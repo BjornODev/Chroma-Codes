@@ -1,15 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=8 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
-[ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="3_0bbpv"]
+[ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
+[ext_resource type="PackedScene" uid="uid://bgsqf585lrwlq" path="res://scenes/Snap_Zone.tscn" id="3_vcsgt"]
+[ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="6_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rvslj")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
+[node name="Snap_Zone" parent="." instance=ExtResource("3_vcsgt")]
+position = Vector2(-160, -179)
+
+[node name="Snap_Zone2" parent="." instance=ExtResource("3_vcsgt")]
+position = Vector2(178, -163)
+
+[node name="PegManager" type="Node2D" parent="."]
+script = ExtResource("2_c01mt")
+
+[node name="PlayerHand" type="Node2D" parent="."]
+script = ExtResource("4_nxtc6")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -28,12 +45,10 @@ size_flags_vertical = 6
 
 [node name="Board" parent="VBoxContainer/CenterContainer" instance=ExtResource("2_0bbpv")]
 layout_mode = 2
-rows = 10
-v_columns = 6
+slot_scene = ExtResource("6_nxtc6")
 
-[node name="Palette" parent="VBoxContainer" instance=ExtResource("3_0bbpv")]
+[node name="Palette" parent="VBoxContainer" instance=ExtResource("7_nxtc6")]
 layout_mode = 2
-size_flags_horizontal = 4
 
 [node name="Submit Button" type="Button" parent="VBoxContainer"]
 layout_mode = 2

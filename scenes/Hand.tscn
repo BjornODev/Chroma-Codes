@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddtq6pg01wkua"]
+
+[ext_resource type="Script" uid="uid://dbtlm0omwiyl1" path="res://scripts/hand.gd" id="1_co447"]
+[ext_resource type="PackedScene" uid="uid://b6ti8xrstdaud" path="res://scenes/Peg.tscn" id="2_oym42"]
+
+[node name="Hand" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_co447")
+peg_scene = ExtResource("2_oym42")

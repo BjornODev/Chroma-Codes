@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bv23udtflu1si"]
 
 [ext_resource type="Script" uid="uid://csbb0gp6na21v" path="res://scripts/board.gd" id="1_hs2ul"]
-[ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="2_hs2ul"]
+[ext_resource type="PackedScene" uid="uid://bgsqf585lrwlq" path="res://scenes/Snap_Zone.tscn" id="2_66b1s"]
 [ext_resource type="PackedScene" uid="uid://c5awicftvlqv6" path="res://scenes/Feedback_Grid.tscn" id="3_66b1s"]
 
 [node name="Board" type="GridContainer"]
@@ -9,5 +9,5 @@ offset_right = 40.0
 offset_bottom = 40.0
 columns = 4
 script = ExtResource("1_hs2ul")
-slot_scene = ExtResource("2_hs2ul")
+slot_scene = ExtResource("2_66b1s")
 feedback_scene = ExtResource("3_66b1s")

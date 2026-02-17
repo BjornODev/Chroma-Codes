@@ -28,10 +28,17 @@ func _can_drop_data(_pos, _data):
 func _drop_data(_pos, data):
 	color_id = data
 	texture = peg_textures[data]
+#	set_color(peg.color_id)
+#	peg.queue_free()
+#	peg.get_parent().draw_hand()
 
 func clear_slot():
 	color_id = -1
 	texture = empty_texture
+
+func set_color(id):
+	color_id = id
+	texture = peg_textures[id]
 
 #func _gui_input(event):
 #	if event is InputEventMouseButton and event.pressed:

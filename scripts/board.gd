@@ -9,7 +9,6 @@ extends GridContainer
 var active_row := 0
 var secret_code = []
 var color_count := 6
-var code_length := v_columns
 
 func _ready():
 	randomize()
@@ -19,10 +18,10 @@ func _ready():
 func generate_code():
 	secret_code.clear()
 	
-	for i in range(code_length):
+	for i in range(v_columns):
 		secret_code.append(randi() % color_count)
 		
-#	print("Secret: ", secret_code)
+	print("Secret: ", secret_code)
 
 func build_board():
 	columns = v_columns + 1
@@ -76,7 +75,7 @@ func evaluate_guess(guess):
 	var secret_copy = secret_code.duplicate()
 	var guess_copy = guess.duplicate()
 	
-	for i in range(code_length):
+	for i in range(v_columns):
 		if guess_copy[i] == secret_copy[i]:
 			black += 1
 			guess_copy[i] = -1
