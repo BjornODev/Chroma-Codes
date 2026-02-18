@@ -27,19 +27,14 @@ renderer/rendering_method="mobile"
 [xogot]
 
 project/editorState=[{
-"column": 17,
-"line": 9,
+"column": 21,
+"line": 14,
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 21,
 "path": "res://scripts/peg_manager.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/board.gd",
 "type": "file"
 }, {
 "column": 0,
@@ -47,22 +42,23 @@ project/editorState=[{
 "path": "res://scripts/snap_zone.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/slot.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 25,
-"path": "res://scripts/peg.gd",
-"type": "file"
-}, {
-"column": 0,
-"current": true,
-"line": 0,
+"column": 35,
+"line": 17,
 "path": "res://scripts/player_hand.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/input_manager.gd",
+"type": "file"
+}, {
+"column": 14,
+"current": true,
+"line": 4,
+"path": "res://scripts/peg_data.gd",
 "type": "file"
 }]
 project/breakpoints={
-"res://scripts/peg.gd": PackedInt32Array()
+"res://scripts/peg.gd": PackedInt32Array(),
+"res://scripts/peg_manager.gd": PackedInt32Array()
 }

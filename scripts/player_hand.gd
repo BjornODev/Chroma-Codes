@@ -7,13 +7,16 @@ const HAND_Y_POSITION = 250
 
 var player_hand = []
 var center_screen_x
-
+var peg_database_reference
 
 func _ready() -> void:
 	center_screen_x = $"../Camera2D".position.x
 	var peg_scene = preload(PEG_SCENE_PATH)
+	peg_database_reference = preload("res://scripts/peg_data.gd")
 	for i in range(HAND_COUNT):
 		var new_peg = peg_scene.instantiate()
+		new_peg.peg_id = randi_range(1, 6)
+		new_peg.modulate = Color(peg_database_reference.PEG_TYPES[new_peg.peg_id][0])
 		$"../PegManager".add_child(new_peg)
 		var new_peg_name = "Peg"
 		add_peg_to_hand(new_peg)
@@ -44,4 +47,10 @@ func calculate_peg_position(index):
 
 func animate_peg_to_position(peg, new_position):
 	var tween = get_tree().create_tween()
-	tween.tween_property(peg, "position", new_position, 0.1)
+	tween.tween_property(peg, "position", new_position, 0.075)
+
+
+func remove_peg_from_hand(peg):
+	if peg in player_hand:
+		player_hand.erase(peg)
+		update_hand_positions()

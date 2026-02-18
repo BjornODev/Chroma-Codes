@@ -11,6 +11,9 @@ var player_hand_reference
 
 func _ready() -> void:
 	player_hand_reference = $"../PlayerHand"
+	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
+	
+
 
 func _process(delta: float) -> void:
 	if peg_being_dragged:
@@ -18,20 +21,10 @@ func _process(delta: float) -> void:
 		peg_being_dragged.position = mouse_pos
 
 
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var peg = raycast_check_for_peg()
-			if peg:
-				start_drag(peg)
-		else:
-			if peg_being_dragged:
-				finish_drag()
-
-
 func start_drag(peg):
 	drag_start_pos = peg.position
 	drag_start_slot = peg.current_slot
+	peg.z_index = 100
 	if peg.current_slot:
 		peg.current_slot.peg_in_slot = null
 		peg.current_slot = null
@@ -42,7 +35,7 @@ func start_drag(peg):
 
 func finish_drag():
 	peg_being_dragged.scale = Vector2(1.05, 1.05)
-	
+	peg_being_dragged.z_index = 1
 	var peg_slot_found = raycast_check_for_peg_slot()
 	
 	if peg_slot_found:
@@ -52,58 +45,29 @@ func finish_drag():
 		peg_being_dragged.position = peg_slot_found.position
 		peg_slot_found.peg_in_slot = peg_being_dragged
 		peg_being_dragged.current_slot = peg_slot_found
+		player_hand_reference.remove_peg_from_hand(peg_being_dragged)
 		
 		# If slot already had peg
 		if other_peg:
 			if drag_start_slot:
 				# Swap between slots
-				other_peg.position = drag_start_pos
 				other_peg.current_slot = drag_start_slot
 				drag_start_slot.peg_in_slot = other_peg
+				# Tween other peg into old slot
+				var tween2 = create_tween()
+				tween2.tween_property(
+					other_peg,
+					"position",
+					drag_start_pos,
+					0.075
+				)
 			else:
 				# Peg came from hand → send old peg back to hand
 				other_peg.current_slot = null
-				player_hand_reference.add_card_to_hand(other_peg)
+				player_hand_reference.add_peg_to_hand(other_peg)
 	else:
 		peg_being_dragged.current_slot = null
-		player_hand_reference.add_card_to_hand(peg_being_dragged)
-
-	peg_being_dragged = null
-
-#func finish_drag():
-#	peg_being_dragged.scale = Vector2(1.05, 1.05)
-#	
-#	var peg_slot_found = raycast_check_for_peg_slot()
-#	var other_peg = peg_slot_found.peg_in_slot
-#	
-#	# Place dragged peg in slot
-#	peg_being_dragged.position = peg_slot_found.position
-#	peg_slot_found.peg_in_slot = peg_being_dragged
-#	peg_being_dragged.current_slot = peg_slot_found
-#	if peg_slot_found:
-#		# Find peg currently in that slot
-#		var other_peg = null
-#		for peg in get_tree().get_nodes_in_group("pegs"):
-#			if peg.current_slot == peg_slot_found:
-#				other_peg = peg
-#				break
-#
-#		# Place dragged peg in slot
-#		peg_being_dragged.position = peg_slot_found.position
-#		peg_slot_found.peg_in_slot = true
-#		peg_being_dragged.current_slot = peg_slot_found
-#
-		# Swap if another peg was there
-#	if other_peg and drag_start_slot:
-#		other_peg.position = drag_start_pos
-#		other_peg.current_slot = drag_start_slot
-#		drag_start_slot.peg_in_slot = true
-#	else:
-#		# Return peg if no slot found
-#		if drag_start_slot:
-#			peg_being_dragged.position = drag_start_pos
-#			drag_start_slot.peg_in_slot = true
-#			peg_being_dragged.current_slot = drag_start_slot
+		player_hand_reference.add_peg_to_hand(peg_being_dragged)
 
 	peg_being_dragged = null
 
@@ -111,6 +75,12 @@ func finish_drag():
 func connect_peg_signals(peg):
 	peg.connect("hovered", on_hovered_over_peg)
 	peg.connect("hovered_off", on_hovered_off_peg)
+
+
+func on_left_click_released():
+	if peg_being_dragged:
+		finish_drag()
+
 
 func on_hovered_over_peg(peg):
 	if !is_hovering_on_peg:
@@ -165,7 +135,7 @@ func raycast_check_for_peg():
 	if result.size() > 0:
 		return get_peg_with_highest_z_index(result)
 	return null
-	
+
 
 func get_peg_with_highest_z_index(pegs):
 	var highest_z_peg = pegs[0].collider.get_parent()
