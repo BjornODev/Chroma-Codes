@@ -27,19 +27,19 @@ renderer/rendering_method="mobile"
 [xogot]
 
 project/editorState=[{
-"column": 18,
-"line": 8,
+"column": 0,
+"line": 0,
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 24,
-"line": 32,
+"column": 30,
+"current": true,
+"line": 40,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
-"column": 0,
-"current": true,
-"line": 0,
+"column": 29,
+"line": 51,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -48,8 +48,8 @@ project/editorState=[{
 "path": "res://scripts/snap_zone.gd",
 "type": "file"
 }, {
-"column": 52,
-"line": 27,
+"column": 0,
+"line": 0,
 "path": "res://scripts/player_hand.gd",
 "type": "file"
 }, {
@@ -61,6 +61,16 @@ project/editorState=[{
 "column": 0,
 "line": 0,
 "path": "res://scripts/peg_data.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/feedback_grid.gd",
+"type": "file"
+}, {
+"column": 1,
+"line": 64,
+"path": "res://scripts/board.gd",
 "type": "file"
 }]
 project/breakpoints={

@@ -14,9 +14,12 @@ var peg_down_reference
 var peg_out_reference
 var peg_sprite2D
 
+var row := -1
+var column := -1
+
 var last_position := Vector2.ZERO
 var drag_velocity := Vector2.ZERO
-var tilt_strength = 0.035
+var tilt_strength = 0.05
 var max_tilt = 0.75
 
 func _ready() -> void:

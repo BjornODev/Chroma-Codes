@@ -10,7 +10,7 @@ var row := 0
 func background_resize(slot_columns):
 	var cols = int(ceil(slot_columns / 2.0))
 	grid.columns = max(cols, 1)
-	background.size.x = grid.columns * 48
+	background.size.x = grid.columns * 24
 
 func show_results(black, white):
 	for i in range(black):

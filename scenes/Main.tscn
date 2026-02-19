@@ -16,7 +16,7 @@ script = ExtResource("1_rvslj")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
-rows = 12
+rows = 9
 
 [node name="PegManager" type="Node2D" parent="."]
 script = ExtResource("2_c01mt")
@@ -26,6 +26,13 @@ script = ExtResource("4_nxtc6")
 
 [node name="InputManager" type="Node2D" parent="."]
 script = ExtResource("4_jlsqs")
+
+[node name="ConfirmationButton" type="Button" parent="."]
+offset_left = -89.0
+offset_top = 408.0
+offset_right = 90.0
+offset_bottom = 446.0
+text = "Confirm"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 visible = false
@@ -56,4 +63,5 @@ layout_mode = 2
 layout_mode = 2
 text = "Submit Guess"
 
+[connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_main_pressed"]
 [connection signal="pressed" from="VBoxContainer/Submit Button" to="VBoxContainer/CenterContainer/Board" method="_on_pressed"]

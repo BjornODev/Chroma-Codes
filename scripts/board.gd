@@ -21,7 +21,7 @@ func generate_code():
 	for i in range(v_columns):
 		secret_code.append(randi() % color_count)
 		
-	print("Secret: ", secret_code)
+#	print("Secret: ", secret_code)
 
 func build_board():
 	columns = v_columns + 1

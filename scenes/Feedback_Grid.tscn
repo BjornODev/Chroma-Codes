@@ -13,15 +13,15 @@ script = ExtResource("1_3mss7")
 peg_scene = ExtResource("2_cvv55")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(96, 96)
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 0
-offset_right = 96.0
-offset_bottom = 96.0
+offset_right = 48.0
+offset_bottom = 48.0
 texture = ExtResource("2_3mss7")
 expand_mode = 1
 
 [node name="GridContainer" type="GridContainer" parent="."]
-custom_minimum_size = Vector2(96, 96)
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

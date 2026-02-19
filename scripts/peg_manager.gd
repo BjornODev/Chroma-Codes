@@ -3,10 +3,14 @@ extends Node2D
 const COLLISION_MASK_NORMAL_PEG = 1
 const COLLISION_MASK_PEG_SLOT = 2
 
+var cur_row = 1
+
 var peg_being_dragged
 var is_hovering_on_peg
+
 var drag_start_pos
 var drag_start_slot
+
 var player_hand_reference
 var peg_reference
 
@@ -31,7 +35,10 @@ func start_drag(peg_stack):
 		peg_stack.get_parent().add_child(peg)
 		peg.is_copy = true
 		peg.peg_id = peg_stack.peg_id
-	else:
+		highlight_peg(peg_stack, false)
+		highlight_peg(peg, false)
+
+	elif peg_stack.row == cur_row:
 		peg = peg_stack
 	drag_start_pos = peg.position
 	drag_start_slot = peg.current_slot
@@ -62,7 +69,7 @@ func finish_drag():
 	peg_being_dragged.z_index = 1
 	var peg_slot_found = raycast_check_for_peg_slot()
 	
-	if peg_slot_found:
+	if peg_slot_found and peg_slot_found.row == cur_row:
 		var other_peg = peg_slot_found.peg_in_slot
 		
 		# Place dragged peg in slot
@@ -70,7 +77,6 @@ func finish_drag():
 		peg_slot_found.peg_in_slot = peg_being_dragged
 		peg_being_dragged.current_slot = peg_slot_found
 		peg_being_dragged.peg_sprite2D.texture = peg_being_dragged.peg_down_reference
-		player_hand_reference.remove_peg_from_hand(peg_being_dragged)
 		
 		# If slot already had peg
 		if other_peg:
@@ -94,7 +100,7 @@ func finish_drag():
 	else:
 		peg_being_dragged.current_slot = null
 		player_hand_reference.return_peg_to_hand(peg_being_dragged)
-
+	
 	peg_being_dragged = null
 
 
