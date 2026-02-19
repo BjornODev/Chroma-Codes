@@ -3,8 +3,9 @@ extends Node2D
 const HAND_COUNT = 6
 const PEG_SCENE_PATH = "res://scenes/Phys_Peg.tscn"
 const PEG_WIDTH = 100
-const HAND_Y_POSITION = 250
+const HAND_Y_POSITION = 500
 
+var peg_bag = [6, 5, 4, 3, 2, 1]
 var player_hand = []
 var center_screen_x
 var peg_database_reference
@@ -13,9 +14,9 @@ func _ready() -> void:
 	center_screen_x = $"../Camera2D".position.x
 	var peg_scene = preload(PEG_SCENE_PATH)
 	peg_database_reference = preload("res://scripts/peg_data.gd")
-	for i in range(HAND_COUNT):
+	for i in peg_bag:
 		var new_peg = peg_scene.instantiate()
-		new_peg.peg_id = randi_range(1, 6)
+		new_peg.peg_id = i
 		new_peg.modulate = Color(peg_database_reference.PEG_TYPES[new_peg.peg_id][0])
 		$"../PegManager".add_child(new_peg)
 		var new_peg_name = "Peg"

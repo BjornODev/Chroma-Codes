@@ -27,23 +27,29 @@ renderer/rendering_method="mobile"
 [xogot]
 
 project/editorState=[{
-"column": 21,
-"line": 14,
+"column": 18,
+"line": 8,
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 21,
+"column": 17,
+"current": true,
+"line": 33,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
 "column": 0,
 "line": 0,
+"path": "res://scripts/board_manager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 9,
 "path": "res://scripts/snap_zone.gd",
 "type": "file"
 }, {
-"column": 35,
-"line": 17,
+"column": 31,
+"line": 7,
 "path": "res://scripts/player_hand.gd",
 "type": "file"
 }, {
@@ -52,9 +58,8 @@ project/editorState=[{
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
-"column": 14,
-"current": true,
-"line": 4,
+"column": 0,
+"line": 0,
 "path": "res://scripts/peg_data.gd",
 "type": "file"
 }]

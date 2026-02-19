@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
 [ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
-[ext_resource type="PackedScene" uid="uid://bgsqf585lrwlq" path="res://scenes/Snap_Zone.tscn" id="3_vcsgt"]
 [ext_resource type="Script" uid="uid://ctmucy8cb87s7" path="res://scripts/input_manager.gd" id="4_jlsqs"]
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="6_nxtc6"]
+[ext_resource type="Script" uid="uid://cor5gnpabjhhi" path="res://scripts/board_manager.gd" id="6_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
 
 [node name="Main" type="Node2D"]
@@ -14,11 +14,10 @@ script = ExtResource("1_rvslj")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="Snap_Zone" parent="." instance=ExtResource("3_vcsgt")]
-position = Vector2(-160, -179)
-
-[node name="Snap_Zone2" parent="." instance=ExtResource("3_vcsgt")]
-position = Vector2(178, -163)
+[node name="BoardManager" type="Node2D" parent="."]
+script = ExtResource("6_q8u5g")
+rows = 12
+columns = 5
 
 [node name="PegManager" type="Node2D" parent="."]
 script = ExtResource("2_c01mt")

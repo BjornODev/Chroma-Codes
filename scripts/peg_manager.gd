@@ -1,6 +1,6 @@
 extends Node2D
 
-const COLLISION_MASK_PEG = 1
+const COLLISION_MASK_NORMAL_PEG = 1
 const COLLISION_MASK_PEG_SLOT = 2
 
 var peg_being_dragged
@@ -8,23 +8,35 @@ var is_hovering_on_peg
 var drag_start_pos
 var drag_start_slot
 var player_hand_reference
+var peg_reference
+
 
 func _ready() -> void:
 	player_hand_reference = $"../PlayerHand"
+	peg_reference = preload("res://scenes/Phys_Peg.tscn")
 	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
-	
 
 
 func _process(delta: float) -> void:
 	if peg_being_dragged:
 		var mouse_pos = get_global_mouse_position()
+		peg_being_dragged.drag_velocity = mouse_pos - peg_being_dragged.position
 		peg_being_dragged.position = mouse_pos
 
 
-func start_drag(peg):
+func start_drag(peg_stack):
+	var peg = null
+	if !peg_stack.is_copy:
+		peg = peg_stack.duplicate()
+		peg_stack.get_parent().add_child(peg)
+		peg.is_copy = true
+	else:
+		peg = peg_stack
 	drag_start_pos = peg.position
 	drag_start_slot = peg.current_slot
 	peg.z_index = 100
+	peg.scale = Vector2(1.075, 1.075)
+	peg.peg_sprite2D.texture = peg.peg_out_reference
 	if peg.current_slot:
 		peg.current_slot.peg_in_slot = null
 		peg.current_slot = null
@@ -34,7 +46,18 @@ func start_drag(peg):
 
 
 func finish_drag():
-	peg_being_dragged.scale = Vector2(1.05, 1.05)
+	var tween_hover = create_tween()
+	tween_hover.set_ease(Tween.EASE_OUT)
+	tween_hover.set_trans(Tween.TRANS_ELASTIC)
+	peg_being_dragged.drag_velocity = Vector2.ZERO
+	
+	tween_hover.tween_property(
+			peg_being_dragged,
+			"scale",
+			Vector2(1, 1),
+			0.25
+		)
+	
 	peg_being_dragged.z_index = 1
 	var peg_slot_found = raycast_check_for_peg_slot()
 	
@@ -45,6 +68,7 @@ func finish_drag():
 		peg_being_dragged.position = peg_slot_found.position
 		peg_slot_found.peg_in_slot = peg_being_dragged
 		peg_being_dragged.current_slot = peg_slot_found
+		peg_being_dragged.peg_sprite2D.texture = peg_being_dragged.peg_down_reference
 		player_hand_reference.remove_peg_from_hand(peg_being_dragged)
 		
 		# If slot already had peg
@@ -64,6 +88,7 @@ func finish_drag():
 			else:
 				# Peg came from hand → send old peg back to hand
 				other_peg.current_slot = null
+				other_peg.peg_sprite2D.texture = other_peg.peg_out_reference
 				player_hand_reference.add_peg_to_hand(other_peg)
 	else:
 		peg_being_dragged.current_slot = null
@@ -99,12 +124,24 @@ func on_hovered_off_peg(peg):
 
 
 func highlight_peg(peg, hovered):
+	var tween_hover = create_tween()
+	tween_hover.set_ease(Tween.EASE_OUT)
+	tween_hover.set_trans(Tween.TRANS_ELASTIC)
+	
 	if hovered:
-		peg.scale = Vector2(1.05, 1.05)
-		peg.z_index = 2
+		tween_hover.tween_property(
+			peg,
+			"scale",
+			Vector2(1.2, 1.2),
+			0.25
+		)
 	else:
-		peg.scale = Vector2(1, 1)
-		peg.z_index = 1
+		tween_hover.tween_property(
+			peg,
+			"scale",
+			Vector2(1, 1),
+			0.25
+		)
 
 
 func raycast_check_for_peg_slot():
@@ -128,7 +165,7 @@ func raycast_check_for_peg():
 	
 	parameters.position = get_global_mouse_position()
 	parameters.collide_with_areas = true
-	parameters.collision_mask = COLLISION_MASK_PEG
+	parameters.collision_mask = COLLISION_MASK_NORMAL_PEG
 	
 	var result = space_state.intersect_point(parameters)
 	
