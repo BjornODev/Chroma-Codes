@@ -18,8 +18,8 @@ func build_board():
 	var total_width = columns * slot_size + (columns - 1) * spacing
 	var total_height = rows * slot_size + (rows - 1) * spacing
 	
-	var start_x = camera_center.x - total_width / 2.0
-	var start_y = camera_center.y - total_height / 2.0
+	var start_x = camera_center.x - total_width / 2.0 + slot_size / 2.0
+	var start_y = camera_center.y - total_height / 2.0 + slot_size / 2.0
 	
 	for r in range(rows):
 		for c in range(columns):

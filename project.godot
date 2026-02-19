@@ -32,13 +32,13 @@ project/editorState=[{
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 17,
-"current": true,
-"line": 33,
+"column": 24,
+"line": 32,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
 "column": 0,
+"current": true,
 "line": 0,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
@@ -48,8 +48,8 @@ project/editorState=[{
 "path": "res://scripts/snap_zone.gd",
 "type": "file"
 }, {
-"column": 31,
-"line": 7,
+"column": 52,
+"line": 27,
 "path": "res://scripts/player_hand.gd",
 "type": "file"
 }, {

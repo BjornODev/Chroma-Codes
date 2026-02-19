@@ -30,6 +30,7 @@ func start_drag(peg_stack):
 		peg = peg_stack.duplicate()
 		peg_stack.get_parent().add_child(peg)
 		peg.is_copy = true
+		peg.peg_id = peg_stack.peg_id
 	else:
 		peg = peg_stack
 	drag_start_pos = peg.position
@@ -89,10 +90,10 @@ func finish_drag():
 				# Peg came from hand → send old peg back to hand
 				other_peg.current_slot = null
 				other_peg.peg_sprite2D.texture = other_peg.peg_out_reference
-				player_hand_reference.add_peg_to_hand(other_peg)
+				player_hand_reference.return_peg_to_hand(other_peg)
 	else:
 		peg_being_dragged.current_slot = null
-		player_hand_reference.add_peg_to_hand(peg_being_dragged)
+		player_hand_reference.return_peg_to_hand(peg_being_dragged)
 
 	peg_being_dragged = null
 

@@ -20,15 +20,13 @@ func _ready() -> void:
 		new_peg.modulate = Color(peg_database_reference.PEG_TYPES[new_peg.peg_id][0])
 		$"../PegManager".add_child(new_peg)
 		var new_peg_name = "Peg"
-		add_peg_to_hand(new_peg)
-
-
-func add_peg_to_hand(peg):
-	if peg not in player_hand:
-		player_hand.insert(0, peg)
+		player_hand.insert(-0, new_peg)
 		update_hand_positions()
-	else:
-		animate_peg_to_position(peg, peg.hand_position)
+
+
+func return_peg_to_hand(peg):
+	animate_peg_to_position(peg, player_hand[peg.peg_id-1].position, true)
+
 
 
 func update_hand_positions():
@@ -37,7 +35,7 @@ func update_hand_positions():
 		var new_position = Vector2(calculate_peg_position(i), HAND_Y_POSITION)
 		var peg = player_hand[i]
 		peg.hand_position = new_position
-		animate_peg_to_position(peg, new_position)
+		animate_peg_to_position(peg, new_position, false)
 
 
 func calculate_peg_position(index):
@@ -46,9 +44,13 @@ func calculate_peg_position(index):
 	return x_position
 
 
-func animate_peg_to_position(peg, new_position):
+func animate_peg_to_position(peg, new_position, duplicate):
 	var tween = get_tree().create_tween()
 	tween.tween_property(peg, "position", new_position, 0.075)
+	
+	if duplicate:
+		await tween.finished
+		peg.queue_free()
 
 
 func remove_peg_from_hand(peg):

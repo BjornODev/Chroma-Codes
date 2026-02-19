@@ -17,7 +17,6 @@ script = ExtResource("1_rvslj")
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
 rows = 12
-columns = 5
 
 [node name="PegManager" type="Node2D" parent="."]
 script = ExtResource("2_c01mt")
