@@ -32,18 +32,19 @@ project/editorState=[{
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 14,
+"column": 0,
 "line": 0,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
-"column": 34,
-"line": 241,
+"column": 0,
+"current": true,
+"line": 61,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 9,
+"line": 0,
 "path": "res://scripts/snap_zone.gd",
 "type": "file"
 }, {
@@ -73,10 +74,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 22,
-"current": true,
 "line": 16,
 "path": "res://data/patterns.json",
 "type": "file"
+}, {
+"title": "Timer",
+"type": "doc"
 }]
 project/breakpoints={
 "res://scripts/peg.gd": PackedInt32Array(),

@@ -41,6 +41,8 @@ func _ready():
 
 
 func spawn_pattern_markers(positions):
+	var spawned_markers = []
+
 	for pos in positions:
 		var inverted_row = rows - 1 - int(pos.x)
 		var lookup_key = Vector2(inverted_row, pos.y)
@@ -50,6 +52,13 @@ func spawn_pattern_markers(positions):
 			var marker = radar_blip_scene.instantiate()
 			add_child(marker)
 			marker.position = slot.position
+			spawned_markers.append(marker)
+
+	await get_tree().create_timer(0.75).timeout
+
+	for marker in spawned_markers:
+		if is_instance_valid(marker):
+			marker.queue_free()
 
 
 func build_empty_board():
