@@ -32,14 +32,13 @@ project/editorState=[{
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 30,
-"current": true,
-"line": 40,
+"column": 14,
+"line": 0,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
-"column": 29,
-"line": 51,
+"column": 34,
+"line": 241,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -68,9 +67,15 @@ project/editorState=[{
 "path": "res://scripts/feedback_grid.gd",
 "type": "file"
 }, {
-"column": 1,
+"column": 0,
 "line": 64,
 "path": "res://scripts/board.gd",
+"type": "file"
+}, {
+"column": 22,
+"current": true,
+"line": 16,
+"path": "res://data/patterns.json",
 "type": "file"
 }]
 project/breakpoints={

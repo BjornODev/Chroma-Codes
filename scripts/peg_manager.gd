@@ -3,7 +3,7 @@ extends Node2D
 const COLLISION_MASK_NORMAL_PEG = 1
 const COLLISION_MASK_PEG_SLOT = 2
 
-var cur_row = 1
+var cur_row = 0
 
 var peg_being_dragged
 var is_hovering_on_peg
@@ -30,6 +30,7 @@ func _process(delta: float) -> void:
 
 func start_drag(peg_stack):
 	var peg = null
+	print(cur_row)
 	if !peg_stack.is_copy:
 		peg = peg_stack.duplicate()
 		peg_stack.get_parent().add_child(peg)
@@ -40,6 +41,8 @@ func start_drag(peg_stack):
 
 	elif peg_stack.row == cur_row:
 		peg = peg_stack
+	else:
+		return
 	drag_start_pos = peg.position
 	drag_start_slot = peg.current_slot
 	peg.z_index = 100
@@ -68,7 +71,7 @@ func finish_drag():
 	
 	peg_being_dragged.z_index = 1
 	var peg_slot_found = raycast_check_for_peg_slot()
-	
+#	print("Slot row:", peg_slot_found.row, "Current row:", cur_row)
 	if peg_slot_found and peg_slot_found.row == cur_row:
 		var other_peg = peg_slot_found.peg_in_slot
 		
@@ -77,6 +80,8 @@ func finish_drag():
 		peg_slot_found.peg_in_slot = peg_being_dragged
 		peg_being_dragged.current_slot = peg_slot_found
 		peg_being_dragged.peg_sprite2D.texture = peg_being_dragged.peg_down_reference
+		peg_being_dragged.row = peg_slot_found.row
+		peg_being_dragged.column = peg_slot_found.column
 		
 		# If slot already had peg
 		if other_peg:
