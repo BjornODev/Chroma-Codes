@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=11 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cw0f175rbogh4" path="res://scripts/item_manager.gd" id="6_lhr70"]
 [ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="6_nxtc6"]
 [ext_resource type="Script" uid="uid://cor5gnpabjhhi" path="res://scripts/board_manager.gd" id="6_q8u5g"]
+[ext_resource type="Script" uid="uid://cu1txk1fkv2nf" path="res://scripts/pattern_engine.gd" id="7_lhr70"]
 [ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
 
 [node name="Main" type="Node2D"]
@@ -17,7 +18,7 @@ script = ExtResource("1_rvslj")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
-rows = 9
+soft_row_limit = 2
 
 [node name="PegManager" type="Node2D" parent="."]
 script = ExtResource("2_c01mt")
@@ -30,6 +31,9 @@ script = ExtResource("4_jlsqs")
 
 [node name="ItemManager" type="Node2D" parent="."]
 script = ExtResource("6_lhr70")
+
+[node name="PatternEngine" type="Node2D" parent="."]
+script = ExtResource("7_lhr70")
 
 [node name="ConfirmationButton" type="Button" parent="."]
 offset_left = -89.0
