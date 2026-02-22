@@ -38,6 +38,7 @@ func _ready():
 	# Create safe rows + one danger row
 	for i in range(soft_row_limit):
 		add_row()
+	update_safe_background()
 
 
 # =========================
@@ -54,13 +55,21 @@ func add_row():
 
 	var camera = $"../Camera2D"
 	var camera_center = camera.get_screen_center_position()
+	
+	var slot_width = columns * slot_size + (columns - 1) * spacing
+	var feedback_columns = ceil(columns / 2.0)
+	var feedback_width = feedback_columns * 24
+	var gap = 10
 
-	var total_width = columns * slot_size + (columns - 1) * spacing
+	var total_width = slot_width + gap + feedback_width
 	var start_x = camera_center.x - total_width / 2.0 + slot_size / 2.0
 
 	# IMPORTANT: grow upward, not downward
-	var base_y = camera_center.y + 200
+	var base_y = camera_center.y + 350
 	var y = base_y - r * (slot_size + spacing)
+
+	if r >= soft_row_limit:
+		create_danger_background(y)
 
 	# Create slots
 	for c in range(columns):
@@ -78,15 +87,56 @@ func add_row():
 	var feedback_grid = feedback_scene.instantiate()
 	feedback_grid.row = r
 	add_child(feedback_grid)
-	feedback_grid.position = Vector2(start_x + total_width + 10, y - 24)
+	feedback_grid.position = Vector2(
+		start_x + slot_width + gap,
+		y - 24
+	)
 
 	# Danger styling
 	if r >= soft_row_limit:
 		for child in get_children():
-			if (child is SnapZone or child is Feedback_Grid) and child.row == r:
+			if (child is SnapZone) and child.row == r:
 				apply_danger_visual(child)
 
 	rows_generated += 1
+	if rows_generated <= soft_row_limit:
+		update_safe_background()
+
+
+func update_safe_background():
+	var camera = $"../Camera2D"
+	var camera_center = camera.get_screen_center_position()
+
+	var slot_width = columns * slot_size + (columns - 1) * spacing
+	var feedback_columns = ceil(columns / 2.0)
+	var feedback_width = feedback_columns * 24
+	var gap = 10
+
+	var total_width = slot_width + gap + feedback_width
+
+	var visible_safe_rows = min(rows_generated, soft_row_limit)
+	if visible_safe_rows == 0:
+		return
+
+	var total_height = soft_row_limit * slot_size + (soft_row_limit - 1) * spacing
+
+	var base_y = camera_center.y + 350
+	var top_y = base_y - (visible_safe_rows - 1) * (slot_size + spacing)
+
+	var bg = $SafeBoardBG
+	
+	var padding_x = 90
+	var padding_y = 50
+	
+	var final_width = total_width + padding_x
+	var final_height = total_height + padding_y
+	
+	bg.size = Vector2(final_width, final_height)
+	
+	bg.position = Vector2(
+		camera_center.x - final_width / 2.0,
+		top_y - slot_size / 2.0 - padding_y / 2.0
+	)
 
 
 func tween_last_row():
@@ -111,14 +161,52 @@ func tween_last_row():
 			tween.tween_property(child, "global_position", original_pos, 0.6)
 
 
+func create_danger_background(y_pos):
+	var bg_scene = preload("res://scenes/DangerRowBG.tscn")
+	var bg = bg_scene.instantiate()
+	$DangerBGContainer.add_child(bg)
+
+	var camera = $"../Camera2D"
+	var camera_center = camera.get_screen_center_position()
+
+	var slot_width = columns * slot_size + (columns - 1) * spacing
+	var feedback_columns = ceil(columns / 2.0)
+	var feedback_width = feedback_columns * 24
+	var gap = 10
+	var total_width = slot_width + gap + feedback_width
+	var total_height = slot_size + spacing
+
+	var padding_x = 90
+	var padding_y = 17
+	
+	var final_width = total_width + padding_x
+	var final_height = total_height + padding_y
+	
+	bg.size = Vector2(final_width, final_height)
+	
+	bg.position = Vector2(
+		camera_center.x - final_width / 2.0,
+		y_pos - slot_size / 2.0 - padding_y / 2.0 - 13
+	)
+	tween_danger_bg(bg)
+
+
+func tween_danger_bg(bg):
+	var camera = $"../Camera2D"
+	var screen_height = get_viewport().get_visible_rect().size.y
+	var world_top = camera.global_position.y - screen_height / 2.0
+
+	var final_pos = bg.global_position
+	bg.global_position.y = world_top - 100
+
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(bg, "global_position", final_pos, 0.6)
+
+
 func apply_danger_visual(node):
-	node.modulate = Color(1.0, 0.5, 0.5, 0.9)
-
-	var glow_mat = CanvasItemMaterial.new()
-	glow_mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-	glow_mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
-
-	node.material = glow_mat
+	node.set_glow_red()
 
 
 # =========================

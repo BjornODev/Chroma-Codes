@@ -37,9 +37,9 @@ project/editorState=[{
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
-"column": 68,
+"column": 48,
 "current": true,
-"line": 110,
+"line": 188,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -48,12 +48,12 @@ project/editorState=[{
 "path": "res://scripts/peg_data.gd",
 "type": "file"
 }, {
-"column": 22,
+"column": 0,
 "line": 37,
 "path": "res://data/patterns.json",
 "type": "file"
 }, {
-"column": 1,
+"column": 0,
 "line": 11,
 "path": "res://scripts/item_manager.gd",
 "type": "file"
@@ -68,9 +68,14 @@ project/editorState=[{
 "path": "res://scripts/main.gd",
 "type": "file"
 }, {
-"column": 12,
+"column": 0,
 "line": 172,
 "path": "res://scripts/pattern_engine.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 12,
+"path": "res://scripts/snap_zone.gd",
 "type": "file"
 }]
 project/breakpoints={

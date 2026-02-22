@@ -20,6 +20,15 @@ offset_bottom = 48.0
 texture = ExtResource("2_3mss7")
 expand_mode = 1
 
+[node name="ShaderRect" type="TextureRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 48.0
+texture = ExtResource("2_3mss7")
+expand_mode = 1
+
 [node name="GridContainer" type="GridContainer" parent="."]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 0

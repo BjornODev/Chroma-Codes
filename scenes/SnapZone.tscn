@@ -1,7 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgsqf585lrwlq"]
+[gd_scene load_steps=6 format=3 uid="uid://bgsqf585lrwlq"]
 
 [ext_resource type="Script" uid="uid://bqulclgokawqe" path="res://scripts/snap_zone.gd" id="1_04kem"]
 [ext_resource type="Texture2D" uid="uid://duvbdmqkitnu2" path="res://assets/circle.svg" id="2_s4yuw"]
+[ext_resource type="Shader" uid="uid://cvih1xjh0ydgu" path="res://shaders/pulse_glow.gdshader" id="3_38nbk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_38nbk"]
+shader = ExtResource("3_38nbk")
+shader_parameter/glow_color = Color(0.886261, 0.14117432, 0, 1)
+shader_parameter/intensity = 1.0
+shader_parameter/spread = 1.9
+shader_parameter/pulse_speed = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5da6h"]
 radius = 16.87704
@@ -11,6 +19,12 @@ script = ExtResource("1_04kem")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.06781711, 0.06781711)
+texture = ExtResource("2_s4yuw")
+
+[node name="ShaderSprite" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_38nbk")
+scale = Vector2(0.113229826, 0.113229826)
 texture = ExtResource("2_s4yuw")
 
 [node name="Area2D" type="Area2D" parent="."]
