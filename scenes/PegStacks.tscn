@@ -1,0 +1,32 @@
+[gd_scene load_steps=7 format=3 uid="uid://wxo2vc7g6oc8"]
+
+[ext_resource type="Script" uid="uid://dsqb6rkauin1s" path="res://scripts/peg_stacks.gd" id="1_sg4uu"]
+[ext_resource type="Shader" uid="uid://eq3ddakaeydg" path="res://shaders/peg_outline.gdshader" id="2_ollbn"]
+[ext_resource type="PackedScene" uid="uid://bxhfhsxwlmjqq" path="res://scenes/Phys_Peg.tscn" id="2_ts8cq"]
+[ext_resource type="Texture2D" uid="uid://dgftl7gndgv2d" path="res://assets/peg_in_hand.svg" id="3_k4max"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0nd3c"]
+shader = ExtResource("2_ollbn")
+shader_parameter/allow_out_of_bounds = true
+shader_parameter/outline_thickness = 0.0
+shader_parameter/outline_color = Color(0.3999939, 0.6156769, 0.20391846, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_58nxj"]
+
+[node name="PegStacks" type="Node2D"]
+script = ExtResource("1_sg4uu")
+peg_scene = ExtResource("2_ts8cq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_0nd3c")
+scale = Vector2(0.16637117, 0.16637117)
+texture = ExtResource("3_k4max")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(-4.0014544, -4.0014544)
+shape = SubResource("CircleShape2D_58nxj")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]

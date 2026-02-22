@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5awicftvlqv6"]
+[gd_scene load_steps=5 format=3 uid="uid://c5awicftvlqv6"]
 
 [ext_resource type="Script" uid="uid://c5abj76boixbx" path="res://scripts/feedback_grid.gd" id="1_3mss7"]
 [ext_resource type="Texture2D" uid="uid://pmakpmew3788" path="res://assets/rounded_square.svg" id="2_3mss7"]
 [ext_resource type="PackedScene" uid="uid://dtprhtpskf5sw" path="res://scenes/Feedback_Peg.tscn" id="2_cvv55"]
+[ext_resource type="Texture2D" uid="uid://doip05vhpinu4" path="res://assets/plain-square.svg" id="3_8su7q"]
 
 [node name="Feedback_Grid" type="Control"]
 layout_mode = 3
@@ -17,7 +18,7 @@ custom_minimum_size = Vector2(48, 48)
 layout_mode = 0
 offset_right = 48.0
 offset_bottom = 48.0
-texture = ExtResource("2_3mss7")
+texture = ExtResource("3_8su7q")
 expand_mode = 1
 
 [node name="ShaderRect" type="TextureRect" parent="."]
