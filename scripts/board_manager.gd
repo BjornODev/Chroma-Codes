@@ -16,6 +16,9 @@ var triggered_patterns = {} # Prevent duplicate triggers
 var patterns = []
 var slot_lookup = {}
 
+var player_items = []
+var all_items = []
+
 # -------------------------
 # SETUP
 # -------------------------
@@ -29,15 +32,9 @@ func _ready():
 	build_board()
 	build_empty_board()
 	generate_code()
-
-
-#func spawn_pattern_markers(positions):
-#	for pos in positions:
-#		var slot = slot_lookup[pos]
-#		if slot:
-#			var marker = radar_blip_scene.instantiate()
-#			add_child(marker)
-#			marker.position = slot.position
+	load_items()
+	# For testing — give player 1 item
+	player_items.append(all_items[0])
 
 
 func spawn_pattern_markers(positions):
@@ -48,17 +45,9 @@ func spawn_pattern_markers(positions):
 		var lookup_key = Vector2(inverted_row, pos.y)
 
 		var slot = slot_lookup.get(lookup_key)
-		if slot:
-			var marker = radar_blip_scene.instantiate()
-			add_child(marker)
-			marker.position = slot.position
-			spawned_markers.append(marker)
-
-	await get_tree().create_timer(0.75).timeout
-
-	for marker in spawned_markers:
-		if is_instance_valid(marker):
-			marker.queue_free()
+		var marker = radar_blip_scene.instantiate()
+		add_child(marker)
+		marker.position = slot.position
 
 
 func build_empty_board():
@@ -73,6 +62,32 @@ func generate_code():
 	secret_code.clear()
 	for i in range(columns):
 		secret_code.append(randi_range(1, 6))
+
+
+func load_items():
+	var file = FileAccess.open("res://data/items.json", FileAccess.READ)
+	var content = file.get_as_text()
+	file.close()
+	
+	var json = JSON.new()
+	var err = json.parse(content)
+	if err != OK:
+		push_error("Item JSON error")
+		return
+	
+	all_items = json.data
+
+
+func emit_game_event(event_name, payload = {}):
+	print("Event emitted:", event_name)
+	
+	for item in player_items:
+		process_item_event(item, event_name, payload)
+
+
+func process_item_event(item, event_name, payload):
+	if item.trigger_event == event_name:
+		print("Item triggered:", item.name)
 
 
 # -------------------------
@@ -146,9 +161,129 @@ func check_patterns_near_row(row_index):
 			for pattern in patterns:
 				var result = match_pattern_at(r, c, pattern)
 				
+#				if result != null:
+#					if pattern_rules_pass(pattern, r):
+#						if register_pattern(pattern.name, Vector2(r,c)):
+#							spawn_pattern_markers(result)
 				if result != null:
-					register_pattern(pattern.name, Vector2(r,c))
-					spawn_pattern_markers(result)
+					
+					if pattern.duplicate_rule != null:
+						var dup_rows = duplicate_rule_rows(pattern)
+						
+						if dup_rows != null:
+							for dup_row in dup_rows:
+								for c2 in range(columns):
+									var res2 = match_pattern_at(dup_row, c2, pattern)
+									if res2 != null:
+										if register_pattern(pattern.name, res2):
+											spawn_pattern_markers(res2)
+					else:
+						if register_pattern(pattern.name, result):
+							spawn_pattern_markers(result)
+							emit_game_event("pattern_triggered", {
+								"pattern_name": pattern.name,
+								"positions": result
+							})
+
+
+func pattern_rules_pass(pattern, row_index):
+	# Rule 1: specific row restriction
+	if pattern.allowed_rows != null and pattern.allowed_rows.size() > 0:
+		if row_index not in pattern.allowed_rows:
+			return false
+	
+	# Rule 2: duplicate row requirement
+	if pattern.duplicate_rule != null:
+		if not duplicate_rule_rows(pattern):
+			return false
+
+	return true
+
+
+#func duplicate_rule_pass(pattern):
+#	var rule = pattern.duplicate_rule
+#	
+#	if rule.type == "any":
+#		return any_two_rows_match_pattern(pattern)
+#	
+#	if rule.type == "fixed":
+#		var rows = rule.rows
+#		
+#		# All required rows must match pattern
+#		for r in rows:
+#			if not row_matches_pattern(r, pattern):
+#				return false
+#		
+#		return true
+#	
+#	return true
+
+
+func duplicate_rule_rows(pattern):
+	var rule = pattern.duplicate_rule
+	if rule == null:
+		return null
+	
+	var rule_type = rule.get("type", "")
+	
+	if rule_type == "any":
+		var matched_rows = []
+		for r in range(rows):
+			if row_matches_pattern(r, pattern):
+				matched_rows.append(r)
+		
+		if matched_rows.size() >= 2:
+			return matched_rows
+		else:
+			return null
+	
+	if rule_type == "fixed":
+		var required_rows = rule.get("rows", [])
+		
+		for r in required_rows:
+			if not row_matches_pattern(r, pattern):
+				return null
+		
+		return required_rows
+	
+	return null
+
+
+func any_two_rows_match_pattern(pattern):
+	var matched_rows = []
+	
+	for r in range(rows):
+		if row_matches_pattern(r, pattern):
+			matched_rows.append(r)
+	
+	return matched_rows.size() >= 2
+
+
+func rows_are_identical(row_list):
+	if row_list.size() < 2:
+		return false
+	
+	var base = board_state[row_list[0]]
+	
+	for i in range(1, row_list.size()):
+		if board_state[row_list[i]] != base:
+			return false
+	
+	return true
+
+
+func row_matches_pattern(row_index, pattern):
+	for cell in pattern.cells:
+		var r = row_index + int(cell.offset.y)
+		var c = int(cell.offset.x)
+
+		if r < 0 or r >= rows or c < 0 or c >= columns:
+			return false
+
+		if board_state[r][c] != cell.color:
+			return false
+
+	return true
 
 
 func match_pattern_at(base_r, base_c, pattern):
@@ -173,11 +308,15 @@ func match_pattern_at(base_r, base_c, pattern):
 
 func register_pattern(name, pos):
 	var key = name + "_" + str(pos)
+	print("Checking key:", key)
 	if key in triggered_patterns:
+		print("Already triggered", key)
 		return
 	
 	triggered_patterns[key] = true
 	print("Pattern triggered:", name, "at", pos)
+	
+	return true
 
 
 func load_patterns_from_json():
@@ -203,7 +342,9 @@ func load_patterns_from_json():
 	for pattern_data in data:
 		var pattern = {
 			"name": pattern_data.name,
-			"cells": []
+			"cells": [],
+			"allowed_rows": pattern_data.get("allowed_rows", null),
+			"duplicate_rule": pattern_data.get("duplicate_rule", null)
 		}
 		
 		for cell in pattern_data.cells:

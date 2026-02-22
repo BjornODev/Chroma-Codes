@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Redo 2",
+    "description": "After submitting a row, you may change up to 2 pegs.",
+    "triggers": [
+      {
+        "event": "row_submitted"
+      }
+    ],
+    "keywords": {
+      "Redo": 2
+    }
+  },
+  {
+    "name": "Duplicate Surge",
+    "description": "When a duplicate pattern appears, gain 1 health.",
+    "triggers": [
+      {
+        "event": "pattern_triggered",
+        "pattern": "Duplicate"
+      }
+    ],
+    "keywords": {
+      "GainHealth": 1
+    }
+  },
+  {
+    "name": "Last Stand",
+    "description": "When you lose health, draw 1 bonus peg.",
+    "triggers": [
+      {
+        "event": "health_lost"
+      }
+    ],
+    "keywords": {
+      "DrawPeg": 1
+    }
+  }
+]

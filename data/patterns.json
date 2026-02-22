@@ -1,6 +1,6 @@
 [
   {
-    "name": "2x2 Yellow Square",
+    "name": "2x2 Green Square",
     "cells": [
       { "x": 0, "y": 0, "color": 3 },
       { "x": 1, "y": 0, "color": 3 },
@@ -9,7 +9,7 @@
     ]
   },
   {
-    "name": "Diamond Pattern",
+    "name": "Orange Row",
     "cells": [
       { "x": 0, "y": 0, "color": 6 },
       { "x": 1, "y": 0, "color": 6 },
@@ -18,12 +18,25 @@
     ]
   }, 
   {
-    "name": "Orange Row",
+    "name": "Red Yellow Green White Diamond",
     "cells": [
       { "x": 0, "y": 1, "color": 1 },
       { "x": -1, "y": 0, "color": 2 },
       { "x": 1, "y": 0, "color": 3 },
       { "x": 0, "y": -1, "color": 4 }
     ]
+  },
+  {
+    "name": "Duplicate",
+    "cells": [
+      { "x": 0, "y": 0, "color": 5 },
+      { "x": 1, "y": 0, "color": 5 },
+      { "x": 2, "y": 0, "color": 6 },
+      { "x": 3, "y": 0, "color": 6 }
+    ],
+    "duplicate_rule": {
+      "type": "fixed",
+      "rows": [0, 4]
+    }
   }
 ]

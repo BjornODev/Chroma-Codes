@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=10 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
 [ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
 [ext_resource type="Script" uid="uid://ctmucy8cb87s7" path="res://scripts/input_manager.gd" id="4_jlsqs"]
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
+[ext_resource type="Script" uid="uid://cw0f175rbogh4" path="res://scripts/item_manager.gd" id="6_lhr70"]
 [ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="6_nxtc6"]
 [ext_resource type="Script" uid="uid://cor5gnpabjhhi" path="res://scripts/board_manager.gd" id="6_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
@@ -26,6 +27,9 @@ script = ExtResource("4_nxtc6")
 
 [node name="InputManager" type="Node2D" parent="."]
 script = ExtResource("4_jlsqs")
+
+[node name="ItemManager" type="Node2D" parent="."]
+script = ExtResource("6_lhr70")
 
 [node name="ConfirmationButton" type="Button" parent="."]
 offset_left = -89.0
