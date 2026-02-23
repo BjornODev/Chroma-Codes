@@ -28,19 +28,19 @@ renderer/rendering_method="mobile"
 [xogot]
 
 project/editorState=[{
-"column": 0,
-"line": 0,
+"column": 14,
+"line": 50,
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 9,
+"line": 115,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
-"column": 0,
+"column": 46,
 "current": true,
-"line": 188,
+"line": 311,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -75,8 +75,38 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 12,
+"line": 0,
 "path": "res://scripts/snap_zone.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/player_hand.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/input_manager.gd",
+"type": "file"
+}, {
+"column": 5,
+"line": 9,
+"path": "res://scripts/feedback_grid.gd",
+"type": "file"
+}, {
+"column": 22,
+"line": 2,
+"path": "res://data/modifiers.json",
+"type": "file"
+}, {
+"column": 21,
+"line": 108,
+"path": "res://scripts/board_modifier_engine.gd",
+"type": "file"
+}, {
+"column": 23,
+"line": 3,
+"path": "res://scripts/spike.gd",
 "type": "file"
 }]
 project/breakpoints={

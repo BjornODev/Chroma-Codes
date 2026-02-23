@@ -8,6 +8,10 @@ extends Node2D
 @export var damage_per_row := 1
 @export var player_health := 5
 
+@export var visible_row_window := 6
+@onready var modifier_engine = $"../BoardModifierEngine"
+@onready var damage_overlay = $DamageOverlay
+
 var slot_scene
 var feedback_scene
 var radar_blip_scene = preload("res://scenes/RadarBlip.tscn")
@@ -19,6 +23,7 @@ var board_state = []
 var slot_lookup = {}
 
 var rows_generated := 0
+var scroll_offset := 0.0
 
 @onready var pattern_engine = $"../PatternEngine"
 @onready var item_system = $"../ItemManager"
@@ -32,13 +37,18 @@ func _ready():
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
 	peg_manager_reference = $"../PegManager"
-
+	modifier_engine.initialize()
+	modifier_engine.pre_board_build(self)
+	
 	generate_code()
-
+	
 	# Create safe rows + one danger row
 	for i in range(soft_row_limit):
 		add_row()
+	
 	update_safe_background()
+	
+	modifier_engine.post_board_build(self)
 
 
 # =========================
@@ -87,6 +97,7 @@ func add_row():
 	var feedback_grid = feedback_scene.instantiate()
 	feedback_grid.row = r
 	add_child(feedback_grid)
+	feedback_grid.background_resize(columns)
 	feedback_grid.position = Vector2(
 		start_x + slot_width + gap,
 		y - 24
@@ -176,7 +187,7 @@ func create_danger_background(y_pos):
 	var total_width = slot_width + gap + feedback_width
 	var total_height = slot_size + spacing
 
-	var padding_x = 90
+	var padding_x = 80
 	var padding_y = 17
 	
 	var final_width = total_width + padding_x
@@ -185,7 +196,7 @@ func create_danger_background(y_pos):
 	bg.size = Vector2(final_width, final_height)
 	
 	bg.position = Vector2(
-		camera_center.x - final_width / 2.0,
+		camera_center.x - final_width / 2.0 - 7,
 		y_pos - slot_size / 2.0 - padding_y / 2.0 - 13
 	)
 	tween_danger_bg(bg)
@@ -220,10 +231,13 @@ func submit_guess():
 	# Validate row
 	for child in get_children():
 		if child is SnapZone and child.row == row_index:
-			if child.peg_in_slot == null:
+			var occupant = child.peg_in_slot
+			
+			if occupant == null:
 				print("Invalid Guess")
 				return
-			guess.append(child.peg_in_slot.peg_id)
+
+			guess.append(occupant.get_submission_value())
 
 	print("Guess:", guess)
 
@@ -282,7 +296,9 @@ func submit_guess():
 func apply_damage():
 	player_health -= damage_per_row
 	print("Health:", player_health)
-
+	
+	flash_damage()
+	
 	item_system.emit_game_event("health_lost", {
 		"amount": damage_per_row,
 		"health": player_health
@@ -290,6 +306,15 @@ func apply_damage():
 
 	if player_health <= 0:
 		print("Game Over")
+
+
+func flash_damage():
+	damage_overlay.modulate = Color(1, 0, 0, 0.8)
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(damage_overlay, "modulate", Color(1, 0, 0, 0), 0.5)
 
 
 # =========================

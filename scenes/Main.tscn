@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=13 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://cor5gnpabjhhi" path="res://scripts/board_manager.gd" id="6_q8u5g"]
 [ext_resource type="Script" uid="uid://cu1txk1fkv2nf" path="res://scripts/pattern_engine.gd" id="7_lhr70"]
 [ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
+[ext_resource type="Script" uid="uid://duiylsgdpo5af" path="res://scripts/board_modifier_engine.gd" id="9_bjd11"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rvslj")
@@ -19,6 +20,7 @@ script = ExtResource("1_rvslj")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
+soft_row_limit = 4
 
 [node name="SafeBoardBG" type="NinePatchRect" parent="BoardManager"]
 offset_right = 40.0
@@ -31,6 +33,24 @@ patch_margin_bottom = 50
 
 [node name="DangerBGContainer" type="Node2D" parent="BoardManager"]
 z_index = -15
+
+[node name="DamageOverlay" type="ColorRect" parent="BoardManager"]
+modulate = Color(1, 1, 1, 0)
+z_index = 1000
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -539.99994
+offset_right = -920.0
+offset_bottom = -499.99994
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(48.674236, 29.958965)
+mouse_filter = 2
+color = Color(0.7097931, 0.10195923, 0, 1)
 
 [node name="PegManager" type="Node2D" parent="."]
 script = ExtResource("2_c01mt")
@@ -46,6 +66,9 @@ script = ExtResource("6_lhr70")
 
 [node name="PatternEngine" type="Node2D" parent="."]
 script = ExtResource("7_lhr70")
+
+[node name="BoardModifierEngine" type="Node2D" parent="."]
+script = ExtResource("9_bjd11")
 
 [node name="ConfirmationButton" type="Button" parent="."]
 offset_left = -89.0

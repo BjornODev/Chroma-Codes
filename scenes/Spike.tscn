@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://csta4cic7w54w"]
+
+[ext_resource type="Script" uid="uid://dlfks06yclsyq" path="res://scripts/spike.gd" id="1_uiy7f"]
+[ext_resource type="Texture2D" uid="uid://dbubbyh76h0ls" path="res://assets/spikes-half.svg" id="1_ycsm2"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_uiy7f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("1_ycsm2")

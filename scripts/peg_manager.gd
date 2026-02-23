@@ -75,6 +75,16 @@ func finish_drag():
 	if peg_slot_found and peg_slot_found.row == cur_row:
 		var other_peg = peg_slot_found.peg_in_slot
 		
+		if other_peg and other_peg.has_method("is_spike") or (other_peg and other_peg.is_spike):
+			# Damage player
+			get_node("../BoardManager").apply_damage()
+			
+			# Remove spike
+			other_peg.queue_free()
+			peg_slot_found.peg_in_slot = null
+			peg_slot_found.set_glow_off()
+			other_peg = null
+		
 		# Place dragged peg in slot
 		peg_being_dragged.position = peg_slot_found.position
 		peg_slot_found.peg_in_slot = peg_being_dragged
