@@ -22,13 +22,21 @@ var drag_velocity := Vector2.ZERO
 var tilt_strength = 0.05
 var max_tilt = 0.75
 
+var shader_material: ShaderMaterial
+
+@onready var modifier = ""
+
 func _ready() -> void:
 	get_parent().connect_peg_signals(self)
 	add_to_group("pegs")
-	peg_down_reference = preload("res://assets/peg_down.svg")
-	peg_out_reference = preload("res://assets/peg_in_hand.svg")
+	peg_down_reference = load("res://assets/peg_down" + modifier + ".svg")
+	peg_out_reference = load("res://assets/peg_out" + modifier + ".svg")
 	peg_sprite2D = $Sprite2D
 	last_position = position
+	shader_material = sprite.material as ShaderMaterial
+	if shader_material == null:
+		print("Error: Material is not a ShaderMaterial")
+		return
 
 
 func _process(delta: float) -> void:
@@ -37,6 +45,15 @@ func _process(delta: float) -> void:
 		rotation = lerpf(rotation, target_rotation, 10.0 * delta)
 	else:
 		rotation = lerpf(rotation, 0.0, 10.0 * delta)
+
+
+
+
+
+func update_shader_value(new_value):
+	if shader_material:
+		shader_material.set_shader_parameter("outline_thickness", new_value)
+
 
 
 func _on_mouse_entered() -> void:

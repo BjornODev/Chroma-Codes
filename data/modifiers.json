@@ -1,20 +1,73 @@
 [
-  {
-    "name": "Trapped 2",
-    "keywords": {
-      "Trapped": 2
-    }
-  },
-  {
-    "name": "Sludge",
-    "keywords": {
-      "Sludge": 1
-    }
-  },
-  {
-    "name": "Wide",
-    "keywords": {
-      "Wide": 5
-    }
-  }
+	{
+		"name": "Wide Board",
+		"phase": "pre_build",
+		"effect": {
+			"wide": 5
+		}
+	},
+
+	{
+		"name": "Very Wide Board",
+		"phase": "pre_build",
+		"effect": {
+			"wide": 6
+		}
+	},
+
+	{
+		"name": "Trapped Board",
+		"phase": "post_build",
+		"effect": {
+			"trapped": 2
+		}
+	},
+
+	{
+		"name": "Heavy Trapped Board",
+		"phase": "post_build",
+		"effect": {
+			"trapped": 3
+		}
+	},
+
+	{
+		"name": "Yellow Sudden Spike",
+		"trigger": {
+			"yellow": 6
+		},
+		"effect": {
+			"sudden_spike": 3
+		}
+	},
+
+	{
+		"name": "Repeatable Yellow Spike",
+		"trigger": {
+			"yellow": 4
+		},
+		"effect": {
+			"sudden_spike": 2
+		}
+	},
+
+	{
+		"name": "Black Sludge",
+		"trigger": {
+			"black": 5
+		},
+		"effect": {
+			"sludge": 2
+		}
+	},
+
+	{
+		"name": "Orange Escalation",
+		"trigger": {
+			"orange": 8
+		},
+		"effect": {
+			"sudden_spike": 4
+		}
+	}
 ]

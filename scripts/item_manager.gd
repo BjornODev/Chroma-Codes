@@ -5,11 +5,11 @@ var all_items = []
 
 var turn_event_queue = []
 var is_processing_turn_events = false
-
+var peg_manager_reference
 
 func _ready():
 	load_items()
-	
+	peg_manager_reference = $"../PegManager"
 	# TEMP: give player first item
 	if all_items.size() > 0:
 		player_items.append(all_items[0])
@@ -77,3 +77,6 @@ func apply_item_effects(item, payload):
 		match keyword:
 			"GainHealth":
 				print("Would gain health:", value)
+		match keyword:
+			"Redo":
+				pass

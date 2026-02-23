@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dgftl7gndgv2d"
-path="res://.godot/imported/peg_in_hand.svg-2463bbd2240c9212beecd5d7f196271e.ctex"
+path="res://.godot/imported/peg_out.svg-f6e3ab7cd3cd6b80340115b5e51f095e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/peg_in_hand.svg"
-dest_files=["res://.godot/imported/peg_in_hand.svg-2463bbd2240c9212beecd5d7f196271e.ctex"]
+source_file="res://assets/peg_out.svg"
+dest_files=["res://.godot/imported/peg_out.svg-f6e3ab7cd3cd6b80340115b5e51f095e.ctex"]
 
 [params]
 

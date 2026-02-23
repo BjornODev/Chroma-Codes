@@ -251,6 +251,7 @@ func submit_guess():
 	for child in get_children():
 		if child is Feedback_Grid and child.row == row_index:
 			child.show_results(result[0], result[1])
+	modifier_engine.process_row_submission(self, guess, result)
 
 	# Emit row submitted event
 	item_system.emit_game_event("row_submitted", {

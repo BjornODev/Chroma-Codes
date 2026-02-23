@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=15 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
 [ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
+[ext_resource type="Shader" uid="uid://vg3ttnixjd30" path="res://shaders/slight_crt.gdshader" id="2_qmy6f"]
 [ext_resource type="Texture2D" uid="uid://ldv6gjgdwdy8" path="res://assets/board_soft_limit.svg" id="3_wp0k4"]
 [ext_resource type="Script" uid="uid://ctmucy8cb87s7" path="res://scripts/input_manager.gd" id="4_jlsqs"]
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
@@ -13,6 +14,16 @@
 [ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
 [ext_resource type="Script" uid="uid://duiylsgdpo5af" path="res://scripts/board_modifier_engine.gd" id="9_bjd11"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
+shader = ExtResource("2_qmy6f")
+shader_parameter/resolution = Vector2(320, 180)
+shader_parameter/scan_line_amount = 0.3
+shader_parameter/warp_amount = 0.25
+shader_parameter/vignette_amount = 0.5
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/grille_amount = 0.650000000745058
+shader_parameter/brightness_boost = 1.2
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rvslj")
 
@@ -20,7 +31,6 @@ script = ExtResource("1_rvslj")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
-soft_row_limit = 4
 
 [node name="SafeBoardBG" type="NinePatchRect" parent="BoardManager"]
 offset_right = 40.0
@@ -76,6 +86,14 @@ offset_top = 408.0
 offset_right = 90.0
 offset_bottom = 446.0
 text = "Confirm"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CRTFilter" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_mwfav")
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 visible = false

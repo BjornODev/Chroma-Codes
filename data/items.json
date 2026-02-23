@@ -1,10 +1,11 @@
 [
   {
     "name": "Redo 2",
-    "description": "After submitting a row, you may change up to 2 pegs.",
+    "description": "After each Green Square, REDO 2.",
     "triggers": [
       {
-        "event": "row_submitted"
+        "event": "pattern_triggered",
+        "pattern": "2x2 Green Square"
       }
     ],
     "keywords": {

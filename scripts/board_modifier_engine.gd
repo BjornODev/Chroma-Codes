@@ -3,13 +3,21 @@ extends Node
 var all_modifiers = []
 var active_modifiers = []
 
+var counters := {}   # keyword counters
+
+
 # =========================
 # INITIALIZATION
 # =========================
 
 func initialize():
 	load_modifiers()
-	active_modifiers.append(all_modifiers[0])
+	
+	# Example: auto-activate first modifier for testing
+	if all_modifiers.size() > 0:
+		active_modifiers.append(all_modifiers[0])
+		active_modifiers.append(all_modifiers[3])
+		active_modifiers.append(all_modifiers[7])
 
 
 # =========================
@@ -53,58 +61,178 @@ func get_active_modifiers():
 
 
 # =========================
-# EVENT SYSTEM (EMPTY FOR NOW)
+# BUILD PHASES
 # =========================
-
-func emit_game_event(event_name, payload = {}):
-	for modifier in active_modifiers:
-		process_modifier_event(modifier, event_name, payload)
-
-
-func process_modifier_event(modifier, event_name, payload):
-	# Step 1 does nothing yet
-	pass
-
 
 func pre_board_build(board):
 	for modifier in active_modifiers:
-		var keywords = modifier.get("keywords", {})
-		
-		for keyword in keywords.keys():
-			var value = keywords[keyword]
-			
-			match keyword:
-				"Wide":
-					apply_wide(board, value)
+		if modifier.has("phase") and modifier.phase == "pre_build":
+			if modifier.has("effect"):
+				apply_effect(board, modifier.effect)
 
 
 func post_board_build(board):
 	for modifier in active_modifiers:
-		var keywords = modifier.get("keywords", {})
-		
-		if keywords.has("Trapped"):
-			var value = keywords["Trapped"]
-			apply_trapped(board, value)
+		if modifier.has("phase") and modifier.phase == "post_build":
+			if modifier.has("effect"):
+				apply_effect(board, modifier.effect)
 
+
+# =========================
+# RUNTIME PROCESSING
+# =========================
+
+func process_row_submission(board, guess, result):
+	update_color_counters(guess)
+	update_feedback_counters(result)
+	check_triggers(board)
+
+
+func update_color_counters(guess):
+	for value in guess:
+		if value == 0:
+			continue
+		
+		var color = get_color_name_from_id(value)
+		
+		if not counters.has(color):
+			counters[color] = 0
+		
+		counters[color] += 1
+
+
+func check_triggers(board):
+	for modifier in active_modifiers:
+		if not modifier.has("trigger"):
+			continue
+		
+		if trigger_satisfied(modifier.trigger):
+			if modifier.has("effect"):
+				apply_effect(board, modifier.effect)
+			
+			reset_trigger(modifier.trigger)
+
+
+func update_feedback_counters(result):
+	var black = result[0]
+	var white = result[1]
+	
+	if not counters.has("black"):
+		counters["black"] = 0
+	
+	if not counters.has("white"):
+		counters["white"] = 0
+	
+	counters["black"] += black
+	counters["white"] += white
+
+
+func trigger_satisfied(trigger_block):
+	for key in trigger_block.keys():
+		if counters.get(key, 0) < trigger_block[key]:
+			return false
+	
+	return true
+
+
+func reset_trigger(trigger_block):
+	for key in trigger_block.keys():
+		counters[key] = 0
+
+
+# =========================
+# EFFECT APPLICATION
+# =========================
+
+func apply_effect(board, effect):
+	for key in effect.keys():
+		match key:
+			"wide":
+				apply_wide(board, effect[key])
+			
+			"trapped":
+				spawn_traps(board, effect[key])
+			
+			"sudden_spike":
+				spawn_spikes(board, effect[key])
+
+
+# =========================
+# WIDE (Pre-Build Effect)
+# =========================
 
 func apply_wide(board, value):
 	print("Applying Wide:", value)
 	board.columns = value
 
 
-func apply_trapped(board, value):
+# =========================
+# TRAPPED (Post-Build Effect)
+# =========================
+
+func spawn_traps(board, value):
 	var total_traps = 2 * value
 	
 	var slots = board.slot_lookup.values()
 	slots.shuffle()
 	
-	for i in range(min(total_traps, slots.size())):
-		var spike = preload("res://scenes/Spike.tscn").instantiate()
-		board.add_child(spike)
-		
-		var slot = slots[i]
-		spike.position = slot.position
-		
-		slot.peg_in_slot = spike
-		slot.set_glow_red()
-		spike.current_slot = slot
+	var placed = 0
+	
+	for slot in slots:
+		if slot.peg_in_slot == null:
+			var spike = preload("res://scenes/Spike.tscn").instantiate()
+			board.add_child(spike)
+			
+			spike.position = slot.position
+			slot.peg_in_slot = spike
+			slot.set_glow_red()
+			spike.current_slot = slot
+			
+			placed += 1
+			
+			if placed >= total_traps:
+				break
+
+
+# =========================
+# RUNTIME SPIKE SPAWN
+# =========================
+
+func spawn_spikes(board, amount):
+	var slots = board.slot_lookup.values()
+	slots.shuffle()
+	
+	var placed = 0
+	
+	for slot in slots:
+		if slot.peg_in_slot == null:
+			var spike = preload("res://scenes/Spike.tscn").instantiate()
+			var tween = create_tween()
+			board.add_child(spike)
+			
+			spike.position = slot.position
+			spike.sprite.scale = Vector2.ZERO
+			tween.tween_property(spike.sprite, "scale", Vector2(0.15,0.15), 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			slot.peg_in_slot = spike
+			slot.set_glow_red()
+			spike.current_slot = slot
+			
+			placed += 1
+			
+			if placed >= amount:
+				break
+
+
+# =========================
+# UTILITY
+# =========================
+
+func get_color_name_from_id(id):
+	match id:
+		1: return "red"
+		2: return "yellow"
+		3: return "green"
+		4: return "white"
+		5: return "purple"
+		6: return "orange"
+		_: return "unknown"

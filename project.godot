@@ -28,19 +28,18 @@ renderer/rendering_method="mobile"
 [xogot]
 
 project/editorState=[{
-"column": 14,
-"line": 50,
+"column": 35,
+"line": 24,
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 9,
-"line": 115,
+"column": 57,
+"line": 372,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
-"column": 46,
-"current": true,
-"line": 311,
+"column": 60,
+"line": 253,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -49,18 +48,18 @@ project/editorState=[{
 "path": "res://scripts/peg_data.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 37,
+"column": 13,
+"line": 2,
 "path": "res://data/patterns.json",
 "type": "file"
 }, {
-"column": 0,
-"line": 11,
+"column": 8,
+"line": 81,
 "path": "res://scripts/item_manager.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 51,
+"line": 3,
 "path": "res://data/items.json",
 "type": "file"
 }, {
@@ -89,29 +88,34 @@ project/editorState=[{
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
-"column": 5,
-"line": 9,
+"column": 0,
+"line": 0,
 "path": "res://scripts/feedback_grid.gd",
 "type": "file"
 }, {
-"column": 22,
-"line": 2,
+"column": 17,
+"line": 64,
 "path": "res://data/modifiers.json",
 "type": "file"
 }, {
-"column": 21,
-"line": 108,
+"column": 41,
+"current": true,
+"line": 19,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
-"column": 23,
-"line": 3,
+"column": 9,
+"line": 4,
 "path": "res://scripts/spike.gd",
 "type": "file"
+}, {
+"title": "Tween",
+"type": "doc"
 }]
 project/breakpoints={
 "res://scripts/board_manager.gd": PackedInt32Array(),
 "res://scripts/pattern_engine.gd": PackedInt32Array(),
 "res://scripts/peg.gd": PackedInt32Array(),
-"res://scripts/peg_manager.gd": PackedInt32Array()
+"res://scripts/peg_manager.gd": PackedInt32Array(),
+"res://scripts/phys_peg.gd": PackedInt32Array()
 }
