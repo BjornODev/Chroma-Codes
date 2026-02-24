@@ -266,21 +266,22 @@ func confirm_replace():
 
 func destroy_obstacle(slot):
 	if delete_mode:
-		var obstacle = slot.peg_in_slot
-		if obstacle and obstacle.get("is_spike"):
-			var tween = create_tween()
-			
-			tween.tween_property(obstacle.sprite, "scale", Vector2.ZERO, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-			slot.peg_in_slot = null
-			await tween.finished
-			obstacle.queue_free()
-			slot.set_glow_off()
-			
-			deletions_left -= 1
-			
-			if deletions_left == 0:
-				delete_mode = false
-
+		if slot.row >= cur_row:
+			var obstacle = slot.peg_in_slot
+			if obstacle and obstacle.get("is_spike"):
+				var tween = create_tween()
+				
+				tween.tween_property(obstacle.sprite, "scale", Vector2.ZERO, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+				slot.peg_in_slot = null
+				await tween.finished
+				obstacle.queue_free()
+				slot.set_glow_off()
+				
+				deletions_left -= 1
+				
+				if deletions_left == 0:
+					delete_mode = false
+	
 
 func start_clear(amount):
 	delete_mode = true

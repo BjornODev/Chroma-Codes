@@ -8,6 +8,8 @@ extends Node2D
 @export var damage_per_row := 1
 @export var player_health := 5
 
+var in_game = true
+
 @export var visible_row_window := 6
 @onready var modifier_engine = $"../BoardModifierEngine"
 @onready var damage_overlay = $DamageOverlay
@@ -17,6 +19,7 @@ var feedback_scene
 var radar_blip_scene = preload("res://scenes/RadarBlip.tscn")
 
 var peg_manager_reference
+@onready var popup_manager = $"../PopUpText"
 
 var secret_code = []
 var board_state = []
@@ -41,6 +44,7 @@ func _ready():
 	modifier_engine.pre_board_build(self)
 	
 	generate_code()
+	$"../SecretCodeDisplay".build(secret_code)
 	
 	# Create safe rows + one danger row
 	for i in range(soft_row_limit):
@@ -252,7 +256,17 @@ func submit_guess():
 		if child is Feedback_Grid and child.row == row_index:
 			child.show_results(result[0], result[1])
 	modifier_engine.process_row_submission(self, guess, result)
-
+	
+	if result[0] == columns:
+		for child in $"../SecretCodeDisplay".get_children():
+			child.reveal()
+		in_game = false
+		popup_manager.show_popup(
+					"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
+				)
+		return
+		
+	
 	# Emit row submitted event
 	item_system.emit_game_event("row_submitted", {
 		"row": row_index,
@@ -308,6 +322,14 @@ func apply_damage():
 
 	if player_health <= 0:
 		print("Game Over")
+		for child in $"../SecretCodeDisplay".get_children():
+			child.reveal()
+		in_game = false
+		popup_manager.show_popup(
+					"[center][b][color=#FF073A] YOU LOSE [/color][/b][/center]"
+				)
+		return
+
 
 
 func flash_damage():
@@ -414,6 +436,7 @@ func generate_code():
 	secret_code.clear()
 	for i in range(columns):
 		secret_code.append(randi_range(1, 6))
+	print(secret_code)
 
 
 func _on_pressed() -> void:

@@ -7,10 +7,12 @@ const COLLISION_MASK_NORMAL_PEG = 1
 const COLLISION_MASK_PEG_SLOT = 2
 
 var card_manager_reference
+var board_reference
 
 
 func _ready() -> void:
 	card_manager_reference = $"../PegManager"
+	board_reference = $"../BoardManager"
 
 
 func _input(event):
@@ -33,12 +35,13 @@ func raycast_at_cursor():
 	
 	if result.size() > 0:
 		var result_collision_mask = result[0].collider.collision_mask
-		if result_collision_mask == COLLISION_MASK_NORMAL_PEG:
-			var card_found = result[0].collider.get_parent()
-			if card_found:
-				card_manager_reference.start_drag(card_found)
-		if result_collision_mask == COLLISION_MASK_PEG_SLOT:
-				var slot_found = result[0].collider.get_parent()
-				if slot_found:
-					card_manager_reference.destroy_obstacle(slot_found)
+		if board_reference.in_game:
+			if result_collision_mask == COLLISION_MASK_NORMAL_PEG:
+				var card_found = result[0].collider.get_parent()
+				if card_found:
+					card_manager_reference.start_drag(card_found)
+			if result_collision_mask == COLLISION_MASK_PEG_SLOT:
+					var slot_found = result[0].collider.get_parent()
+					if slot_found:
+						card_manager_reference.destroy_obstacle(slot_found)
 	

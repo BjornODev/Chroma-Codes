@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bjcxyo7gyqgoc"]
+
+[ext_resource type="Script" uid="uid://dohj0uoqoio1c" path="res://scripts/pop_up_text.gd" id="1_tyklc"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="2_oddxa"]
+
+[sub_resource type="Theme" id="Theme_1p0ck"]
+default_font = ExtResource("2_oddxa")
+default_font_size = 250
+
+[node name="PopUpText" type="CanvasLayer"]
+script = ExtResource("1_tyklc")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_1p0ck")
+theme_override_colors/default_color = Color(0.5882263, 0.82743835, 0.37254333, 0.4950884)
+theme_override_fonts/bold_font = ExtResource("2_oddxa")
+text = "RichTextLabel"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

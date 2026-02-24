@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=17 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
+[ext_resource type="Script" uid="uid://7oxqnrpufvdf" path="res://scripts/secret_code_display.gd" id="2_3p2gp"]
 [ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
 [ext_resource type="Shader" uid="uid://vg3ttnixjd30" path="res://shaders/slight_crt.gdshader" id="2_qmy6f"]
 [ext_resource type="Texture2D" uid="uid://ldv6gjgdwdy8" path="res://assets/board_soft_limit.svg" id="3_wp0k4"]
@@ -9,10 +10,11 @@
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
 [ext_resource type="Script" uid="uid://cw0f175rbogh4" path="res://scripts/item_manager.gd" id="6_lhr70"]
 [ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="6_nxtc6"]
-[ext_resource type="Script" uid="uid://cor5gnpabjhhi" path="res://scripts/board_manager.gd" id="6_q8u5g"]
+[ext_resource type="Script" uid="uid://duaojaojbvdrq" path="res://scripts/board_manager.gd" id="6_q8u5g"]
 [ext_resource type="Script" uid="uid://cu1txk1fkv2nf" path="res://scripts/pattern_engine.gd" id="7_lhr70"]
 [ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
 [ext_resource type="Script" uid="uid://duiylsgdpo5af" path="res://scripts/board_modifier_engine.gd" id="9_bjd11"]
+[ext_resource type="PackedScene" uid="uid://bjcxyo7gyqgoc" path="res://scenes/PopUpText.tscn" id="10_mwfav"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("2_qmy6f")
@@ -20,7 +22,7 @@ shader_parameter/resolution = Vector2(320, 180)
 shader_parameter/scan_line_amount = 0.30000001425
 shader_parameter/warp_amount = 0.150000007125
 shader_parameter/vignette_amount = 0.5000000237500001
-shader_parameter/vignette_intensity = 0.40000001900000004
+shader_parameter/vignette_intensity = 0.400000019
 shader_parameter/grille_amount = 0.650000030875
 shader_parameter/brightness_boost = 1.200000057
 
@@ -28,6 +30,10 @@ shader_parameter/brightness_boost = 1.200000057
 script = ExtResource("1_rvslj")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="SecretCodeDisplay" type="Node2D" parent="."]
+position = Vector2(-640, 288)
+script = ExtResource("2_3p2gp")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
@@ -102,6 +108,8 @@ offset_top = 408.0
 offset_right = 90.0
 offset_bottom = 446.0
 text = "Confirm"
+
+[node name="PopUpText" parent="." instance=ExtResource("10_mwfav")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

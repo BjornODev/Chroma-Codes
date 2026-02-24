@@ -7,6 +7,8 @@ var turn_event_queue = []
 var is_processing_turn_events = false
 var peg_manager_reference
 
+@onready var popup_manager = $"../PopUpText"
+
 func _ready():
 	load_items()
 	peg_manager_reference = $"../PegManager"
@@ -77,12 +79,20 @@ func apply_item_effects(item, payload):
 		
 		match keyword:
 			"GainHealth":
-				print("Would gain health:", value)
-		match keyword:
+				popup_manager.show_popup(
+					"[center][b][color=#00ff88]+%d HEALTH[/color][/b][/center]" % value
+				)
+		
 			"Replace":
+				popup_manager.show_popup(
+					"[center][b][color=#ffaa00]REPLACE %d[/color][/b][/center]" % value
+				)
 				peg_manager_reference.start_replace_mode(value)
-		match keyword:
+		
 			"Clear":
+				popup_manager.show_popup(
+					"[center][b][color=#ff4444]CLEAR %d[/color][/b][/center]" % value
+				)
 				peg_manager_reference.start_clear(value)
 
 
