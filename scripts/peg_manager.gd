@@ -8,6 +8,9 @@ var replace_mode := false
 var replaces_left := 0
 var edited_rows := {}
 
+var delete_mode := false
+var deletions_left := 0
+
 var peg_being_dragged
 var is_hovering_on_peg
 
@@ -249,7 +252,8 @@ func confirm_replace():
 		return
 	
 	var board = get_node("../BoardManager")
-	
+	$"../ReplaceConfirmationButton".disabled = true
+	$"../ReplaceConfirmationButton".visible = false
 	for row in edited_rows.keys():
 		board.re_evaluate_row(row)
 	
@@ -260,3 +264,30 @@ func confirm_replace():
 	print("Replace confirmed.")
 
 
+func destroy_obstacle(slot):
+	if delete_mode:
+		var obstacle = slot.peg_in_slot
+		if obstacle and obstacle.get("is_spike"):
+			var tween = create_tween()
+			
+			tween.tween_property(obstacle.sprite, "scale", Vector2.ZERO, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+			slot.peg_in_slot = null
+			await tween.finished
+			obstacle.queue_free()
+			slot.set_glow_off()
+			
+			deletions_left -= 1
+			
+			if deletions_left == 0:
+				delete_mode = false
+
+
+func start_clear(amount):
+	delete_mode = true
+	deletions_left = amount
+	
+	print("Clear mode started clears: ", amount)
+
+
+func _on_pressed() -> void:
+	confirm_replace()

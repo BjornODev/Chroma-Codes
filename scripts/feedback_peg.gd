@@ -1,3 +1,4 @@
+class_name Feedback_Peg
 extends TextureRect
 
 

@@ -33,13 +33,13 @@ project/editorState=[{
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 27,
-"line": 31,
+"column": 22,
+"line": 276,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 393,
+"line": 396,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -48,18 +48,18 @@ project/editorState=[{
 "path": "res://scripts/peg_data.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 40,
+"line": 45,
 "path": "res://data/patterns.json",
 "type": "file"
 }, {
 "column": 0,
-"line": 81,
+"line": 0,
 "path": "res://scripts/item_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 11,
+"line": 0,
 "path": "res://data/items.json",
 "type": "file"
 }, {
@@ -69,7 +69,8 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"current": true,
+"line": 40,
 "path": "res://scripts/pattern_engine.gd",
 "type": "file"
 }, {
@@ -79,13 +80,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 27,
-"current": true,
 "line": 5,
 "path": "res://scripts/player_hand.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 44,
+"line": 42,
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
@@ -99,8 +99,8 @@ project/editorState=[{
 "path": "res://data/modifiers.json",
 "type": "file"
 }, {
-"column": 0,
-"line": 19,
+"column": 3,
+"line": 209,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
@@ -111,6 +111,16 @@ project/editorState=[{
 }, {
 "title": "Tween",
 "type": "doc"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/feedback_peg.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 252,
+"path": "/var/mobile/Containers/Data/Application/65C3D545-2E01-4472-A509-7A0B115C4241/Documents/Mastermind Roguelite/scripts/peg_manager.gd",
+"type": "file"
 }]
 project/breakpoints={
 "res://scripts/board_manager.gd": PackedInt32Array(),

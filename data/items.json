@@ -26,15 +26,16 @@
     }
   },
   {
-    "name": "Last Stand",
-    "description": "When you lose health, draw 1 bonus peg.",
+    "name": "Strong Start",
+    "description": "Fill the first row with yellow and CLEAR 3",
     "triggers": [
       {
-        "event": "health_lost"
+        "event": "pattern_triggered",
+        "pattern": "All Yellow Start"
       }
     ],
     "keywords": {
-      "DrawPeg": 1
+      "Clear": 3
     }
   }
 ]

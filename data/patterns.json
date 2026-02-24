@@ -38,5 +38,20 @@
       "type": "fixed",
       "rows": [0, 4]
     }
+  },
+  {
+    "name": "All Yellow Start",
+    "type": "full_row_color",
+    "color": "yellow",
+    "allowed_rows": [0, 1, 2, 3, 4, 5, 6]
+  },
+  {
+    "name": "Purple First & Third",
+    "type": "full_row_color",
+    "color": "purple",
+    "duplicate_rule": {
+      "type": "fixed",
+      "rows": [0, 2]
+    }
   }
 ]

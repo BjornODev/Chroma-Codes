@@ -37,3 +37,8 @@ func raycast_at_cursor():
 			var card_found = result[0].collider.get_parent()
 			if card_found:
 				card_manager_reference.start_drag(card_found)
+		if result_collision_mask == COLLISION_MASK_PEG_SLOT:
+				var slot_found = result[0].collider.get_parent()
+				if slot_found:
+					card_manager_reference.destroy_obstacle(slot_found)
+	

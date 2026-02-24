@@ -13,6 +13,7 @@ func _ready():
 	# TEMP: give player first item
 	if all_items.size() > 0:
 		player_items.append(all_items[0])
+		player_items.append(all_items[2])
 
 
 func load_items():
@@ -80,3 +81,15 @@ func apply_item_effects(item, payload):
 		match keyword:
 			"Replace":
 				peg_manager_reference.start_replace_mode(value)
+		match keyword:
+			"Clear":
+				peg_manager_reference.start_clear(value)
+
+
+func has_item_trigger_for_pattern(pattern_name):
+	for item in player_items:
+		for trigger in item.triggers:
+			if trigger.event == "pattern_triggered":
+				if trigger.has("pattern") and trigger.pattern == pattern_name:
+					return true
+	return false

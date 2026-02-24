@@ -269,12 +269,13 @@ func submit_guess():
 	)
 
 	for p in triggered:
-		spawn_pattern_markers(p.positions)
-
-		item_system.emit_game_event("pattern_triggered", {
-			"pattern_name": p.name,
-			"positions": p.positions
-		})
+		if item_system.has_item_trigger_for_pattern(p.name):
+			spawn_pattern_markers(p.positions)
+	
+			item_system.emit_game_event("pattern_triggered", {
+				"pattern_name": p.name,
+				"positions": p.positions
+			})
 
 	# Apply soft limit damage
 	if row_index >= soft_row_limit:
@@ -367,7 +368,7 @@ func re_evaluate_row(row_index):
 				guess.append(0)
 
 	var result = evaluate_guess(guess)
-
+	
 	# Update board state
 	for c in range(columns):
 		board_state[row_index][c] = guess[c]
@@ -375,9 +376,34 @@ func re_evaluate_row(row_index):
 	# Update feedback visuals
 	for child in get_children():
 		if child is Feedback_Grid and child.row == row_index:
+			clear_feedback_grid(child)
 			child.show_results(result[0], result[1])
+	
+	var triggered = pattern_engine.evaluate_board(
+		board_state,
+		rows_generated,
+		columns,
+		row_index
+	)
+
+	for p in triggered:
+		if item_system.has_item_trigger_for_pattern(p.name):
+			spawn_pattern_markers(p.positions)
+	
+			item_system.emit_game_event("pattern_triggered", {
+				"pattern_name": p.name,
+				"positions": p.positions
+			})
 
 	print("Row re-evaluated:", row_index, result)
+
+
+func clear_feedback_grid(grid):
+	for node in grid.get_children():
+		if node is Feedback_Peg:
+			node.queue_free()
+		else:
+			clear_feedback_grid(node)
 
 
 # =========================
@@ -390,5 +416,5 @@ func generate_code():
 		secret_code.append(randi_range(1, 6))
 
 
-func _on_peg_manager_pressed() -> void:
+func _on_pressed() -> void:
 	submit_guess()
