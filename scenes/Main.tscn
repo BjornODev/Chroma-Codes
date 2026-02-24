@@ -18,7 +18,7 @@
 shader = ExtResource("2_qmy6f")
 shader_parameter/resolution = Vector2(320, 180)
 shader_parameter/scan_line_amount = 0.3
-shader_parameter/warp_amount = 0.25
+shader_parameter/warp_amount = 0.15
 shader_parameter/vignette_amount = 0.5
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/grille_amount = 0.650000000745058
@@ -87,6 +87,14 @@ offset_right = 90.0
 offset_bottom = 446.0
 text = "Confirm"
 
+[node name="ReplaceConfirmationButton" type="Button" parent="."]
+visible = false
+offset_left = -89.0
+offset_top = 408.0
+offset_right = 90.0
+offset_bottom = 446.0
+text = "Confirm"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="CRTFilter" type="ColorRect" parent="CanvasLayer"]
@@ -125,4 +133,5 @@ layout_mode = 2
 text = "Submit Guess"
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
+[connection signal="pressed" from="ReplaceConfirmationButton" to="BoardManager" method="_on_peg_manager_pressed"]
 [connection signal="pressed" from="VBoxContainer/Submit Button" to="VBoxContainer/CenterContainer/Board" method="_on_pressed"]

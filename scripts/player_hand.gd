@@ -3,7 +3,7 @@ extends Node2D
 const HAND_COUNT = 6
 const PEG_SCENE_PATH = "res://scenes/Phys_Peg.tscn"
 const PEG_WIDTH = 100
-const HAND_Y_POSITION = 500
+const HAND_Y_POSITION = 475
 
 var peg_bag = [6, 5, 4, 3, 2, 1]
 var player_hand = []
@@ -17,8 +17,9 @@ func _ready() -> void:
 	for i in peg_bag:
 		var new_peg = peg_scene.instantiate()
 		new_peg.peg_id = i
-		new_peg.modulate = Color(peg_database_reference.PEG_TYPES[new_peg.peg_id][0])
+#		new_peg.peg_sprite2D.modulate = Color(peg_database_reference.PEG_TYPES[new_peg.peg_id][0])
 		$"../PegManager".add_child(new_peg)
+		new_peg.peg_sprite2D.modulate = Color(peg_database_reference.PEG_TYPES[new_peg.peg_id][0])
 		var new_peg_name = "Peg"
 		player_hand.insert(-0, new_peg)
 		update_hand_positions()

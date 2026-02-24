@@ -23,14 +23,14 @@ void vertex() {
 void fragment() {
 	if (outline_thickness > 0.0 && outline_color.a > 0.0) {
 		vec2 uv = UV;
-		vec4 texture_color = texture(TEXTURE, UV);
+		vec4 texture_color = texture(TEXTURE, UV) * COLOR;
 
 		if (allow_out_of_bounds) {
 			vec2 texture_pixel_size = vec2(1.0) / (vec2(1.0) / TEXTURE_PIXEL_SIZE + vec2(outline_thickness * 2.0));
 			uv = (uv - texture_pixel_size * outline_thickness) * TEXTURE_PIXEL_SIZE / texture_pixel_size;
 
 			if (is_inside_usquare(uv)) {
-				texture_color = texture(TEXTURE, uv);
+				texture_color = texture(TEXTURE, uv) * COLOR;
 			} else {
 				texture_color = vec4(0.0);
 			}

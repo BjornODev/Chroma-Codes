@@ -78,5 +78,5 @@ func apply_item_effects(item, payload):
 			"GainHealth":
 				print("Would gain health:", value)
 		match keyword:
-			"Redo":
-				pass
+			"Replace":
+				peg_manager_reference.start_replace_mode(value)

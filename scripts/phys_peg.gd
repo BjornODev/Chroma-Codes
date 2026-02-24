@@ -3,13 +3,12 @@ extends Node2D
 signal hovered
 signal hovered_off
 
-@onready var sprite = $Sprite2D
-
 var peg_id := 0
 var current_slot = null
 var hand_position
 var is_copy := false
 
+var peg_database_reference
 var peg_down_reference
 var peg_out_reference
 var peg_sprite2D
@@ -29,15 +28,17 @@ var shader_material: ShaderMaterial
 func _ready() -> void:
 	get_parent().connect_peg_signals(self)
 	add_to_group("pegs")
+	peg_database_reference = preload("res://scripts/peg_data.gd")
 	peg_down_reference = load("res://assets/peg_down" + modifier + ".svg")
 	peg_out_reference = load("res://assets/peg_out" + modifier + ".svg")
 	peg_sprite2D = $Sprite2D
+	
+	peg_sprite2D.material = peg_sprite2D.material.duplicate()
 	last_position = position
-	shader_material = sprite.material as ShaderMaterial
+	shader_material = peg_sprite2D.material as ShaderMaterial
 	if shader_material == null:
 		print("Error: Material is not a ShaderMaterial")
 		return
-
 
 func _process(delta: float) -> void:
 	if drag_velocity.length() > 0:

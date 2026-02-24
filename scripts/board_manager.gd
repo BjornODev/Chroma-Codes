@@ -356,6 +356,30 @@ func spawn_pattern_markers(positions):
 			marker.position = slot.position
 
 
+func re_evaluate_row(row_index):
+	var guess = []
+
+	for child in get_children():
+		if child is SnapZone and child.row == row_index:
+			if child.peg_in_slot:
+				guess.append(child.peg_in_slot.get_submission_value())
+			else:
+				guess.append(0)
+
+	var result = evaluate_guess(guess)
+
+	# Update board state
+	for c in range(columns):
+		board_state[row_index][c] = guess[c]
+
+	# Update feedback visuals
+	for child in get_children():
+		if child is Feedback_Grid and child.row == row_index:
+			child.show_results(result[0], result[1])
+
+	print("Row re-evaluated:", row_index, result)
+
+
 # =========================
 # SECRET CODE
 # =========================
@@ -366,5 +390,5 @@ func generate_code():
 		secret_code.append(randi_range(1, 6))
 
 
-func _on_pressed() -> void:
+func _on_peg_manager_pressed() -> void:
 	submit_guess()
