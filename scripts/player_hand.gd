@@ -26,8 +26,8 @@ func _ready() -> void:
 
 
 func return_peg_to_hand(peg):
-	animate_peg_to_position(peg, player_hand[peg.peg_id-1].position, true)
-
+	var should_delete = peg.is_copy and not peg.is_special
+	animate_peg_to_position(peg, peg.hand_position, should_delete)
 
 
 func update_hand_positions():
@@ -58,3 +58,9 @@ func remove_peg_from_hand(peg):
 	if peg in player_hand:
 		player_hand.erase(peg)
 		update_hand_positions()
+
+
+func add_special_peg(peg):
+	$"../PegManager".add_child(peg)
+	player_hand.append(peg)
+	update_hand_positions()

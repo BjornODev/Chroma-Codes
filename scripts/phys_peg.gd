@@ -21,24 +21,44 @@ var drag_velocity := Vector2.ZERO
 var tilt_strength = 0.05
 var max_tilt = 0.75
 
+var is_special := false
+var special_type := ""
+
+
 var shader_material: ShaderMaterial
 
 @onready var modifier = ""
 
-func _ready() -> void:
+#func _ready() -> void:
+#	get_parent().connect_peg_signals(self)
+#	add_to_group("pegs")
+#	if is_special:
+#		modifier = "_" + special_type
+#	peg_database_reference = preload("res://scripts/peg_data.gd")
+#	peg_down_reference = load("res://assets/peg_down" + modifier + ".svg")
+#	peg_out_reference = load("res://assets/peg_out" + modifier + ".svg")
+#	peg_sprite2D = $Sprite2D
+#	
+#	peg_sprite2D.material = peg_sprite2D.material.duplicate()
+#	last_position = position
+#	shader_material = peg_sprite2D.material as ShaderMaterial
+#	if shader_material == null:
+#		print("Error: Material is not a ShaderMaterial")
+#		return
+
+
+func _ready():
 	get_parent().connect_peg_signals(self)
 	add_to_group("pegs")
 	peg_database_reference = preload("res://scripts/peg_data.gd")
-	peg_down_reference = load("res://assets/peg_down" + modifier + ".svg")
-	peg_out_reference = load("res://assets/peg_out" + modifier + ".svg")
 	peg_sprite2D = $Sprite2D
+	
+	setup_visuals()
 	
 	peg_sprite2D.material = peg_sprite2D.material.duplicate()
 	last_position = position
 	shader_material = peg_sprite2D.material as ShaderMaterial
-	if shader_material == null:
-		print("Error: Material is not a ShaderMaterial")
-		return
+
 
 func _process(delta: float) -> void:
 	if drag_velocity.length() > 0:
@@ -48,7 +68,16 @@ func _process(delta: float) -> void:
 		rotation = lerpf(rotation, 0.0, 10.0 * delta)
 
 
-
+func setup_visuals():
+	modifier = ""
+	if is_special:
+		modifier = "_" + special_type
+	
+	peg_down_reference = load("res://assets/peg_down" + modifier + ".svg")
+	peg_out_reference = load("res://assets/peg_out" + modifier + ".svg")
+	
+	if peg_sprite2D:
+		peg_sprite2D.texture = peg_out_reference
 
 
 func update_shader_value(new_value):
@@ -66,4 +95,8 @@ func _on_mouse_exited() -> void:
 
 
 func get_submission_value():
+	if is_special:
+		match special_type:
+			"goop":
+				return 0  # Special non-color ID
 	return peg_id

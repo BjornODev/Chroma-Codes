@@ -16,7 +16,7 @@ func initialize():
 	# Example: auto-activate first modifier for testing
 	if all_modifiers.size() > 0:
 		active_modifiers.append(all_modifiers[0])
-		active_modifiers.append(all_modifiers[3])
+		active_modifiers.append(all_modifiers[2])
 		active_modifiers.append(all_modifiers[7])
 
 
@@ -85,8 +85,17 @@ func post_board_build(board):
 func process_row_submission(board, guess, result):
 	update_color_counters(guess)
 	update_feedback_counters(result)
+	
 	check_triggers(board)
+	
+	var black_this_row = result[0]
 
+	for modifier in active_modifiers:
+		if modifier.has("effect") and modifier.effect.has("goop"):
+			var multiplier = modifier.effect["goop"]
+			spawn_goop_from_black(board, black_this_row * multiplier)
+
+	
 
 func update_color_counters(guess):
 	for value in guess:
@@ -155,7 +164,9 @@ func apply_effect(board, effect):
 			
 			"sudden_spike":
 				spawn_spikes(board, effect[key])
-
+			
+			"goop":
+				pass
 
 # =========================
 # WIDE (Pre-Build Effect)
@@ -222,6 +233,25 @@ func spawn_spikes(board, amount):
 			if placed >= amount:
 				break
 
+
+func spawn_goop_from_black(board, black_count):
+	if black_count <= 0:
+		return
+	
+	var peg_manager = board.get_node("../PegManager")
+	var hand = peg_manager.player_hand_reference
+	
+	for i in range(black_count):
+		var goop = preload("res://scenes/Phys_Peg.tscn").instantiate()
+		
+		goop.is_special = true
+		goop.is_copy = true
+		goop.special_type = "goop"
+		goop.peg_id = 0
+		goop.setup_visuals()
+		
+		# IMPORTANT: configure BEFORE adding to scene
+		hand.add_special_peg(goop)
 
 # =========================
 # UTILITY

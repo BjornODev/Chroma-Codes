@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://oc11oeqiu24y"]
+
+[ext_resource type="Script" uid="uid://cvwituvu2mhpj" path="res://scripts/health_text.gd" id="1_em44f"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="2_app4t"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_app4t"]
+
+[sub_resource type="Theme" id="Theme_1p0ck"]
+default_font = ExtResource("2_app4t")
+default_font_size = 150
+
+[node name="Health Text" type="CanvasLayer"]
+script = ExtResource("1_em44f")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+material = SubResource("ShaderMaterial_app4t")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 113.0
+offset_right = -1399.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_1p0ck")
+theme_override_colors/default_color = Color(0.5882263, 0.82743835, 0.37254333, 0.4950884)
+theme_override_fonts/bold_font = ExtResource("2_app4t")
+bbcode_enabled = true
+text = "10"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 2

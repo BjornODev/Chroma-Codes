@@ -1,10 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=22 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
 [ext_resource type="Script" uid="uid://7oxqnrpufvdf" path="res://scripts/secret_code_display.gd" id="2_3p2gp"]
 [ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
-[ext_resource type="Shader" uid="uid://vg3ttnixjd30" path="res://shaders/slight_crt.gdshader" id="2_qmy6f"]
 [ext_resource type="Texture2D" uid="uid://ldv6gjgdwdy8" path="res://assets/board_soft_limit.svg" id="3_wp0k4"]
 [ext_resource type="Script" uid="uid://ctmucy8cb87s7" path="res://scripts/input_manager.gd" id="4_jlsqs"]
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
@@ -15,16 +14,39 @@
 [ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
 [ext_resource type="Script" uid="uid://duiylsgdpo5af" path="res://scripts/board_modifier_engine.gd" id="9_bjd11"]
 [ext_resource type="PackedScene" uid="uid://bjcxyo7gyqgoc" path="res://scenes/PopUpText.tscn" id="10_mwfav"]
+[ext_resource type="PackedScene" uid="uid://oc11oeqiu24y" path="res://scenes/HealthText.tscn" id="12_cvmbd"]
+[ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="13_cvmbd"]
+[ext_resource type="Texture2D" uid="uid://delxlc11h4gkr" path="res://assets/button_unpressed.svg" id="17_bb450"]
+[ext_resource type="Texture2D" uid="uid://5ee8tiys5wfv" path="res://assets/button_pressed.svg" id="18_nfivy"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="19_nfivy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
-shader = ExtResource("2_qmy6f")
+shader = ExtResource("13_cvmbd")
+shader_parameter/overlay = false
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.1
+shader_parameter/grille_opacity = 0.3
 shader_parameter/resolution = Vector2(320, 180)
-shader_parameter/scan_line_amount = 0.30000001425
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 0.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.075
+shader_parameter/noise_speed = 50.0
+shader_parameter/static_noise_intensity = 0.0
+shader_parameter/aberration = 0.0
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = false
 shader_parameter/warp_amount = 0.150000007125
-shader_parameter/vignette_amount = 0.5000000237500001
+shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.400000019
-shader_parameter/grille_amount = 0.650000030875
-shader_parameter/brightness_boost = 1.200000057
+shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="Theme" id="Theme_1nqs0"]
+default_font = ExtResource("19_nfivy")
+default_font_size = 20
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rvslj")
@@ -37,6 +59,7 @@ script = ExtResource("2_3p2gp")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
+player_health = 10
 
 [node name="SafeBoardBG" type="NinePatchRect" parent="BoardManager"]
 offset_right = 40.0
@@ -67,6 +90,7 @@ grow_vertical = 2
 scale = Vector2(48.674236, 29.958965)
 mouse_filter = 2
 color = Color(0.7097931, 0.10195923, 0, 1)
+metadata/_edit_lock_ = true
 
 [node name="PegManager" type="Node2D" parent="."]
 script = ExtResource("2_c01mt")
@@ -86,30 +110,31 @@ script = ExtResource("7_lhr70")
 [node name="BoardModifierEngine" type="Node2D" parent="."]
 script = ExtResource("9_bjd11")
 
-[node name="ConfirmationButton" type="Button" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -89.0
-offset_top = 408.0
-offset_right = 90.0
-offset_bottom = 446.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Confirm
-"
+[node name="ConfirmationButton" type="TextureButton" parent="."]
+offset_left = -88.0
+offset_top = 392.0
+offset_right = 88.0
+offset_bottom = 432.0
+texture_normal = ExtResource("17_bb450")
+texture_pressed = ExtResource("18_nfivy")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="ReplaceConfirmationButton" type="Button" parent="."]
+[node name="ReplaceConfirmationButton" type="TextureButton" parent="."]
 visible = false
-offset_left = -89.0
-offset_top = 408.0
-offset_right = 90.0
-offset_bottom = 446.0
-text = "Confirm"
+offset_left = -88.0
+offset_top = 392.0
+offset_right = 88.0
+offset_bottom = 432.0
+disabled = true
+texture_normal = ExtResource("17_bb450")
+texture_pressed = ExtResource("18_nfivy")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="PopUpText" parent="." instance=ExtResource("10_mwfav")]
+
+[node name="Health Text" parent="." instance=ExtResource("12_cvmbd")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -147,6 +172,19 @@ layout_mode = 2
 [node name="Submit Button" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Submit Guess"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = -88.0
+offset_top = 392.0
+offset_right = 88.0
+offset_bottom = 432.0
+mouse_filter = 2
+theme = SubResource("Theme_1nqs0")
+theme_override_colors/default_color = Color(0.82743835, 0.886261, 1, 1)
+text = "Confirm"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]

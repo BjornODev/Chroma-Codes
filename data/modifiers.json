@@ -52,16 +52,6 @@
 	},
 
 	{
-		"name": "Black Sludge",
-		"trigger": {
-			"black": 5
-		},
-		"effect": {
-			"sludge": 2
-		}
-	},
-
-	{
 		"name": "Orange Escalation",
 		"trigger": {
 			"orange": 8
@@ -69,5 +59,14 @@
 		"effect": {
 			"sudden_spike": 4
 		}
-	}
+	},
+	{
+		"name": "Goop Board",
+		"trigger": {
+			"black": 1
+		},
+		"effect": {
+			"goop": 1
+		}
+}
 ]

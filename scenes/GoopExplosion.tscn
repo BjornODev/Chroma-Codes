@@ -1,0 +1,81 @@
+[gd_scene load_steps=9 format=3 uid="uid://btgkru1yr8xy3"]
+
+[ext_resource type="Script" uid="uid://c8jkdqvxnr0x3" path="res://scripts/goop_explosion.gd" id="1_qymhd"]
+[ext_resource type="Texture2D" uid="uid://bunkokyi6n86m" path="res://assets/circle_black.svg" id="2_d2e4q"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="3_d2e4q"]
+
+[sub_resource type="Curve" id="Curve_emf54"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qdhj4"]
+curve = SubResource("Curve_emf54")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gvwdc"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.0
+spread = 180.0
+initial_velocity_min = 160.0
+initial_velocity_max = 160.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.1
+scale_curve = SubResource("CurveTexture_qdhj4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_emf54"]
+
+[sub_resource type="Theme" id="Theme_qdhj4"]
+default_font = ExtResource("3_d2e4q")
+default_font_size = 150
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_qymhd")
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 40
+texture = ExtResource("2_d2e4q")
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_gvwdc")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+material = SubResource("ShaderMaterial_emf54")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1512.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_qdhj4")
+theme_override_colors/default_color = Color(0.5882263, 0.82743835, 0.37254333, 0.4950884)
+theme_override_fonts/bold_font = ExtResource("3_d2e4q")
+bbcode_enabled = true
+text = "10"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="RichTextLabel"]
+material = SubResource("ShaderMaterial_emf54")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1512.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_qdhj4")
+theme_override_colors/default_color = Color(0.5882263, 0.82743835, 0.37254333, 0.4950884)
+theme_override_fonts/bold_font = ExtResource("3_d2e4q")
+bbcode_enabled = true
+text = "10"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 2

@@ -20,7 +20,7 @@ func set_color_from_id(texture):
 	peg_sprite.modulate = Color(peg_database_reference.PEG_TYPES[texture][0])
 
 
-func reveal(duration := 1.2):
+func reveal(duration := 2.5):
 
 	if revealed:
 		return

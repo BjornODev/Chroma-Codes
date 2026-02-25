@@ -20,6 +20,7 @@ var radar_blip_scene = preload("res://scenes/RadarBlip.tscn")
 
 var peg_manager_reference
 @onready var popup_manager = $"../PopUpText"
+@onready var health_text = $"../Health Text"
 
 var secret_code = []
 var board_state = []
@@ -42,6 +43,8 @@ func _ready():
 	peg_manager_reference = $"../PegManager"
 	modifier_engine.initialize()
 	modifier_engine.pre_board_build(self)
+	health_text.initialize()
+	health_text.change_health(player_health)
 	
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)
@@ -222,6 +225,7 @@ func tween_danger_bg(bg):
 
 func apply_danger_visual(node):
 	node.set_glow_red()
+	node.in_danger_row = true
 
 
 # =========================
@@ -250,22 +254,29 @@ func submit_guess():
 		board_state[row_index][c] = guess[c]
 
 	var result = evaluate_guess(guess)
-
+	
+		# Apply soft limit damage
+	if row_index >= soft_row_limit:
+		apply_damage(damage_per_row)
+	
 	# Show feedback
 	for child in get_children():
 		if child is Feedback_Grid and child.row == row_index:
 			child.show_results(result[0], result[1])
-	modifier_engine.process_row_submission(self, guess, result)
 	
 	if result[0] == columns:
 		for child in $"../SecretCodeDisplay".get_children():
 			child.reveal()
 		in_game = false
-		popup_manager.show_popup(
-					"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
-				)
+		await handle_goop_explosion()
+		if player_health > 0:
+			popup_manager.show_popup(
+						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
+					)
 		return
 		
+	if in_game:
+		modifier_engine.process_row_submission(self, guess, result)
 	
 	# Emit row submitted event
 	item_system.emit_game_event("row_submitted", {
@@ -291,14 +302,10 @@ func submit_guess():
 				"positions": p.positions
 			})
 
-	# Apply soft limit damage
-	if row_index >= soft_row_limit:
-		apply_damage()
-
 	peg_manager_reference.cur_row += 1
 
 	# Add new row when reaching last visible row
-	if peg_manager_reference.cur_row >= rows_generated - 1:
+	if peg_manager_reference.cur_row >= rows_generated - 3:
 		add_row()
 		tween_last_row()
 
@@ -309,12 +316,12 @@ func submit_guess():
 # DAMAGE SYSTEM
 # =========================
 
-func apply_damage():
-	player_health -= damage_per_row
+func apply_damage(damage):
+	player_health -= damage
 	print("Health:", player_health)
 	
 	flash_damage()
-	
+	health_text.change_health(player_health)
 	item_system.emit_game_event("health_lost", {
 		"amount": damage_per_row,
 		"health": player_health
@@ -390,7 +397,7 @@ func re_evaluate_row(row_index):
 				guess.append(0)
 
 	var result = evaluate_guess(guess)
-	
+	modifier_engine.process_row_submission(self, guess, result)
 	# Update board state
 	for c in range(columns):
 		board_state[row_index][c] = guess[c]
@@ -428,6 +435,49 @@ func clear_feedback_grid(grid):
 			clear_feedback_grid(node)
 
 
+func handle_goop_explosion():
+	var peg_manager = $"../PegManager"
+	var hand = peg_manager.player_hand_reference
+	
+	var goop_pegs := []
+	
+	for peg in hand.player_hand:
+		if peg.is_special and peg.special_type == "goop":
+			goop_pegs.append(peg)
+	
+	for peg in goop_pegs:
+		hand.player_hand.erase(peg)
+
+	hand.update_hand_positions()
+	
+	var goop_count = 0
+	var damage = floor(goop_count / 2)
+	
+	for peg in goop_pegs:
+		goop_count += 1
+		spawn_goop_explosion(peg.global_position)
+		peg.queue_free()
+		if goop_count == 2:
+			apply_damage(1)
+			goop_count = 0
+		await get_tree().create_timer(0.25).timeout
+	
+
+	
+	hand.player_hand = hand.player_hand.filter(
+		func(p): return not (p.is_special and p.special_type == "goop")
+	)
+	
+	hand.update_hand_positions()
+
+
+func spawn_goop_explosion(pos):
+	var explosion = preload("res://scenes/GoopExplosion.tscn").instantiate()
+	add_child(explosion)
+	explosion.global_position = pos
+	explosion.explode()
+
+
 # =========================
 # SECRET CODE
 # =========================
@@ -437,6 +487,7 @@ func generate_code():
 	for i in range(columns):
 		secret_code.append(randi_range(1, 6))
 	print(secret_code)
+
 
 
 func _on_pressed() -> void:

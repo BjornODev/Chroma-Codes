@@ -20,11 +20,15 @@ var drag_start_slot
 var player_hand_reference
 var peg_reference
 var board_reference
+var pattern_engine
+var item_system
 
 func _ready() -> void:
 	player_hand_reference = $"../PlayerHand"
 	peg_reference = preload("res://scenes/Phys_Peg.tscn")
 	board_reference = $"../BoardManager"
+	pattern_engine = $"../PatternEngine"
+	item_system = $"../ItemManager"
 	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
 
 
@@ -38,15 +42,18 @@ func _process(delta: float) -> void:
 func start_drag(peg_stack):
 	var peg = null
 	print(cur_row)
-	if !peg_stack.is_copy:
+	if !peg_stack.is_copy and not peg_stack.is_special:
 		peg = peg_stack.duplicate()
 		peg_stack.get_parent().add_child(peg)
 		peg.is_copy = true
 		peg.peg_id = peg_stack.peg_id
+		peg.hand_position = peg_stack.hand_position
 		highlight_peg(peg_stack, false)
 		highlight_peg(peg, false)
 
 	elif peg_stack.row == cur_row:
+		peg = peg_stack
+	elif peg_stack.is_special and peg_stack.row == -1:
 		peg = peg_stack
 	else:
 		return
@@ -95,13 +102,24 @@ func finish_drag():
 		
 		if other_peg and other_peg.get("is_spike"):
 			# Damage player
-			get_node("../BoardManager").apply_damage()
+			get_node("../BoardManager").apply_damage(1)
 			
 			# Remove spike
 			other_peg.queue_free()
 			peg_slot_found.peg_in_slot = null
 			peg_slot_found.set_glow_off()
 			other_peg = null
+			
+			if replace_mode:
+				replaces_left -= 1
+				peg_being_dragged.update_shader_value(16)
+				edited_rows[peg_slot_found.row] = true
+				
+				print("Replacements left:", replaces_left)
+				
+				if replaces_left <= 0:
+					print("No replacements left. Awaiting confirmation.")
+
 		
 		# Place dragged peg in slot
 		peg_being_dragged.position = peg_slot_found.position
@@ -110,6 +128,9 @@ func finish_drag():
 		peg_being_dragged.peg_sprite2D.texture = peg_being_dragged.peg_down_reference
 		peg_being_dragged.row = peg_slot_found.row
 		peg_being_dragged.column = peg_slot_found.column
+		
+		if peg_being_dragged.is_special:
+			player_hand_reference.remove_peg_from_hand(peg_being_dragged)
 		
 		# If slot already had peg
 		if other_peg:
@@ -143,6 +164,8 @@ func finish_drag():
 	else:
 		peg_being_dragged.current_slot = null
 		player_hand_reference.return_peg_to_hand(peg_being_dragged)
+		if peg_being_dragged.is_special:
+			player_hand_reference.player_hand.append(peg_being_dragged)
 	
 	peg_being_dragged = null
 
@@ -261,6 +284,22 @@ func confirm_replace():
 	replaces_left = 0
 	edited_rows.clear()
 	
+	var triggered = pattern_engine.evaluate_board(
+		board_reference.board_state,
+		board_reference.rows_generated,
+		board_reference.columns,
+		cur_row
+	)
+
+	for p in triggered:
+		if item_system.has_item_trigger_for_pattern(p.name):
+			board_reference.spawn_pattern_markers(p.positions)
+	
+			item_system.emit_game_event("pattern_triggered", {
+				"pattern_name": p.name,
+				"positions": p.positions
+			})
+	item_system.process_turn_events()
 	print("Replace confirmed.")
 
 
@@ -275,7 +314,8 @@ func destroy_obstacle(slot):
 				slot.peg_in_slot = null
 				await tween.finished
 				obstacle.queue_free()
-				slot.set_glow_off()
+				if !slot.in_danger_row:
+					slot.set_glow_off()
 				
 				deletions_left -= 1
 				
