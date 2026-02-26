@@ -223,24 +223,24 @@ func collapse_bottom_rows():
 	if has_move:
 		await move_tween.finished
 
-	# --------------------
-	# Phase 3 — Fade danger BGs now inside safe zone
-	# --------------------
+	# Phase 3 — Delete overflow danger BGs
 
-	var bg_fade_tween = create_tween().set_parallel(true)
-	var has_bg_fade := false
-	var danger_to_remove := []
-
+	var overflow_limit = soft_row_limit * 2
+	
+	var bg_cleanup_tween = create_tween().set_parallel(true)
+	var has_cleanup := false
+	var overflow_to_remove := []
+	
 	for bg in $DangerBGContainer.get_children():
-		if bg.row < soft_row_limit:
-			bg_fade_tween.tween_property(bg, "modulate:a", 0.0, 0.35)
-			has_bg_fade = true
-			danger_to_remove.append(bg)
-
-	if has_bg_fade:
-		await bg_fade_tween.finished
-
-	for bg in danger_to_remove:
+		if bg.row >= overflow_limit:
+			bg_cleanup_tween.tween_property(bg, "modulate:a", 0.0, 0.3)
+			has_cleanup = true
+			overflow_to_remove.append(bg)
+	
+	if has_cleanup:
+		await bg_cleanup_tween.finished
+	
+	for bg in overflow_to_remove:
 		if is_instance_valid(bg):
 			bg.queue_free()
 
@@ -260,7 +260,7 @@ func collapse_bottom_rows():
 		peg_manager_reference.cur_row = 0
 	if peg_manager_reference.cur_row >= rows_generated:
 		peg_manager_reference.cur_row = rows_generated - 1
-
+	print(peg_manager_reference.cur_row)
 	update_safe_background()
 
 
@@ -452,16 +452,12 @@ func submit_guess():
 	peg_manager_reference.cur_row += 1
 
 	# Collapse BEFORE spawning new danger rows
-	if rows_generated >= 11:
+	if peg_manager_reference.cur_row >= 6:
 		await collapse_bottom_rows()
 		
 	
 	# Add new row
-	if peg_manager_reference.cur_row >= rows_generated - 3:
-		add_row()
-		tween_last_row()
-	# Add new row when reaching last visible row
-	if peg_manager_reference.cur_row >= rows_generated - 3:
+	if peg_manager_reference.cur_row >= rows_generated - 3 and rows_generated < 11:
 		add_row()
 		tween_last_row()
 

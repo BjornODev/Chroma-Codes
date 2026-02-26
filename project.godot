@@ -75,9 +75,8 @@ project/editorState=[{
 "path": "res://data/modifiers.json",
 "type": "file"
 }, {
-"column": 3,
-"current": true,
-"line": 94,
+"column": 46,
+"line": 19,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
@@ -101,8 +100,9 @@ project/editorState=[{
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
-"column": 26,
-"line": 472,
+"column": 38,
+"current": true,
+"line": 454,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -127,7 +127,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 10,
+"line": 14,
 "path": "res://scripts/background_layer.gd",
 "type": "file"
 }, {

@@ -17,7 +17,8 @@ func initialize():
 	
 	# Example: auto-activate first modifier for testing
 	if all_modifiers.size() > 0:
-		activate_modifier_by_name("Very Wide Board")
+#		activate_modifier_by_name("Very Wide Board")
+		activate_modifier_by_name("Goop Board")
 
 
 # =========================
@@ -107,7 +108,7 @@ func process_row_submission(board, guess, result):
 	var black_this_row = result[0]
 
 	for modifier in active_modifiers:
-		if modifier.has("effect") and modifier.effect.has("goop"):
+		if modifier.effect != null and modifier.effect.has("goop"):
 			var multiplier = modifier.effect["goop"]
 			spawn_goop_from_black(board, black_this_row * multiplier)
 
@@ -128,11 +129,11 @@ func update_color_counters(guess):
 
 func check_triggers(board):
 	for modifier in active_modifiers:
-		if not modifier.has("trigger"):
+		if modifier.trigger == null:
 			continue
 		
 		if trigger_satisfied(modifier.trigger):
-			if modifier.has("effect"):
+			if modifier.effect != null:
 				apply_effect(board, modifier.effect)
 			
 			reset_trigger(modifier.trigger)
