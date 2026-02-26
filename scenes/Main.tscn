@@ -1,12 +1,16 @@
-[gd_scene load_steps=22 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=28 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
+[ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="2_1iba3"]
 [ext_resource type="Script" uid="uid://7oxqnrpufvdf" path="res://scripts/secret_code_display.gd" id="2_3p2gp"]
 [ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
+[ext_resource type="Script" uid="uid://bwce2aqtv3mcl" path="res://scripts/background_layer.gd" id="2_yxlcp"]
 [ext_resource type="Texture2D" uid="uid://ldv6gjgdwdy8" path="res://assets/board_soft_limit.svg" id="3_wp0k4"]
+[ext_resource type="Texture2D" uid="uid://c8u5amc2052kk" path="res://assets/backgrounds/background_image_0.jpg" id="3_yxlcp"]
 [ext_resource type="Script" uid="uid://ctmucy8cb87s7" path="res://scripts/input_manager.gd" id="4_jlsqs"]
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
+[ext_resource type="Shader" uid="uid://df3pi3khvsebn" path="res://shaders/lava_lamp.gdshader" id="5_2ofn6"]
 [ext_resource type="Script" uid="uid://cw0f175rbogh4" path="res://scripts/item_manager.gd" id="6_lhr70"]
 [ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="6_nxtc6"]
 [ext_resource type="Script" uid="uid://duaojaojbvdrq" path="res://scripts/board_manager.gd" id="6_q8u5g"]
@@ -19,6 +23,37 @@
 [ext_resource type="Texture2D" uid="uid://delxlc11h4gkr" path="res://assets/button_unpressed.svg" id="17_bb450"]
 [ext_resource type="Texture2D" uid="uid://5ee8tiys5wfv" path="res://assets/button_pressed.svg" id="18_nfivy"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="19_nfivy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
+shader = ExtResource("2_1iba3")
+shader_parameter/screen_height = 2160.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 1.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 1.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ofn6"]
+shader = ExtResource("5_2ofn6")
+shader_parameter/top = 1.0
+shader_parameter/bottom = 0.0
+shader_parameter/blob_threshold = 1.5
+shader_parameter/random_seed = 0.0
+shader_parameter/blob_scale_x = 2.0
+shader_parameter/blob_scale_y = 2.0
+shader_parameter/blobs_enabled = true
+shader_parameter/blob_speed = 1.0
+shader_parameter/background_edge = Color(0.1, 0, 0.2, 1)
+shader_parameter/background_center = Color(0.5, 0, 0.8, 1)
+shader_parameter/background_alpha = 1.0
+shader_parameter/blob_top = Color(1, 0.4, 0.4, 1)
+shader_parameter/blob_bottom = Color(1, 1, 0.3, 1)
+shader_parameter/blob_alpha = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mwfav"]
 shader = ExtResource("13_cvmbd")
@@ -51,6 +86,38 @@ default_font_size = 20
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rvslj")
 
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("2_yxlcp")
+
+[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("3_yxlcp")
+
+[node name="Background" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_ebg2g")
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("3_yxlcp")
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+material = SubResource("ShaderMaterial_2ofn6")
+offset_right = 1920.0
+offset_bottom = 1080.0
+
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="SecretCodeDisplay" type="Node2D" parent="."]
@@ -59,6 +126,7 @@ script = ExtResource("2_3p2gp")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
+soft_row_limit = 3
 player_health = 10
 
 [node name="SafeBoardBG" type="NinePatchRect" parent="BoardManager"]
@@ -139,6 +207,7 @@ stretch_mode = 0
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="CRTFilter" type="ColorRect" parent="CanvasLayer"]
+visible = false
 material = SubResource("ShaderMaterial_mwfav")
 offset_right = 1920.0
 offset_bottom = 1080.0

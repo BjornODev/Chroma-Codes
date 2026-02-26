@@ -260,12 +260,16 @@ func get_peg_with_highest_z_index(pegs):
 
 
 func start_replace_mode(amount):
+	if board_reference.board_state.is_empty():
+		return
+	
 	if cur_row <= 0:
 		return
+	
 	$"../ReplaceConfirmationButton".disabled = false
 	$"../ReplaceConfirmationButton".visible = true
 	replace_mode = true
-	replaces_left = amount
+	replaces_left += amount
 	edited_rows.clear()
 	
 	print("Replace mode active. Replacements:", amount)

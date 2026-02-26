@@ -13,6 +13,7 @@ config_version=5
 config/name="Mastermind Roguelite"
 run/main_scene="res://scenes/Main.tscn"
 config/features=PackedStringArray("4.5", "Mobile")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
 
 [display]
@@ -24,6 +25,7 @@ window/stretch/mode="canvas_items"
 [rendering]
 
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 
 [xogot]
 
@@ -33,8 +35,8 @@ project/editorState=[{
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 32,
-"line": 264,
+"column": 0,
+"line": 13,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
@@ -98,9 +100,8 @@ project/editorState=[{
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
-"column": 29,
-"current": true,
-"line": 450,
+"column": 26,
+"line": 472,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -115,12 +116,29 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 7,
+"line": 0,
 "path": "res://scripts/goop_explosion.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/danger_row_bg.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 10,
+"path": "res://scripts/background_layer.gd",
+"type": "file"
+}, {
+"column": 55,
+"current": true,
+"line": 36,
+"path": "res://scripts/main.gd",
 "type": "file"
 }]
 project/breakpoints={
 "res://scripts/board_manager.gd": PackedInt32Array(),
+"res://scripts/main.gd": PackedInt32Array(),
 "res://scripts/pattern_engine.gd": PackedInt32Array(),
 "res://scripts/peg.gd": PackedInt32Array(),
 "res://scripts/peg_manager.gd": PackedInt32Array(),

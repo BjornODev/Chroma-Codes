@@ -13,6 +13,7 @@ var in_game = true
 @export var visible_row_window := 6
 @onready var modifier_engine = $"../BoardModifierEngine"
 @onready var damage_overlay = $DamageOverlay
+@onready var bg = $"../BackgroundLayer/ColorRect"
 
 var slot_scene
 var feedback_scene
@@ -45,6 +46,8 @@ func _ready():
 	modifier_engine.pre_board_build(self)
 	health_text.initialize()
 	health_text.change_health(player_health)
+	
+	$"../BackgroundLayer".change_background(randi() % 4)
 	
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)
@@ -121,6 +124,146 @@ func add_row():
 		update_safe_background()
 
 
+func collapse_bottom_rows():
+
+	var rows_to_remove = soft_row_limit
+	var shift_distance = rows_to_remove * (slot_size + spacing)
+
+	# --------------------
+	# Phase 1 — Fade bottom rows
+	# --------------------
+
+	var fade_tween = create_tween().set_parallel(true)
+	var has_fade := false
+	var nodes_to_delete := []
+
+	for child in get_children():
+
+		if child is SnapZone and child.row < rows_to_remove:
+
+			fade_tween.tween_property(child, "modulate:a", 0.0, 0.35)
+			has_fade = true
+			nodes_to_delete.append(child)
+
+			if child.peg_in_slot:
+				fade_tween.tween_property(child.peg_in_slot, "modulate:a", 0.0, 0.35)
+				nodes_to_delete.append(child.peg_in_slot)
+
+		elif child is Feedback_Grid and child.row < rows_to_remove:
+
+			fade_tween.tween_property(child, "modulate:a", 0.0, 0.35)
+			has_fade = true
+			nodes_to_delete.append(child)
+
+	for bg in $DangerBGContainer.get_children():
+		if bg.row < rows_to_remove:
+			fade_tween.tween_property(bg, "modulate:a", 0.0, 0.35)
+			has_fade = true
+			nodes_to_delete.append(bg)
+
+	if has_fade:
+		await fade_tween.finished
+
+	for n in nodes_to_delete:
+		if is_instance_valid(n):
+			n.queue_free()
+
+	# Remove logical rows
+	for i in range(rows_to_remove):
+		if board_state.size() > 0:
+			board_state.remove_at(0)
+
+	# --------------------
+	# Phase 2 — Shift remaining rows
+	# --------------------
+
+	var move_tween = create_tween().set_parallel(true)
+	move_tween.set_trans(Tween.TRANS_CUBIC)
+	move_tween.set_ease(Tween.EASE_OUT)
+
+	var has_move := false
+
+	for child in get_children():
+
+		if child is SnapZone and child.row >= rows_to_remove:
+
+			child.row -= rows_to_remove
+
+			var new_pos = child.position
+			new_pos.y += shift_distance
+			move_tween.tween_property(child, "position", new_pos, 0.5)
+			has_move = true
+
+			if child.peg_in_slot:
+				var occ = child.peg_in_slot
+				occ.row -= rows_to_remove
+
+				var occ_new = occ.position
+				occ_new.y += shift_distance
+				move_tween.tween_property(occ, "position", occ_new, 0.5)
+
+		elif child is Feedback_Grid and child.row >= rows_to_remove:
+
+			child.row -= rows_to_remove
+
+			var new_pos = child.position
+			new_pos.y += shift_distance
+			move_tween.tween_property(child, "position", new_pos, 0.5)
+			has_move = true
+
+	for bg in $DangerBGContainer.get_children():
+
+		bg.row -= rows_to_remove
+
+		var new_pos = bg.position
+		new_pos.y += shift_distance
+		move_tween.tween_property(bg, "position", new_pos, 0.5)
+		has_move = true
+
+	if has_move:
+		await move_tween.finished
+
+	# --------------------
+	# Phase 3 — Fade danger BGs now inside safe zone
+	# --------------------
+
+	var bg_fade_tween = create_tween().set_parallel(true)
+	var has_bg_fade := false
+	var danger_to_remove := []
+
+	for bg in $DangerBGContainer.get_children():
+		if bg.row < soft_row_limit:
+			bg_fade_tween.tween_property(bg, "modulate:a", 0.0, 0.35)
+			has_bg_fade = true
+			danger_to_remove.append(bg)
+
+	if has_bg_fade:
+		await bg_fade_tween.finished
+
+	for bg in danger_to_remove:
+		if is_instance_valid(bg):
+			bg.queue_free()
+
+	# --------------------
+	# Rebuild lookup & sync rows
+	# --------------------
+
+	slot_lookup.clear()
+	for child in get_children():
+		if child is SnapZone:
+			slot_lookup[Vector2(child.row, child.column)] = child
+
+	rows_generated = board_state.size()
+
+	peg_manager_reference.cur_row -= rows_to_remove
+	if peg_manager_reference.cur_row < 0:
+		peg_manager_reference.cur_row = 0
+	if peg_manager_reference.cur_row >= rows_generated:
+		peg_manager_reference.cur_row = rows_generated - 1
+
+	update_safe_background()
+
+
 func update_safe_background():
 	var camera = $"../Camera2D"
 	var camera_center = camera.get_screen_center_position()
@@ -182,6 +325,7 @@ func tween_last_row():
 func create_danger_background(y_pos):
 	var bg_scene = preload("res://scenes/DangerRowBG.tscn")
 	var bg = bg_scene.instantiate()
+	bg.row = peg_manager_reference.cur_row
 	$DangerBGContainer.add_child(bg)
 
 	var camera = $"../Camera2D"
@@ -248,7 +392,8 @@ func submit_guess():
 			guess.append(occupant.get_submission_value())
 
 	print("Guess:", guess)
-
+	if row_index >= board_state.size():
+		return
 	# Save guess
 	for c in range(columns):
 		board_state[row_index][c] = guess[c]
@@ -301,15 +446,24 @@ func submit_guess():
 				"pattern_name": p.name,
 				"positions": p.positions
 			})
-
+	item_system.process_turn_events()
+	
+	
 	peg_manager_reference.cur_row += 1
 
+	# Collapse BEFORE spawning new danger rows
+	if rows_generated >= 11:
+		await collapse_bottom_rows()
+		
+	
+	# Add new row
+	if peg_manager_reference.cur_row >= rows_generated - 3:
+		add_row()
+		tween_last_row()
 	# Add new row when reaching last visible row
 	if peg_manager_reference.cur_row >= rows_generated - 3:
 		add_row()
 		tween_last_row()
-
-	item_system.process_turn_events()
 
 
 # =========================
@@ -398,6 +552,10 @@ func re_evaluate_row(row_index):
 
 	var result = evaluate_guess(guess)
 	modifier_engine.process_row_submission(self, guess, result)
+	
+	if row_index >= board_state.size():
+		return
+	
 	# Update board state
 	for c in range(columns):
 		board_state[row_index][c] = guess[c]
