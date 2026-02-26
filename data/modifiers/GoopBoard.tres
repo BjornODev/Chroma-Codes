@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dfyyju28nflqu"]
+
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_k2djh"]
+
+[resource]
+script = ExtResource("1_k2djh")
+modifier_name = "Goop Board"
+trigger = {
+"black": 1
+}
+effect = {
+"goop": 1
+}

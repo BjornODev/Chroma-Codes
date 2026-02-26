@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cvni3unq48lju"]
+
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_2bq50"]
+
+[resource]
+script = ExtResource("1_2bq50")
+modifier_name = "Heavy Trapped Board"
+phase = "post_build"
+effect = {
+"trapped": 4
+}

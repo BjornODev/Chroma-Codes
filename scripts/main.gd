@@ -23,7 +23,7 @@ func generate_opposite_palette(mat):
 	var hue = fmod(base_hue + randf_range(-0.15, 0.15), 1.0)
 
 	# Adjacent hue (small shift)
-	var adjacent = fmod(hue + randf_range(0.15, 0.35), 1.0)
+	var adjacent = fmod(hue + randf_range(0.1, 0.225), 1.0)
 	var top = Color.from_hsv(hue, 1.0, 0.9)
 	var bottom = Color.from_hsv(adjacent, 1.0, 0.7)
 	

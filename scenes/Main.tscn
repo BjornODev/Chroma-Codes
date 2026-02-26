@@ -102,7 +102,6 @@ offset_bottom = 1248.0
 texture = ExtResource("3_yxlcp")
 
 [node name="Background" type="TextureRect" parent="BackgroundLayer"]
-visible = false
 z_index = -100
 z_as_relative = false
 texture_repeat = 2
@@ -114,6 +113,7 @@ offset_bottom = 1248.0
 texture = ExtResource("3_yxlcp")
 
 [node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+visible = false
 material = SubResource("ShaderMaterial_2ofn6")
 offset_right = 1920.0
 offset_bottom = 1080.0

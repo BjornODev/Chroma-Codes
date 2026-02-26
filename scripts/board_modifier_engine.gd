@@ -1,7 +1,9 @@
 extends Node
 
-var all_modifiers = []
 var active_modifiers = []
+
+var all_modifiers : Array[ModifierData] = []
+var modifiers_by_name := {}
 
 var counters := {}   # keyword counters
 
@@ -15,47 +17,65 @@ func initialize():
 	
 	# Example: auto-activate first modifier for testing
 	if all_modifiers.size() > 0:
-		active_modifiers.append(all_modifiers[0])
-		active_modifiers.append(all_modifiers[2])
-		active_modifiers.append(all_modifiers[7])
+		activate_modifier_by_name("Very Wide Board")
 
 
 # =========================
 # LOAD MODIFIERS
 # =========================
 
+#func load_modifiers():
+#	var file = FileAccess.open("res://data/modifiers.json", FileAccess.READ)
+#	if file == null:
+#		push_error("Failed to load modifiers.json")
+#		return
+#	
+#	var content = file.get_as_text()
+#	file.close()
+#	
+#	var json = JSON.new()
+#	var error = json.parse(content)
+#	if error != OK:
+#		push_error("Modifier JSON parse error")
+#		return
+#	
+#	all_modifiers = json.data
+
+
 func load_modifiers():
-	var file = FileAccess.open("res://data/modifiers.json", FileAccess.READ)
-	if file == null:
-		push_error("Failed to load modifiers.json")
+	all_modifiers.clear()
+	modifiers_by_name.clear()
+	
+	var dir = DirAccess.open("res://data/modifiers")
+	if dir == null:
+		push_error("Modifiers folder missing")
 		return
 	
-	var content = file.get_as_text()
-	file.close()
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
 	
-	var json = JSON.new()
-	var error = json.parse(content)
-	if error != OK:
-		push_error("Modifier JSON parse error")
-		return
+	while file_name != "":
+		if file_name.ends_with(".tres"):
+			var modifier : ModifierData = load("res://data/modifiers/" + file_name)
+			all_modifiers.append(modifier)
+			modifiers_by_name[modifier.modifier_name] = modifier
+		
+		file_name = dir.get_next()
 	
-	all_modifiers = json.data
+	dir.list_dir_end()
 
 
 # =========================
 # ACTIVATION
 # =========================
 
-func activate_modifier_by_name(name):
-	for modifier in all_modifiers:
-		if modifier.name == name:
-			active_modifiers.append(modifier)
-			print("Activated modifier:", name)
-			return
+func activate_modifier_by_name(name : String):
+	if not modifiers_by_name.has(name):
+		print("Modifier not found:", name)
+		return
 	
-	print("Modifier not found:", name)
-
-
+	active_modifiers.append(modifiers_by_name[name])
+	print("Activated modifier:", name)
 func get_active_modifiers():
 	return active_modifiers
 
@@ -66,17 +86,13 @@ func get_active_modifiers():
 
 func pre_board_build(board):
 	for modifier in active_modifiers:
-		if modifier.has("phase") and modifier.phase == "pre_build":
-			if modifier.has("effect"):
-				apply_effect(board, modifier.effect)
-
+		if modifier.phase == "pre_build" and modifier.effect != null:
+			apply_effect(board, modifier.effect)
 
 func post_board_build(board):
 	for modifier in active_modifiers:
-		if modifier.has("phase") and modifier.phase == "post_build":
-			if modifier.has("effect"):
-				apply_effect(board, modifier.effect)
-
+		if modifier.phase == "post_build" and modifier.effect != null:
+			apply_effect(board, modifier.effect)
 
 # =========================
 # RUNTIME PROCESSING

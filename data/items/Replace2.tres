@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://7333f2rlvxmu"]
+
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="1_s08mv"]
+
+[resource]
+script = ExtResource("1_s08mv")
+item_name = "Replace 2"
+description = "After every Green Square Replace 2"
+triggers = [{
+"event": "pattern_triggered",
+"pattern": "2x2 Green Square"
+}]
+keywords = {
+"Replace": 2
+}

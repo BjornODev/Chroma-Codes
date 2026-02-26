@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://b2wqm54565who"]
+
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="1_h3i16"]
+
+[resource]
+script = ExtResource("1_h3i16")
+item_name = "Duplicate Surge"
+description = "After this pattern is duplicated HEAL 1"
+triggers = [{
+"event": "pattern_triggered",
+"pattern": "Duplicate"
+}]
+keywords = {
+"GainHealth": 1
+}

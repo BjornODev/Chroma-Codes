@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ModifierData" load_steps=2 format=3 uid="uid://twphdclitrea"]
+
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_4blju"]
+
+[resource]
+script = ExtResource("1_4blju")
+modifier_name = "Yellow Spike"
+trigger = {
+"yellow": 6
+}
+effect = {
+"sudden_spike": 2
+}

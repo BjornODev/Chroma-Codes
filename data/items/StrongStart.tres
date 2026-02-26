@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://ccq7ufjahav4l"]
+
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="1_h3i16"]
+
+[resource]
+script = ExtResource("1_h3i16")
+item_name = "Strong Start"
+description = "Play all Yellow into the first row to CLEAR 3"
+triggers = [{
+"event": "pattern_triggered",
+"pattern": "All Yellow Start"
+}]
+keywords = {
+"Clear": 3
+}

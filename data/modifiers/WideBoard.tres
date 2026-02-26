@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d13ox526evbvh"]
+
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_tp420"]
+
+[resource]
+script = ExtResource("1_tp420")
+modifier_name = "Wide Board"
+phase = "pre_build"
+effect = {
+"wide": 5
+}
