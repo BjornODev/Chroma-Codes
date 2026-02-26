@@ -28,23 +28,6 @@ func initialize():
 # LOAD MODIFIERS
 # =========================
 
-#func load_modifiers():
-#	var file = FileAccess.open("res://data/modifiers.json", FileAccess.READ)
-#	if file == null:
-#		push_error("Failed to load modifiers.json")
-#		return
-#	
-#	var content = file.get_as_text()
-#	file.close()
-#	
-#	var json = JSON.new()
-#	var error = json.parse(content)
-#	if error != OK:
-#		push_error("Modifier JSON parse error")
-#		return
-#	
-#	all_modifiers = json.data
-
 
 func load_modifiers():
 	all_modifiers.clear()
@@ -229,29 +212,72 @@ func spawn_traps(board, value):
 # RUNTIME SPIKE SPAWN
 # =========================
 
+#func spawn_spikes(board, amount):
+#	var slots = board.slot_lookup.values()
+#	slots.shuffle()
+#	
+#	var placed = 0
+#	
+#	print("Requested spikes:", amount)
+#	
+#	for slot in slots:
+#		if slot.peg_in_slot == null:
+#			var spike = preload("res://scenes/Spike.tscn").instantiate()
+#			var tween = create_tween()
+#			board.add_child(spike)
+#			
+#			spike.position = slot.position
+#			spike.sprite.scale = Vector2.ZERO
+#			tween.tween_property(spike.sprite, "scale", Vector2(0.15,0.15), 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+#			slot.peg_in_slot = spike
+#			slot.set_glow_red()
+#			spike.current_slot = slot
+#			
+#			placed += 1
+#			
+#			if placed >= amount:
+#			print("Placed spikes:", placed)
+#				break
+
+
 func spawn_spikes(board, amount):
-	var slots = board.slot_lookup.values()
-	slots.shuffle()
-	
-	var placed = 0
-	
-	for slot in slots:
+
+	var empty_slots := []
+
+	for slot in board.slot_lookup.values():
 		if slot.peg_in_slot == null:
-			var spike = preload("res://scenes/Spike.tscn").instantiate()
-			var tween = create_tween()
-			board.add_child(spike)
-			
-			spike.position = slot.position
-			spike.sprite.scale = Vector2.ZERO
-			tween.tween_property(spike.sprite, "scale", Vector2(0.15,0.15), 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-			slot.peg_in_slot = spike
-			slot.set_glow_red()
-			spike.current_slot = slot
-			
-			placed += 1
-			
-			if placed >= amount:
-				break
+			empty_slots.append(slot)
+
+	if empty_slots.is_empty():
+		print("No empty slots available for spikes.")
+		return
+
+	empty_slots.shuffle()
+
+	var placed := 0
+
+	for slot in empty_slots:
+
+		var spike = preload("res://scenes/Spike.tscn").instantiate()
+		board.add_child(spike)
+
+		spike.position = slot.position
+		spike.sprite.scale = Vector2.ZERO
+
+		var tween = board.create_tween()
+		tween.tween_property(spike.sprite, "scale", Vector2(0.15,0.15), 0.2)\
+			.set_trans(Tween.TRANS_CUBIC)\
+			.set_ease(Tween.EASE_IN_OUT)
+
+		slot.peg_in_slot = spike
+		slot.set_glow_red()
+		spike.current_slot = slot
+
+		placed += 1
+		if placed >= amount:
+			break
+
+	print("Spikes placed:", placed, "/", amount)
 
 
 func spawn_goop_from_black(board, black_count):

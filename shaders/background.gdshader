@@ -34,5 +34,5 @@ void fragment()
 		COLOR = vec4(texture(palette, vec2(palette_swap, 0)).rgb, tex.a);
 	}
 	else COLOR = tex;
-	COLOR = mix(vec4(0.0), COLOR, float(int(UV.y * screen_height) % 2));
+	/* COLOR = mix(vec4(0.0), COLOR, float(int(UV.y * screen_height) % 2)); */
 }

@@ -46,7 +46,7 @@ func _ready():
 	health_text.initialize()
 	health_text.change_health(player_health)
 	
-	$"../BackgroundLayer".change_background(randi() % 4)
+	$"../BackgroundLayer".change_background(randi() % 5)
 	
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)

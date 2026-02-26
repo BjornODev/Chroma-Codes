@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=26 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://delxlc11h4gkr" path="res://assets/button_unpressed.svg" id="17_bb450"]
 [ext_resource type="Texture2D" uid="uid://5ee8tiys5wfv" path="res://assets/button_pressed.svg" id="18_nfivy"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="19_nfivy"]
+[ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="21_1iba3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
 shader = ExtResource("2_1iba3")
@@ -108,6 +109,7 @@ offset_top = -232.0
 offset_right = 2218.6665
 offset_bottom = 1248.0
 texture = ExtResource("3_yxlcp")
+metadata/_edit_lock_ = true
 
 [node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
 visible = false
@@ -123,7 +125,6 @@ script = ExtResource("2_3p2gp")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
-soft_row_limit = 3
 player_health = 10
 
 [node name="SafeBoardBG" type="NinePatchRect" parent="BoardManager"]
@@ -242,6 +243,38 @@ text = "Confirm"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+
+[node name="HUDRoot" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemsHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+theme_override_constants/separation = 20
+
+[node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1820.0
+offset_top = 20.0
+offset_right = 1860.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="PanelContainer" parent="HUDLayer" instance=ExtResource("21_1iba3")]
+visible = false
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]

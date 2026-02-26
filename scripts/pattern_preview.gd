@@ -5,6 +5,9 @@ var peg_scene = preload("res://scenes/display_peg.tscn")
 func _ready() -> void:
 	for child in get_children():
 		child.queue_free()
+	set_anchors_preset(Control.PRESET_TOP_LEFT)
+	size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 
 #func display_pattern(pattern : PatternData):
 #	columns = pattern.width
@@ -39,6 +42,7 @@ func display_pattern(pattern : PatternData):
 			add_child(cell)
 			cell.custom_minimum_size = Vector2(50,50)
 			cell.modulate = get_color_from_id(pattern.grid[0][0])
+		update_minimum_size()
 		return
 
 	# Normal grid pattern
@@ -57,6 +61,8 @@ func display_pattern(pattern : PatternData):
 #				cell.modulate = Color(0,0,0,0)
 #			else:
 			cell.modulate = get_color_from_id(value)
+	update_minimum_size()
+
 
 func get_color_from_id(id):
 	match id:

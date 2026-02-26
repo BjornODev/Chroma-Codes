@@ -5,11 +5,11 @@
 
 [resource]
 script = ExtResource("1_n85vf")
-modifier_name = "Small Yellow Spike"
+modifier_name = "Yellow Spike"
 icon = ExtResource("1_84wtc")
 trigger = {
-"yellow": 4
+"yellow": 6
 }
 effect = {
-"sudden_spike": 2
+"sudden_spike": 4
 }
