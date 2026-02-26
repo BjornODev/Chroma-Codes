@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://cauxwn6vnpopq"]
+
+[ext_resource type="Script" uid="uid://k7dm7b5gbqqt" path="res://scripts/tooltip_panel.gd" id="1_4kqj3"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="1_7ldkd"]
+
+[sub_resource type="Theme" id="Theme_1wanm"]
+default_font = ExtResource("1_7ldkd")
+default_font_size = 50
+
+[node name="PanelContainer" type="PanelContainer"]
+offset_right = 496.0
+offset_bottom = 165.0
+script = ExtResource("1_4kqj3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_1wanm")
+text = "Label"
+horizontal_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_1wanm")
+text = "Label"
+
+[node name="PatternPreviewContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="EffectLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_1wanm")
+text = "Label"

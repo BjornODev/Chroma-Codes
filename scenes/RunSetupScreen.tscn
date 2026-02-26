@@ -1,0 +1,87 @@
+[gd_scene load_steps=6 format=3 uid="uid://c04vg4ejpu8yn"]
+
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="1_c1uwh"]
+[ext_resource type="Script" uid="uid://dvm6ics6ju76w" path="res://scripts/run_setup_screen.gd" id="1_p0svl"]
+[ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="3_p0svl"]
+
+[sub_resource type="Theme" id="Theme_l6qi6"]
+default_font = ExtResource("1_c1uwh")
+default_font_size = 75
+
+[sub_resource type="Theme" id="Theme_p0svl"]
+default_font = ExtResource("1_c1uwh")
+default_font_size = 75
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p0svl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_l6qi6")
+text = "Modifier and Item Selector"
+horizontal_alignment = 1
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+layout_mode = 2
+split_offset = 960
+dragging_enabled = false
+
+[node name="ItemsPanel" type="PanelContainer" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+
+[node name="ItemsGrid" type="GridContainer" parent="VBoxContainer/HSplitContainer/ItemsPanel"]
+layout_mode = 2
+columns = 10
+
+[node name="ModifiersPanel" type="PanelContainer" parent="VBoxContainer/HSplitContainer"]
+layout_mode = 2
+
+[node name="ModifiersGrid" type="GridContainer" parent="VBoxContainer/HSplitContainer/ModifiersPanel"]
+layout_mode = 2
+columns = 10
+
+[node name="PanelContainer" parent="." instance=ExtResource("3_p0svl")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.0
+offset_top = -82.5
+offset_right = 74.0
+offset_bottom = 82.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartRunButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -380.0
+offset_top = -96.0
+offset_right = 380.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_p0svl")
+text = "Enter Board"
+
+[connection signal="pressed" from="StartRunButton" to="." method="_on_StartRunButton_pressed"]

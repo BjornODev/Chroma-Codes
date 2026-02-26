@@ -11,10 +11,21 @@ config_version=5
 [application]
 
 config/name="Mastermind Roguelite"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/RunSetupScreen.tscn"
 config/features=PackedStringArray("4.5", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout=""
+
+[autoload]
+
+ItemManager="*res://scripts/item_manager.gd"
+BoardModifierEngine="*res://scripts/board_modifier_engine.gd"
+PatternEngine="*res://scripts/pattern_engine.gd"
+PopUpText="*res://scenes/PopUpText.tscn"
 
 [display]
 
@@ -35,23 +46,24 @@ project/editorState=[{
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 13,
+"column": 26,
+"current": true,
+"line": 30,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 1,
 "path": "res://scripts/peg_data.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 45,
+"line": 0,
 "path": "res://data/patterns.json",
 "type": "file"
 }, {
-"column": 0,
-"line": 20,
+"column": 34,
+"line": 102,
 "path": "res://scripts/item_manager.gd",
 "type": "file"
 }, {
@@ -70,13 +82,13 @@ project/editorState=[{
 "path": "res://scripts/snap_zone.gd",
 "type": "file"
 }, {
-"column": 21,
+"column": 0,
 "line": 19,
 "path": "res://data/modifiers.json",
 "type": "file"
 }, {
-"column": 46,
-"line": 19,
+"column": 13,
+"line": 15,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
@@ -100,9 +112,8 @@ project/editorState=[{
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
-"column": 38,
-"current": true,
-"line": 454,
+"column": 43,
+"line": 31,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -131,8 +142,8 @@ project/editorState=[{
 "path": "res://scripts/background_layer.gd",
 "type": "file"
 }, {
-"column": 48,
-"line": 25,
+"column": 1,
+"line": 7,
 "path": "res://scripts/main.gd",
 "type": "file"
 }, {
@@ -141,9 +152,34 @@ project/editorState=[{
 "path": "res://data/resources/item_data.gd",
 "type": "file"
 }, {
-"column": 16,
-"line": 1,
+"column": 0,
+"line": 4,
 "path": "res://data/resources/modifiers_data.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 8,
+"path": "res://data/resources/pattern_data.gd",
+"type": "file"
+}, {
+"column": 55,
+"line": 31,
+"path": "res://scripts/pattern_preview.gd",
+"type": "file"
+}, {
+"column": 33,
+"line": 4,
+"path": "res://scripts/selectable_icon.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/tooltip_panel.gd",
+"type": "file"
+}, {
+"column": 14,
+"line": 12,
+"path": "res://scripts/run_setup_screen.gd",
 "type": "file"
 }]
 project/breakpoints={

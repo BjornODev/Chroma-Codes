@@ -6,18 +6,16 @@ var items_by_name := {}
 
 var turn_event_queue = []
 var is_processing_turn_events = false
-var peg_manager_reference
 
-@onready var popup_manager = $"../PopUpText"
+@onready var popup_manager = PopUpText
 
 func _ready():
 	load_items()
-	peg_manager_reference = $"../PegManager"
 	# TEMP: give player first item
-	if all_items.size() > 0:
+#	if all_items.size() > 0:
 #		player_items.append(all_items[0])
 #		player_items.append(all_items[2])
-		give_item_by_name("Replace 2")
+#		give_item_by_name("Replace 2")
 
 
 func load_items():
@@ -94,13 +92,15 @@ func apply_item_effects(item, payload):
 				popup_manager.show_popup(
 					"[center][b][color=#ffaa00]REPLACE %d[/color][/b][/center]" % value
 				)
-				peg_manager_reference.start_replace_mode(value)
+				var peg_manager = get_tree().current_scene.get_node("PegManager")
+				peg_manager.start_replace_mode(value)
 		
 			"Clear":
 				popup_manager.show_popup(
 					"[center][b][color=#ff4444]CLEAR %d[/color][/b][/center]" % value
 				)
-				peg_manager_reference.start_clear(value)
+				var peg_manager = get_tree().current_scene.get_node("PegManager")
+				peg_manager.start_clear(value)
 
 
 func give_item_by_name(name : String):

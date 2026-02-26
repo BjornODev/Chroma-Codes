@@ -1,10 +1,12 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cvni3unq48lju"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://cvni3unq48lju"]
 
 [ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_2bq50"]
+[ext_resource type="Texture2D" uid="uid://drnvu567erotb" path="res://assets/mod_icons/nails 2.svg" id="1_how8p"]
 
 [resource]
 script = ExtResource("1_2bq50")
 modifier_name = "Heavy Trapped Board"
+icon = ExtResource("1_how8p")
 phase = "post_build"
 effect = {
 "trapped": 4

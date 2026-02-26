@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://7333f2rlvxmu"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://7333f2rlvxmu"]
 
-[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="1_s08mv"]
+[ext_resource type="Texture2D" uid="uid://5ljfe2evmbwl" path="res://assets/item_icons/tabletop-players.svg" id="1_qyo8f"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_7x0f5"]
 
 [resource]
-script = ExtResource("1_s08mv")
+script = ExtResource("2_7x0f5")
 item_name = "Replace 2"
 description = "After every Green Square Replace 2"
+icon = ExtResource("1_qyo8f")
 triggers = [{
 "event": "pattern_triggered",
 "pattern": "2x2 Green Square"

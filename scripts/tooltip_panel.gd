@@ -1,0 +1,58 @@
+extends PanelContainer
+
+@onready var name_label = $VBoxContainer/NameLabel
+@onready var preview_container = $VBoxContainer/PatternPreviewContainer
+@onready var description_label = $VBoxContainer/DescriptionLabel
+@onready var effect_label = $VBoxContainer/EffectLabel
+
+
+func _ready():
+	print("Tooltip ready")
+
+func display_item(item : ItemData):
+
+	name_label.text = item.item_name
+	description_label.text = item.description
+	
+	clear_preview()
+	# Look for pattern trigger
+	for trigger in item.triggers:
+		if trigger.has("pattern"):
+			var pattern_name = trigger["pattern"]
+
+			var pattern = PatternEngine.get_pattern_by_name(pattern_name)
+			if pattern:
+				var preview = preload("res://scenes/PatternPreview.tscn").instantiate()
+				preview_container.add_child(preview)
+				preview.display_pattern(pattern)
+			break  # Only show first pattern
+
+	effect_label.text = build_effect_text(item.keywords)
+
+func display_modifier(modifier):
+
+	name_label.text = modifier.modifier_name
+	description_label.text = ""
+	
+	clear_preview()
+	
+	var trigger_text = ""
+	if modifier.phase != "":
+		trigger_text += "Phase: " + modifier.phase + "\n"
+	
+	if modifier.trigger.size() > 0:
+		trigger_text += "Trigger:\n"
+		for key in modifier.trigger.keys():
+			trigger_text += "- %s: %d\n" % [key, modifier.trigger[key]]
+	
+	effect_label.text = trigger_text + build_effect_text(modifier.effect)
+
+func clear_preview():
+	for child in preview_container.get_children():
+		child.queue_free()
+
+func build_effect_text(effect_dict):
+	var text = "Effects:\n"
+	for key in effect_dict.keys():
+		text += "- %s %d\n" % [key, effect_dict[key]]
+	return text

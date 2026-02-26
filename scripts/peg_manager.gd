@@ -27,8 +27,8 @@ func _ready() -> void:
 	player_hand_reference = $"../PlayerHand"
 	peg_reference = preload("res://scenes/Phys_Peg.tscn")
 	board_reference = $"../BoardManager"
-	pattern_engine = $"../PatternEngine"
-	item_system = $"../ItemManager"
+	pattern_engine = PatternEngine
+	item_system = ItemManager
 	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
 
 

@@ -5,6 +5,8 @@ func _ready() -> void:
 	var bg_mat = $BackgroundLayer/ColorRect.material
 	bg_mat.set_shader_parameter("random_seed", randf() * 1000.0)
 	randomize_background(bg_mat)
+#	print("Active Items:", ItemManager.player_items)
+#	print("Active Mods:", BoardModifierEngine.active_modifiers)
 
 func randomize_background(mat):
 	generate_opposite_palette(mat)

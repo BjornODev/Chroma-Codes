@@ -1,10 +1,12 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://clyxhxerfyevg"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://clyxhxerfyevg"]
 
-[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_4blju"]
+[ext_resource type="Texture2D" uid="uid://bnqjvyrx2ruo3" path="res://assets/mod_icons/nailed-head 2.svg" id="1_6py17"]
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_ridwu"]
 
 [resource]
-script = ExtResource("1_4blju")
+script = ExtResource("1_ridwu")
 modifier_name = "Orange Escalation"
+icon = ExtResource("1_6py17")
 trigger = {
 "orange": 8
 }

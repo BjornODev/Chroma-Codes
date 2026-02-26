@@ -11,7 +11,6 @@ extends Node2D
 var in_game = true
 
 @export var visible_row_window := 6
-@onready var modifier_engine = $"../BoardModifierEngine"
 @onready var damage_overlay = $DamageOverlay
 @onready var bg = $"../BackgroundLayer/ColorRect"
 
@@ -30,8 +29,8 @@ var slot_lookup = {}
 var rows_generated := 0
 var scroll_offset := 0.0
 
-@onready var pattern_engine = $"../PatternEngine"
-@onready var item_system = $"../ItemManager"
+@onready var pattern_engine = PatternEngine
+@onready var item_system = ItemManager
 
 
 # =========================
@@ -42,8 +41,8 @@ func _ready():
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
 	peg_manager_reference = $"../PegManager"
-	modifier_engine.initialize()
-	modifier_engine.pre_board_build(self)
+	print("Items at board start:", item_system.player_items)
+	BoardModifierEngine.pre_board_build(self)
 	health_text.initialize()
 	health_text.change_health(player_health)
 	
@@ -58,7 +57,7 @@ func _ready():
 	
 	update_safe_background()
 	
-	modifier_engine.post_board_build(self)
+	BoardModifierEngine.post_board_build(self)
 
 
 # =========================
@@ -421,7 +420,7 @@ func submit_guess():
 		return
 		
 	if in_game:
-		modifier_engine.process_row_submission(self, guess, result)
+		BoardModifierEngine.process_row_submission(self, guess, result)
 	
 	# Emit row submitted event
 	item_system.emit_game_event("row_submitted", {
@@ -452,7 +451,7 @@ func submit_guess():
 	peg_manager_reference.cur_row += 1
 
 	# Collapse BEFORE spawning new danger rows
-	if peg_manager_reference.cur_row >= 6:
+	if peg_manager_reference.cur_row >= 11:
 		await collapse_bottom_rows()
 		
 	
@@ -547,7 +546,7 @@ func re_evaluate_row(row_index):
 				guess.append(0)
 
 	var result = evaluate_guess(guess)
-	modifier_engine.process_row_submission(self, guess, result)
+	BoardModifierEngine.process_row_submission(self, guess, result)
 	
 	if row_index >= board_state.size():
 		return

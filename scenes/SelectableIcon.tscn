@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://6ycitbu6by6e"]
+
+[ext_resource type="Script" uid="uid://bq7j1g4hrdtwn" path="res://scripts/selectable_icon.gd" id="1_jto20"]
+
+[node name="PanelContainer" type="PanelContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_jto20")
+
+[node name="Icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+expand_mode = 1
+
+[node name="SelectionOverlay" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.46273804, 0.73332214, 0.25097656, 0.5991849)
+
+[node name="HoverGlow" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.8039093, 0.90979004, 0.7097931, 0.6917382)
+
+[connection signal="mouse_entered" from="Icon" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Icon" to="." method="_on_mouse_exited"]

@@ -12,13 +12,16 @@ var counters := {}   # keyword counters
 # INITIALIZATION
 # =========================
 
+func _ready() -> void:
+	initialize()
+
 func initialize():
 	load_modifiers()
 	
 	# Example: auto-activate first modifier for testing
-	if all_modifiers.size() > 0:
-#		activate_modifier_by_name("Very Wide Board")
-		activate_modifier_by_name("Goop Board")
+#	if all_modifiers.size() > 0:
+##		activate_modifier_by_name("Very Wide Board")
+#		activate_modifier_by_name("Goop Board")
 
 
 # =========================

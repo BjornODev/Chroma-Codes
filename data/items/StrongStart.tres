@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3 uid="uid://ccq7ufjahav4l"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://ccq7ufjahav4l"]
 
 [ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="1_h3i16"]
+[ext_resource type="Texture2D" uid="uid://b4neorel7veww" path="res://assets/item_icons/aura.svg" id="1_mxveb"]
 
 [resource]
 script = ExtResource("1_h3i16")
 item_name = "Strong Start"
 description = "Play all Yellow into the first row to CLEAR 3"
+icon = ExtResource("1_mxveb")
 triggers = [{
 "event": "pattern_triggered",
 "pattern": "All Yellow Start"
