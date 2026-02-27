@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://cit6vm7irhvbk"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_ifnhl"]
+
+[resource]
+script = ExtResource("1_ifnhl")
+pattern_name = "Red Diamond"
+width = 3
+height = 3
+grid = [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
+metadata/_custom_type_script = "uid://hy1bu6e7fi6a"

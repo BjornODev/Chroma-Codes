@@ -1,7 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=23 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
-[ext_resource type="PackedScene" uid="uid://bv23udtflu1si" path="res://scenes/Board.tscn" id="2_0bbpv"]
 [ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="2_1iba3"]
 [ext_resource type="Script" uid="uid://7oxqnrpufvdf" path="res://scripts/secret_code_display.gd" id="2_3p2gp"]
 [ext_resource type="Script" uid="uid://b6c4v3cyqa4pw" path="res://scripts/peg_manager.gd" id="2_c01mt"]
@@ -11,9 +10,7 @@
 [ext_resource type="Script" uid="uid://ctmucy8cb87s7" path="res://scripts/input_manager.gd" id="4_jlsqs"]
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/player_hand.gd" id="4_nxtc6"]
 [ext_resource type="Shader" uid="uid://df3pi3khvsebn" path="res://shaders/lava_lamp.gdshader" id="5_2ofn6"]
-[ext_resource type="PackedScene" uid="uid://cbbuna4ye86q4" path="res://scenes/Slot.tscn" id="6_nxtc6"]
 [ext_resource type="Script" uid="uid://duaojaojbvdrq" path="res://scripts/board_manager.gd" id="6_q8u5g"]
-[ext_resource type="PackedScene" uid="uid://djatsfpdjxhqw" path="res://scenes/Palette.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://bjcxyo7gyqgoc" path="res://scenes/PopUpText.tscn" id="10_mwfav"]
 [ext_resource type="PackedScene" uid="uid://oc11oeqiu24y" path="res://scenes/HealthText.tscn" id="12_cvmbd"]
 [ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="13_cvmbd"]
@@ -201,35 +198,6 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = -2.0
-offset_bottom = 2.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-
-[node name="Board" parent="VBoxContainer/CenterContainer" instance=ExtResource("2_0bbpv")]
-layout_mode = 2
-slot_scene = ExtResource("6_nxtc6")
-
-[node name="Palette" parent="VBoxContainer" instance=ExtResource("7_nxtc6")]
-layout_mode = 2
-
-[node name="Submit Button" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Submit Guess"
-
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
 offset_left = -88.0
 offset_top = 392.0
@@ -277,4 +245,3 @@ visible = false
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]
-[connection signal="pressed" from="VBoxContainer/Submit Button" to="VBoxContainer/CenterContainer/Board" method="_on_pressed"]

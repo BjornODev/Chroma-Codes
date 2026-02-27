@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dsqb6rkauin1s" path="res://scripts/peg_stacks.gd" id="1_sg4uu"]
 [ext_resource type="Shader" uid="uid://eq3ddakaeydg" path="res://shaders/peg_outline.gdshader" id="2_ollbn"]
 [ext_resource type="PackedScene" uid="uid://bxhfhsxwlmjqq" path="res://scenes/Phys_Peg.tscn" id="2_ts8cq"]
-[ext_resource type="Texture2D" uid="uid://dgftl7gndgv2d" path="res://assets/peg_out.svg" id="3_k4max"]
+[ext_resource type="Texture2D" uid="uid://dgftl7gndgv2d" path="res://assets/pegs/peg_out.svg" id="3_k4max"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0nd3c"]
 shader = ExtResource("2_ollbn")

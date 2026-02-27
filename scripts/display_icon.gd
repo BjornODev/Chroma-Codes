@@ -2,8 +2,10 @@ extends PanelContainer
 
 signal hovered(resource_data)
 signal hovered_off(resource_data)
+signal modifier_clicked(resource_data)
 
 var data
+
 
 @onready var hover_glow = $HoverGlow
 
@@ -12,9 +14,16 @@ func setup(resource_data):
 	$Icon.texture = data.icon
 	hover_glow.visible = false
 
+
+func _gui_input(event):
+	if event is InputEventMouseButton and event.pressed:
+		emit_signal("modifier_clicked", data)
+
+
 func _on_mouse_entered():
 	hover_glow.visible = true
 	emit_signal("hovered", data)
+
 
 func _on_mouse_exited():
 	hover_glow.visible = false

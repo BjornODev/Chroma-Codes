@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dmumbbbqlalih"]
 
-[ext_resource type="Texture2D" uid="uid://dhhfa8i5mufyw" path="res://assets/peg_down.svg" id="1_3fep1"]
+[ext_resource type="Texture2D" uid="uid://dhhfa8i5mufyw" path="res://assets/pegs/peg_down.svg" id="1_3fep1"]
 
 [node name="DisplayPeg" type="TextureRect"]
 custom_minimum_size = Vector2(100, 100)

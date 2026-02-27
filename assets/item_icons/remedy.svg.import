@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ddftcivdv6h4r"
-path="res://.godot/imported/peg_down_goop.svg-753fb0ee4495064a144e1eabdc1d8dee.ctex"
+uid="uid://b5ht02ih168t3"
+path="res://.godot/imported/remedy.svg-bf1af98598625ad10523c94582ae95e8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/peg_down_goop.svg"
-dest_files=["res://.godot/imported/peg_down_goop.svg-753fb0ee4495064a144e1eabdc1d8dee.ctex"]
+source_file="res://assets/item_icons/remedy.svg"
+dest_files=["res://.godot/imported/remedy.svg-bf1af98598625ad10523c94582ae95e8.ctex"]
 
 [params]
 

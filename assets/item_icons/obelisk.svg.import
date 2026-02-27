@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhhfa8i5mufyw"
-path="res://.godot/imported/peg_down.svg-8a0a011899f613ec1f7ce3ce1d9db1fc.ctex"
+uid="uid://bwxrfoiyjv034"
+path="res://.godot/imported/obelisk.svg-1de21c5560b1eb8a48740113eff61ae3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/peg_down.svg"
-dest_files=["res://.godot/imported/peg_down.svg-8a0a011899f613ec1f7ce3ce1d9db1fc.ctex"]
+source_file="res://assets/item_icons/obelisk.svg"
+dest_files=["res://.godot/imported/obelisk.svg-1de21c5560b1eb8a48740113eff61ae3.ctex"]
 
 [params]
 

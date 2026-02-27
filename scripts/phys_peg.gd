@@ -73,8 +73,8 @@ func setup_visuals():
 	if is_special:
 		modifier = "_" + special_type
 	
-	peg_down_reference = load("res://assets/peg_down" + modifier + ".svg")
-	peg_out_reference = load("res://assets/peg_out" + modifier + ".svg")
+	peg_down_reference = load("res://assets/pegs/peg_down" + modifier + ".svg")
+	peg_out_reference = load("res://assets/pegs/peg_out" + modifier + ".svg")
 	
 	if peg_sprite2D:
 		peg_sprite2D.texture = peg_out_reference

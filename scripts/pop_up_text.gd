@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @onready var label = $RichTextLabel
+@onready var mult_label = $MultiplierText
 
 var queue := []
 var showing := false
@@ -47,3 +48,7 @@ func _animate_popup(text: String):
 
 	await fade.finished
 	label.visible = false
+
+
+func mult_increase(amount):
+	mult_label.text = "Multiplier: " + str(amount) + "x"

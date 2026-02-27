@@ -57,10 +57,10 @@ func display_pattern(pattern : PatternData):
 			add_child(cell)
 			cell.custom_minimum_size = Vector2(50,50)
 
-#			if value == 0:
-#				cell.modulate = Color(0,0,0,0)
-#			else:
-			cell.modulate = get_color_from_id(value)
+			if value == 0:
+				cell.modulate = Color(0,0,0,0)
+			else:
+				cell.modulate = get_color_from_id(value)
 	update_minimum_size()
 
 

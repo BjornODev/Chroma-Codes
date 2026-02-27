@@ -406,6 +406,12 @@ func submit_guess():
 
 	var result = evaluate_guess(guess)
 	
+
+	for peg in guess:
+		if peg == 7:
+			apply_heal(1)
+
+
 		# Apply soft limit damage
 	if row_index >= soft_row_limit:
 		apply_damage(damage_per_row)
@@ -416,6 +422,8 @@ func submit_guess():
 			child.show_results(result[0], result[1])
 	
 	if result[0] == columns:
+		BoardModifierEngine.disabled_modifiers_this_round.clear()
+		BoardModifierEngine.disable_mode = false
 		for child in $"../SecretCodeDisplay".get_children():
 			child.reveal()
 		in_game = false
@@ -445,13 +453,14 @@ func submit_guess():
 	)
 
 	for p in triggered:
+    # Always emit event
+		item_system.emit_game_event("pattern_triggered", {
+			"pattern_name": p.name,
+			"positions": p.positions
+		})
+	    # Only show visuals if an item actually responded
 		if item_system.has_item_trigger_for_pattern(p.name):
 			spawn_pattern_markers(p.positions)
-	
-			item_system.emit_game_event("pattern_triggered", {
-				"pattern_name": p.name,
-				"positions": p.positions
-			})
 	item_system.process_turn_events()
 	
 	
@@ -553,7 +562,27 @@ func re_evaluate_row(row_index):
 				guess.append(0)
 
 	var result = evaluate_guess(guess)
+	
+	for peg in guess:
+		if peg == 7:
+			apply_heal(1)
+
+
+	
 	BoardModifierEngine.process_row_submission(self, guess, result)
+	
+	if result[0] == columns:
+		BoardModifierEngine.disabled_modifiers_this_round.clear()
+		BoardModifierEngine.disable_mode = false
+		for child in $"../SecretCodeDisplay".get_children():
+			child.reveal()
+		in_game = false
+		await handle_goop_explosion()
+		if player_health > 0:
+			popup_manager.show_popup(
+						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
+					)
+		return
 	
 	if row_index >= board_state.size():
 		return
@@ -648,6 +677,15 @@ func generate_code():
 		secret_code.append(randi_range(1, 6))
 	print(secret_code)
 
+
+func apply_heal(amount):
+	player_health += amount
+	print("Healed:", amount)
+	health_text.change_health(player_health)
+
+	popup_manager.show_popup(
+		"[center][b][color=#ED7117]+%d HEALTH[/color][/b][/center]" % amount
+	)
 
 
 func _on_pressed() -> void:

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://b5mnfa1i50hcr"]
+
+[ext_resource type="Texture2D" uid="uid://b5ht02ih168t3" path="res://assets/item_icons/remedy.svg" id="1_4u64a"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_1vroo"]
+
+[resource]
+script = ExtResource("2_1vroo")
+item_name = "Take the L"
+description = "Play an orange L to spawn 1 healing peg"
+icon = ExtResource("1_4u64a")
+triggers = [{
+"event": "pattern_triggered",
+"pattern": "2x2 Orange L"
+}]
+keywords = {
+"CreateHealing": 1
+}

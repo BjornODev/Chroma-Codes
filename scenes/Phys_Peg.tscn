@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bxhfhsxwlmjqq"]
 
 [ext_resource type="Script" uid="uid://c3rktvftjw1b4" path="res://scripts/phys_peg.gd" id="1_b2cxf"]
-[ext_resource type="Texture2D" uid="uid://dgftl7gndgv2d" path="res://assets/peg_out.svg" id="2_b2cxf"]
+[ext_resource type="Texture2D" uid="uid://dgftl7gndgv2d" path="res://assets/pegs/peg_out.svg" id="2_b2cxf"]
 [ext_resource type="Shader" uid="uid://eq3ddakaeydg" path="res://shaders/peg_outline.gdshader" id="2_jvobn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0nd3c"]

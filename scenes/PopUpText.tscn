@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bjcxyo7gyqgoc"]
+[gd_scene load_steps=5 format=3 uid="uid://bjcxyo7gyqgoc"]
 
 [ext_resource type="Script" uid="uid://dohj0uoqoio1c" path="res://scripts/pop_up_text.gd" id="1_tyklc"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="2_oddxa"]
@@ -6,6 +6,10 @@
 [sub_resource type="Theme" id="Theme_1p0ck"]
 default_font = ExtResource("2_oddxa")
 default_font_size = 250
+
+[sub_resource type="Theme" id="Theme_oddxa"]
+default_font = ExtResource("2_oddxa")
+default_font_size = 50
 
 [node name="PopUpText" type="CanvasLayer"]
 script = ExtResource("1_tyklc")
@@ -27,3 +31,21 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MultiplierText" type="RichTextLabel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_oddxa")
+theme_override_colors/default_color = Color(0.59606934, 0.16470337, 0.73724365, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 20
+theme_override_fonts/bold_font = ExtResource("2_oddxa")
+text = "Multiplier: 1x"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 2

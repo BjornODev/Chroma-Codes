@@ -9,5 +9,5 @@ modifier_name = "Very Wide Board"
 icon = ExtResource("1_4t1oo")
 phase = "pre_build"
 effect = {
-"wide": 6
+"wide": 2
 }

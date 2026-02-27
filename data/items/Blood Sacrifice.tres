@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://bwhjh6h6j03i7"]
+
+[ext_resource type="Texture2D" uid="uid://b8tp86w35k8fh" path="res://assets/item_icons/sacrificial-dagger.svg" id="1_v305l"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_5072s"]
+
+[resource]
+script = ExtResource("2_5072s")
+item_name = " Blood Sacrifice"
+description = "Play a red diamond and pay 2 HP to disable 1 board modifier"
+icon = ExtResource("1_v305l")
+triggers = [{
+"event": "pattern_triggered",
+"pattern": "Red Diamond"
+}]
+keywords = {
+"Disable": 1
+}

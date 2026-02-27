@@ -7,6 +7,33 @@ var modifiers_by_name := {}
 
 var counters := {}   # keyword counters
 
+var disable_mode := false
+var disables_left := 0
+var disabled_modifiers_this_round := []
+
+func start_disable_mode(amount):
+	disable_mode = true
+	disables_left = amount
+#	disabled_modifiers_this_round.clear()
+	print("Disable mode started:", amount)
+
+
+func disable_modifier(modifier):
+	if not disable_mode:
+		return
+
+	if modifier in disabled_modifiers_this_round:
+		return
+
+	disabled_modifiers_this_round.append(modifier)
+	disables_left -= 1
+
+	print("Disabled:", modifier.modifier_name)
+
+	if disables_left <= 0:
+		disable_mode = false
+		print("Disable mode ended.")
+
 
 # =========================
 # INITIALIZATION
@@ -73,11 +100,15 @@ func get_active_modifiers():
 
 func pre_board_build(board):
 	for modifier in active_modifiers:
+		if modifier in disabled_modifiers_this_round:
+			continue
 		if modifier.phase == "pre_build" and modifier.effect != null:
 			apply_effect(board, modifier.effect)
 
 func post_board_build(board):
 	for modifier in active_modifiers:
+		if modifier in disabled_modifiers_this_round:
+			continue
 		if modifier.phase == "post_build" and modifier.effect != null:
 			apply_effect(board, modifier.effect)
 
@@ -94,6 +125,8 @@ func process_row_submission(board, guess, result):
 	var black_this_row = result[0]
 
 	for modifier in active_modifiers:
+		if modifier in disabled_modifiers_this_round:
+			continue
 		if modifier.effect != null and modifier.effect.has("goop"):
 			var multiplier = modifier.effect["goop"]
 			spawn_goop_from_black(board, black_this_row * multiplier)
@@ -114,6 +147,8 @@ func update_color_counters(guess):
 
 func check_triggers(board):
 	for modifier in active_modifiers:
+		if modifier in disabled_modifiers_this_round:
+			continue
 		if modifier.trigger == null:
 			continue
 		
@@ -179,7 +214,7 @@ func apply_effect(board, effect):
 
 func apply_wide(board, value):
 	print("Applying Wide:", value)
-	board.columns = value
+	board.columns += value
 
 
 # =========================

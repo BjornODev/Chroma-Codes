@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://defk3edu5ivp2"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_gyghn"]
+
+[resource]
+script = ExtResource("1_gyghn")
+pattern_name = "2x2 Orange L"
+width = 2
+height = 2
+grid = [[6, 0], [6, 6]]

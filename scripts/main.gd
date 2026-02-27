@@ -18,6 +18,7 @@ func populate_hud():
 		icon.connect("hovered", _on_hovered)
 		icon.connect("hovered_off", _on_hovered_off)
 
+
 	# Modifiers (top right)
 	for mod in BoardModifierEngine.active_modifiers:
 		var icon = preload("res://scenes/DisplayIcon.tscn").instantiate()
@@ -25,6 +26,23 @@ func populate_hud():
 		icon.setup(mod)
 		icon.connect("hovered", _on_hovered)
 		icon.connect("hovered_off", _on_hovered_off)
+		icon.connect("modifier_clicked", _on_modifier_clicked)
+
+
+func _on_modifier_clicked(modifier_data):
+
+	print("Clicked:", modifier_data.modifier_name)
+
+	if BoardModifierEngine.disable_mode:
+		BoardModifierEngine.disable_modifier(modifier_data)
+		hide_modifier_icon(modifier_data)
+
+
+func hide_modifier_icon(modifier_data):
+	for child in modifiers_hud.get_children():
+		if child.data == modifier_data:
+			child.queue_free()
+			break
 
 
 func _on_hovered(resource_data):
