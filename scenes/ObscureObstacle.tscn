@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://bsggivpm7nuhh"]
+
+[ext_resource type="Script" uid="uid://dcb2nhusbm1ue" path="res://scripts/obscure_obstacle.gd" id="1_txa7b"]
+[ext_resource type="Shader" uid="uid://cvih1xjh0ydgu" path="res://shaders/pulse_glow.gdshader" id="2_kb3fh"]
+[ext_resource type="Texture2D" uid="uid://duvbdmqkitnu2" path="res://assets/circle.svg" id="3_m4tkx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ybh5"]
+shader = ExtResource("2_kb3fh")
+shader_parameter/glow_color = Color(0.74508667, 0.21960449, 0.95292664, 1)
+shader_parameter/intensity = 1.0
+shader_parameter/spread = 1.9
+shader_parameter/pulse_speed = 1.0
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_txa7b")
+
+[node name="ShaderSprite" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_7ybh5")
+scale = Vector2(0.113229826, 0.113229826)
+texture = ExtResource("3_m4tkx")

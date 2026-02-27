@@ -6,12 +6,13 @@
 [resource]
 script = ExtResource("2_5072s")
 item_name = " Blood Sacrifice"
-description = "Play a red diamond and pay 2 HP to disable 1 board modifier"
+description = "Play a red diamond and pay 2 HP to Clear 4"
 icon = ExtResource("1_v305l")
-triggers = [{
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "Red Diamond"
-}]
+}])
 keywords = {
-"Disable": 1
+"Bleed": 2,
+"Clear": 4
 }

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://cp1gusu8l5d3a"]
+
+[ext_resource type="Texture2D" uid="uid://ckcmlc25ab220" path="res://assets/mod_icons/expander.svg" id="1_30ajo"]
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_2bbse"]
+
+[resource]
+script = ExtResource("2_2bbse")
+modifier_name = "Twice Short Board"
+icon = ExtResource("1_30ajo")
+phase = "pre_build"
+effect = {
+"short": 2
+}

@@ -25,6 +25,7 @@ var peg_manager_reference
 var secret_code = []
 var board_state = []
 var slot_lookup = {}
+var obscurities := 0
 
 var rows_generated := 0
 var scroll_offset := 0.0
@@ -396,7 +397,6 @@ func submit_guess():
 				return
 
 			guess.append(occupant.get_submission_value())
-
 	print("Guess:", guess)
 	if row_index >= board_state.size():
 		return
@@ -406,6 +406,7 @@ func submit_guess():
 
 	var result = evaluate_guess(guess)
 	
+	result = apply_obscure_logic(obscurities, result)
 
 	for peg in guess:
 		if peg == 7:
@@ -687,6 +688,21 @@ func apply_heal(amount):
 		"[center][b][color=#ED7117]+%d HEALTH[/color][/b][/center]" % amount
 	)
 
+
+func apply_obscure_logic(obscurities, result):
+	var black = result[0]
+	var white = result[1]
+	
+	for g in range(obscurities):
+#		PopUpText.show_popup(
+#			"[center][b][color=#BC13FE]OBSCURE?[/color][/b][/center]"
+#		)
+		if randf() < 0.5:
+			if black > 0:
+				black -= 1
+			elif white > 0:
+				white -= 1
+	return [black, white]
 
 func _on_pressed() -> void:
 	submit_guess()

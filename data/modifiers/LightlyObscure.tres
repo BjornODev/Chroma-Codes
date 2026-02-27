@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://mcdqb47bnmd7"]
+
+[ext_resource type="Texture2D" uid="uid://drnvu567erotb" path="res://assets/mod_icons/nails 2.svg" id="1_vkcmy"]
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_ccw71"]
+
+[resource]
+script = ExtResource("2_ccw71")
+modifier_name = "Lightly Obscure"
+icon = ExtResource("1_vkcmy")
+phase = "post_build"
+effect = {
+"obscure": 3
+}

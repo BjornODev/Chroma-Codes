@@ -4,9 +4,19 @@ extends Node2D
 @onready var items_hud = $HUDLayer/HUDRoot/ItemsHUD
 @onready var modifiers_hud = $HUDLayer/HUDRoot/ModifiersHUD
 @onready var tooltip = $HUDLayer/PanelContainer
+@onready var crt_filter = $CanvasLayer/CRTFilter
 
 func _ready():
 	populate_hud()
+
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("f"):
+		if crt_filter.visible == false:
+			crt_filter.visible = true
+		else:
+			crt_filter.visible = false
+
 
 func populate_hud():
 

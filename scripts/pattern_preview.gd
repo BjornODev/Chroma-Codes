@@ -9,27 +9,6 @@ func _ready() -> void:
 	size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 
-#func display_pattern(pattern : PatternData):
-#	columns = pattern.width
-#
-#    # clear previous
-#	for child in get_children():
-#		child.queue_free()
-#
-#	for y in range(pattern.height):
-#		for x in range(pattern.width):
-#
-#			var value = pattern.grid[y][x]
-#
-#			var cell = peg_scene.instantiate()
-#			add_child(cell)
-#			cell.custom_minimum_size = Vector2(50,50)
-#
-#			if value == 0:
-#				cell.modulate = Color(0,0,0,0)
-#			else:
-#				cell.modulate = get_color_from_id(value)
-
 
 func display_pattern(pattern : PatternData):
 	print("Display pattern called:", pattern.pattern_name)
@@ -48,7 +27,7 @@ func display_pattern(pattern : PatternData):
 	# Normal grid pattern
 	columns = pattern.width
 
-	for y in range(pattern.height):
+	for y in range(pattern.height - 1, -1, -1):
 		for x in range(pattern.width):
 
 			var value = pattern.grid[y][x]

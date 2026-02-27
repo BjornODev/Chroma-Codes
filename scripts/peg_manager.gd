@@ -105,12 +105,31 @@ func finish_drag():
 		
 		if other_peg and other_peg.get("is_spike"):
 			# Damage player
-			get_node("../BoardManager").apply_damage(1)
+			board_reference.apply_damage(1)
 			
 			# Remove spike
 			other_peg.queue_free()
 			peg_slot_found.peg_in_slot = null
 			peg_slot_found.set_glow_off()
+			other_peg = null
+			
+			if replace_mode:
+				replaces_left -= 1
+				peg_being_dragged.update_shader_value(16)
+				edited_rows[peg_slot_found.row] = true
+				
+				print("Replacements left:", replaces_left)
+				
+				if replaces_left <= 0:
+					print("No replacements left. Awaiting confirmation.")
+				
+		elif other_peg and other_peg.get("is_obscure"):
+			PopUpText.show_popup(
+				"[center][b][color=#BC13FE]OBSCURE?[/color][/b][/center]"
+			)
+			board_reference.obscurities += 1
+			other_peg.queue_free()
+			peg_slot_found.peg_in_slot = null
 			other_peg = null
 			
 			if replace_mode:

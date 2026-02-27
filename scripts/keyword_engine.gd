@@ -40,20 +40,19 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 			multiplier += base_value
 			popup_reference.mult_increase(multiplier)
 
-		"Disable":
+		"Bleed":
 			popup_reference.show_popup(
-				"[center][b][color=#FF073A]DISABLE %d[/color][/b][/center]" % final_value
+				"[center][b][color=#FF073A]BLEED %d[/color][/b][/center]" % final_value
 			)
-			var cost = final_value * 2
-			if board_reference.player_health >= cost:
-				board_reference.apply_damage(cost)
-				BoardModifierEngine.start_disable_mode(final_value * multiplier)
+			var cost = base_value
+#			if board_reference.player_health >= cost:
+			board_reference.apply_damage(cost)
+#				BoardModifierEngine.start_disable_mode(final_value * multiplier)
 
-		"CreateHealing":
+		"Create Healing":
 			popup_reference.show_popup(
 				"[center][b][color=#ED7117]+%d HEAL PEGS[/color][/b][/center]" % final_value
 			)
-		
 		
 			for i in range(final_value):
 				var heal_peg = preload("res://scenes/Phys_Peg.tscn").instantiate()

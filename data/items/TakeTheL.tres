@@ -8,10 +8,10 @@ script = ExtResource("2_1vroo")
 item_name = "Take the L"
 description = "Play an orange L to spawn 1 healing peg"
 icon = ExtResource("1_4u64a")
-triggers = [{
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "2x2 Orange L"
-}]
+}])
 keywords = {
-"CreateHealing": 1
+"Create Healing": 1
 }

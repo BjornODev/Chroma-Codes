@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://d13ox526evbvh"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://drwallunuvwte"]
 
-[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_tp420"]
-[ext_resource type="Texture2D" uid="uid://c4qreuh406nv4" path="res://assets/mod_icons/expander 2.svg" id="1_yjuq7"]
+[ext_resource type="Texture2D" uid="uid://c4qreuh406nv4" path="res://assets/mod_icons/expander 2.svg" id="1_xyogv"]
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_kwcdq"]
 
 [resource]
-script = ExtResource("1_tp420")
+script = ExtResource("2_kwcdq")
 modifier_name = "Wide Board"
-icon = ExtResource("1_yjuq7")
+icon = ExtResource("1_xyogv")
 phase = "pre_build"
 effect = {
 "wide": 1
