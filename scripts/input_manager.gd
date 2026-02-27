@@ -5,6 +5,7 @@ signal left_mouse_button_released
 
 const COLLISION_MASK_NORMAL_PEG = 1
 const COLLISION_MASK_PEG_SLOT = 2
+const COLLISION_MASK_CODE_PEG = 4
 
 var card_manager_reference
 var board_reference
@@ -44,4 +45,8 @@ func raycast_at_cursor():
 					var slot_found = result[0].collider.get_parent()
 					if slot_found:
 						card_manager_reference.destroy_obstacle(slot_found)
+			if result_collision_mask == COLLISION_MASK_CODE_PEG:
+					var code_peg_found = result[0].collider.get_parent()
+					if code_peg_found:
+						card_manager_reference.reveal_code(code_peg_found)
 	

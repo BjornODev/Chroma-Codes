@@ -18,6 +18,14 @@ func _ready():
 #		give_item_by_name("Replace 2")
 
 
+var board_reference
+var peg_manager_reference
+
+func set_board_context(board, peg_manager):
+	board_reference = board
+	peg_manager_reference = peg_manager
+
+
 func load_items():
 	all_items.clear()
 	items_by_name.clear()
@@ -80,28 +88,11 @@ func process_item_event(item, event_name, payload):
 
 func apply_item_effects(item, payload):
 	for keyword in item.keywords.keys():
-		var value = item.keywords[keyword]
-		
-		match keyword:
-			"GainHealth":
-				popup_manager.show_popup(
-					"[center][b][color=#00ff88]+%d HEALTH[/color][/b][/center]" % value
-				)
-		
-			"Replace":
-				popup_manager.show_popup(
-					"[center][b][color=#ffaa00]REPLACE %d[/color][/b][/center]" % value
-				)
-				var peg_manager = get_tree().current_scene.get_node("PegManager")
-				peg_manager.start_replace_mode(value)
-		
-			"Clear":
-				popup_manager.show_popup(
-					"[center][b][color=#ff4444]CLEAR %d[/color][/b][/center]" % value
-				)
-				var peg_manager = get_tree().current_scene.get_node("PegManager")
-				peg_manager.start_clear(value)
-
+		KeywordEngine.apply_keyword(
+			keyword,
+			item.keywords[keyword],
+			payload
+		)
 
 func give_item_by_name(name : String):
 	if not items_by_name.has(name):

@@ -8,6 +8,9 @@ var replace_mode := false
 var replaces_left := 0
 var edited_rows := {}
 
+var reveal_mode := false
+var reveals_left := 0
+
 var delete_mode := false
 var deletions_left := 0
 
@@ -30,7 +33,7 @@ func _ready() -> void:
 	pattern_engine = PatternEngine
 	item_system = ItemManager
 	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
-
+	start_reveal(2)
 
 func _process(delta: float) -> void:
 	if peg_being_dragged:
@@ -333,6 +336,18 @@ func start_clear(amount):
 	
 	print("Clear mode started clears: ", amount)
 
+
+func reveal_code(code_peg):
+	if reveal_mode == true:
+		if !code_peg.revealed:
+			code_peg.reveal()
+			reveals_left -= 1
+			if reveals_left <= 0:
+				reveal_mode = false
+
+func start_reveal(amount):
+	reveal_mode = true
+	reveals_left += amount
 
 func _on_pressed() -> void:
 	confirm_replace()

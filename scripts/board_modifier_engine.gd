@@ -98,7 +98,6 @@ func process_row_submission(board, guess, result):
 			var multiplier = modifier.effect["goop"]
 			spawn_goop_from_black(board, black_this_row * multiplier)
 
-	
 
 func update_color_counters(guess):
 	for value in guess:
@@ -140,6 +139,9 @@ func update_feedback_counters(result):
 
 
 func trigger_satisfied(trigger_block):
+	if trigger_block == null or trigger_block.is_empty():
+		return false
+	
 	for key in trigger_block.keys():
 		if counters.get(key, 0) < trigger_block[key]:
 			return false

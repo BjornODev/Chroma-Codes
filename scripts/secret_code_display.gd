@@ -25,6 +25,7 @@ func build(secret_code: Array):
 
 
 func reveal_all():
+	await get_tree().create_timer(1.5).timeout
 	for peg in pegs:
 		peg.reveal()
 

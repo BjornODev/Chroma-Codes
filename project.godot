@@ -26,6 +26,7 @@ ItemManager="*res://scripts/item_manager.gd"
 BoardModifierEngine="*res://scripts/board_modifier_engine.gd"
 PatternEngine="*res://scripts/pattern_engine.gd"
 PopUpText="*res://scenes/PopUpText.tscn"
+KeywordEngine="*res://scripts/keyword_engine.gd"
 
 [display]
 
@@ -47,7 +48,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 30,
+"line": 0,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
@@ -61,8 +62,8 @@ project/editorState=[{
 "path": "res://data/patterns.json",
 "type": "file"
 }, {
-"column": 0,
-"line": 102,
+"column": 1,
+"line": 89,
 "path": "res://scripts/item_manager.gd",
 "type": "file"
 }, {
@@ -87,7 +88,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 241,
+"line": 99,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
@@ -96,24 +97,24 @@ project/editorState=[{
 "path": "res://scripts/pop_up_text.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 16,
+"line": 27,
 "path": "res://scripts/secret_code_peg.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 43,
+"line": 27,
 "path": "res://scripts/secret_code_display.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 40,
+"line": 50,
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
-"column": 53,
+"column": 2,
 "current": true,
-"line": 48,
+"line": 52,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -142,7 +143,7 @@ project/editorState=[{
 "path": "res://scripts/background_layer.gd",
 "type": "file"
 }, {
-"column": 24,
+"column": 0,
 "line": 39,
 "path": "res://scripts/main.gd",
 "type": "file"
@@ -162,7 +163,7 @@ project/editorState=[{
 "path": "res://data/resources/pattern_data.gd",
 "type": "file"
 }, {
-"column": 23,
+"column": 0,
 "line": 44,
 "path": "res://scripts/pattern_preview.gd",
 "type": "file"
@@ -172,19 +173,24 @@ project/editorState=[{
 "path": "res://scripts/selectable_icon.gd",
 "type": "file"
 }, {
-"column": 40,
+"column": 0,
 "line": 72,
 "path": "res://scripts/tooltip_panel.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 12,
+"line": 66,
 "path": "res://scripts/run_setup_screen.gd",
 "type": "file"
 }, {
 "column": 0,
 "line": 0,
 "path": "res://scripts/display_icon.gd",
+"type": "file"
+}, {
+"column": 66,
+"line": 42,
+"path": "res://scripts/keyword_engine.gd",
 "type": "file"
 }]
 project/breakpoints={

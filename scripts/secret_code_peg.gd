@@ -6,7 +6,7 @@ var peg_database_reference
 var revealed := false
 
 func _ready():
-
+	print($Area2D.collision_layer)
 	var cover = $Cover
 	cover.material = cover.material.duplicate()
 
@@ -26,7 +26,6 @@ func reveal(duration := 2.5):
 		return
 
 	revealed = true
-	await get_tree().create_timer(1.5).timeout
 	var mat = $Cover.material as ShaderMaterial
 
 	var tween = create_tween()

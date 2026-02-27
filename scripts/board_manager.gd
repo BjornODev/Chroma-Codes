@@ -45,8 +45,15 @@ func _ready():
 	BoardModifierEngine.pre_board_build(self)
 	health_text.initialize()
 	health_text.change_health(player_health)
-	
+	print("Modifiers on Board load: ", BoardModifierEngine.active_modifiers)
+	print("Items on Board load: ", ItemManager.player_items)
 	$"../BackgroundLayer".change_background(randi() % 5)
+	
+	KeywordEngine.set_context(
+		self,
+		peg_manager_reference,
+		popup_manager
+	)
 	
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)

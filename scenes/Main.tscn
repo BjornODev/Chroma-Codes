@@ -125,7 +125,6 @@ script = ExtResource("2_3p2gp")
 
 [node name="BoardManager" type="Node2D" parent="."]
 script = ExtResource("6_q8u5g")
-player_health = 10
 
 [node name="SafeBoardBG" type="NinePatchRect" parent="BoardManager"]
 offset_right = 40.0
