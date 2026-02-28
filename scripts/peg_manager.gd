@@ -51,6 +51,7 @@ func start_drag(peg_stack):
 		peg.is_copy = true
 		peg.peg_id = peg_stack.peg_id
 		peg.hand_position = peg_stack.hand_position
+		peg.counter.visible = false
 		highlight_peg(peg_stack, false)
 		highlight_peg(peg, false)
 
@@ -124,9 +125,7 @@ func finish_drag():
 					print("No replacements left. Awaiting confirmation.")
 				
 		elif other_peg and other_peg.get("is_obscure"):
-			PopUpText.show_popup(
-				"[center][b][color=#BC13FE]OBSCURE?[/color][/b][/center]"
-			)
+			AudioLoader.play_sound("obscure", -20.0)
 			board_reference.obscurities += 1
 			other_peg.queue_free()
 			peg_slot_found.peg_in_slot = null
@@ -153,7 +152,7 @@ func finish_drag():
 		
 		if peg_being_dragged.is_special:
 			player_hand_reference.remove_peg_from_hand(peg_being_dragged)
-		
+		AudioLoader.play_sound("peg_snap")
 		# If slot already had peg
 		if other_peg:
 			if drag_start_slot:
@@ -370,3 +369,4 @@ func start_reveal(amount):
 
 func _on_pressed() -> void:
 	confirm_replace()
+	AudioLoader.play_sound("select")

@@ -68,7 +68,6 @@ func _on_StartRunButton_pressed():
 	print(selected_modifiers)
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
-
 func _on_item_toggled(item_data : ItemData, enabled : bool):
 	if enabled:
 		if item_data not in selected_items:

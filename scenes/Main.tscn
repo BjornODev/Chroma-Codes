@@ -154,6 +154,22 @@ mouse_filter = 2
 color = Color(0.7097931, 0.10195923, 0, 1)
 metadata/_edit_lock_ = true
 
+[node name="CanvasLayer" type="CanvasLayer" parent="BoardManager"]
+layer = 10
+
+[node name="FadeOut" type="ColorRect" parent="BoardManager/CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+z_index = 1000
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(48.674236, 29.958965)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+metadata/_edit_lock_ = true
+
 [node name="PegManager" type="Node2D" parent="."]
 script = ExtResource("2_c01mt")
 

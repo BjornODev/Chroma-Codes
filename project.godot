@@ -27,6 +27,8 @@ BoardModifierEngine="*res://scripts/board_modifier_engine.gd"
 PatternEngine="*res://scripts/pattern_engine.gd"
 PopUpText="*res://scenes/PopUpText.tscn"
 KeywordEngine="*res://scripts/keyword_engine.gd"
+AudioSystem="*res://scenes/music_player.tscn"
+AudioLoader="*res://scripts/music_player.gd"
 
 [display]
 
@@ -51,12 +53,12 @@ environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 
 project/editorState=[{
 "column": 0,
-"line": 76,
+"line": 43,
 "path": "res://scripts/phys_peg.gd",
 "type": "file"
 }, {
-"column": 18,
-"line": 107,
+"column": 49,
+"line": 126,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
@@ -70,13 +72,14 @@ project/editorState=[{
 "path": "res://scripts/snap_zone.gd",
 "type": "file"
 }, {
-"column": 60,
-"line": 221,
+"column": 21,
+"line": 70,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
-"column": 2,
-"line": 696,
+"column": 17,
+"current": true,
+"line": 592,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -85,15 +88,39 @@ project/editorState=[{
 "path": "res://scripts/keyword_engine.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 9,
+"line": 7,
 "path": "res://scripts/obscure_obstacle.gd",
 "type": "file"
 }, {
-"column": 29,
-"current": true,
+"column": 0,
 "line": 17,
 "path": "res://scripts/main.gd",
+"type": "file"
+}, {
+"column": 14,
+"line": 36,
+"path": "res://scripts/music_player.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 28,
+"path": "res://scripts/pop_up_text.gd",
+"type": "file"
+}, {
+"column": 31,
+"line": 28,
+"path": "res://scripts/secret_code_display.gd",
+"type": "file"
+}, {
+"column": 58,
+"line": 68,
+"path": "res://scripts/run_setup_screen.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/spike.gd",
 "type": "file"
 }]
 project/breakpoints={

@@ -406,7 +406,9 @@ func submit_guess():
 
 	var result = evaluate_guess(guess)
 	
-	result = apply_obscure_logic(obscurities, result)
+	if obscurities > 0:
+		result = apply_obscure_logic(obscurities, result)
+		obscurities = 0
 
 	for peg in guess:
 		if peg == 7:
@@ -425,14 +427,24 @@ func submit_guess():
 	if result[0] == columns:
 		BoardModifierEngine.disabled_modifiers_this_round.clear()
 		BoardModifierEngine.disable_mode = false
-		for child in $"../SecretCodeDisplay".get_children():
-			child.reveal()
+		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
 		if player_health > 0:
 			popup_manager.show_popup(
-						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
-					)
+				"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
+			)
+		AudioLoader.play_sound("win")
+		await get_tree().create_timer(5.0).timeout
+		var tween = create_tween().set_ease(Tween.EASE_IN)
+		tween.tween_property(
+			$CanvasLayer/FadeOut, 
+			"modulate:a",
+			1,
+			2.5
+		)
+		await tween.finished
+		get_tree().change_scene_to_file("res://scenes/RunSetupScreen.tscn")
 		return
 		
 	if in_game:
@@ -488,6 +500,7 @@ func apply_damage(damage):
 	
 	flash_damage()
 	health_text.change_health(player_health)
+	AudioLoader.play_sound("damage")
 	item_system.emit_game_event("health_lost", {
 		"amount": damage_per_row,
 		"health": player_health
@@ -495,12 +508,24 @@ func apply_damage(damage):
 
 	if player_health <= 0:
 		print("Game Over")
-		for child in $"../SecretCodeDisplay".get_children():
-			child.reveal()
 		in_game = false
 		popup_manager.show_popup(
-					"[center][b][color=#FF073A] YOU LOSE [/color][/b][/center]"
-				)
+			"[center][b][color=#FF073A] YOU LOSE [/color][/b][/center]"
+		)
+		AudioLoader.play_sound("lose")
+		$"../SecretCodeDisplay".reveal_all()
+		in_game = false
+		await handle_goop_explosion()
+		await get_tree().create_timer(5.0).timeout
+		var tween = create_tween().set_ease(Tween.EASE_IN)
+		tween.tween_property(
+			$CanvasLayer/FadeOut, 
+			"modulate:a",
+			1,
+			2.5
+		)
+		await tween.finished
+		get_tree().change_scene_to_file("res://scenes/RunSetupScreen.tscn")
 		return
 
 
@@ -563,7 +588,9 @@ func re_evaluate_row(row_index):
 				guess.append(0)
 
 	var result = evaluate_guess(guess)
-	
+	if obscurities > 0:
+		result = apply_obscure_logic(obscurities, result)
+		obscurities = 0
 	for peg in guess:
 		if peg == 7:
 			apply_heal(1)
@@ -575,14 +602,24 @@ func re_evaluate_row(row_index):
 	if result[0] == columns:
 		BoardModifierEngine.disabled_modifiers_this_round.clear()
 		BoardModifierEngine.disable_mode = false
-		for child in $"../SecretCodeDisplay".get_children():
-			child.reveal()
+		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
 		if player_health > 0:
 			popup_manager.show_popup(
 						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 					)
+		AudioLoader.play_sound("win")
+		await get_tree().create_timer(5.0).timeout
+		var tween = create_tween().set_ease(Tween.EASE_IN)
+		tween.tween_property(
+			$CanvasLayer/FadeOut, 
+			"modulate:a",
+			1,
+			2.5
+		)
+		await tween.finished
+		get_tree().change_scene_to_file("res://scenes/RunSetupScreen.tscn")
 		return
 	
 	if row_index >= board_state.size():
@@ -646,6 +683,7 @@ func handle_goop_explosion():
 	for peg in goop_pegs:
 		goop_count += 1
 		spawn_goop_explosion(peg.global_position)
+		AudioLoader.play_sound("goop")
 		peg.queue_free()
 		if goop_count == 2:
 			apply_damage(1)
@@ -694,10 +732,10 @@ func apply_obscure_logic(obscurities, result):
 	var white = result[1]
 	
 	for g in range(obscurities):
-#		PopUpText.show_popup(
-#			"[center][b][color=#BC13FE]OBSCURE?[/color][/b][/center]"
-#		)
 		if randf() < 0.5:
+			PopUpText.show_popup(
+				"[center][b][color=#BC13FE]OBSCURE 1[/color][/b][/center]"
+			)
 			if black > 0:
 				black -= 1
 			elif white > 0:
@@ -706,3 +744,4 @@ func apply_obscure_logic(obscurities, result):
 
 func _on_pressed() -> void:
 	submit_guess()
+	AudioLoader.play_sound("select")

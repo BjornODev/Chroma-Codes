@@ -26,6 +26,7 @@ func build(secret_code: Array):
 
 func reveal_all():
 	await get_tree().create_timer(1.5).timeout
+	AudioLoader.play_sound("reveal")
 	for peg in pegs:
 		peg.reveal()
 

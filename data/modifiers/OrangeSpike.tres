@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://dh75twfas1a8p"]
+
+[ext_resource type="Texture2D" uid="uid://bnqjvyrx2ruo3" path="res://assets/mod_icons/nailed-head 2.svg" id="1_l72nx"]
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_8j3g6"]
+
+[resource]
+script = ExtResource("2_8j3g6")
+modifier_name = "Orange Spike"
+icon = ExtResource("1_l72nx")
+trigger = {
+"orange": 6
+}
+effect = {
+"sudden_spike": 4
+}

@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://d13ox526evbvh"]
 
 [ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_tp420"]
-[ext_resource type="Texture2D" uid="uid://c4qreuh406nv4" path="res://assets/mod_icons/expander 2.svg" id="1_yjuq7"]
+[ext_resource type="Texture2D" uid="uid://bc0y1wqu6j4rw" path="res://assets/mod_icons/contract.svg" id="1_xyogv"]
 
 [resource]
 script = ExtResource("1_tp420")
 modifier_name = "Short Board"
-icon = ExtResource("1_yjuq7")
+icon = ExtResource("1_xyogv")
 phase = "pre_build"
 effect = {
 "short": 1

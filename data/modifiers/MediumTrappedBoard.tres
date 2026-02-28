@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://dhueiv45bj5hg"]
+
+[ext_resource type="Texture2D" uid="uid://c0pijtdrf87yw" path="res://assets/mod_icons/nails 3.svg" id="1_jkegg"]
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_rxoky"]
+
+[resource]
+script = ExtResource("2_rxoky")
+modifier_name = "Medium Trapped Board"
+icon = ExtResource("1_jkegg")
+phase = "post_build"
+effect = {
+"trapped": 3
+}

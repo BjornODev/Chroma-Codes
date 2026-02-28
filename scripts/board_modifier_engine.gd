@@ -5,7 +5,10 @@ var active_modifiers = []
 var all_modifiers : Array[ModifierData] = []
 var modifiers_by_name := {}
 
-var counters := {}   # keyword counters
+var color_counters := {}
+var feedback_counters := {}   # keyword counters
+signal color_counters_updated(counters: Dictionary)
+signal feedback_counters_updated(counters: Dictionary)
 
 var disable_mode := false
 var disables_left := 0
@@ -139,10 +142,11 @@ func update_color_counters(guess):
 		
 		var color = get_color_name_from_id(value)
 		
-		if not counters.has(color):
-			counters[color] = 0
+		if not color_counters.has(color):
+			color_counters[color] = 0
 		
-		counters[color] += 1
+		color_counters[color] += 1
+		emit_signal("color_counters_updated", color_counters.duplicate())
 
 
 func check_triggers(board):
@@ -163,14 +167,15 @@ func update_feedback_counters(result):
 	var black = result[0]
 	var white = result[1]
 	
-	if not counters.has("black"):
-		counters["black"] = 0
+	if not feedback_counters.has("black"):
+		feedback_counters["black"] = 0
 	
-	if not counters.has("white"):
-		counters["white"] = 0
+	if not feedback_counters.has("white"):
+		feedback_counters["white"] = 0
 	
-	counters["black"] += black
-	counters["white"] += white
+	feedback_counters["black"] += black
+	feedback_counters["white"] += white
+	emit_signal("feedback_counters_updated", feedback_counters.duplicate())
 
 
 func trigger_satisfied(trigger_block):
@@ -178,7 +183,7 @@ func trigger_satisfied(trigger_block):
 		return false
 	
 	for key in trigger_block.keys():
-		if counters.get(key, 0) < trigger_block[key]:
+		if color_counters.get(key, 0) < trigger_block[key] and feedback_counters.get(key, 0) < trigger_block[key]:
 			return false
 	
 	return true
@@ -186,7 +191,14 @@ func trigger_satisfied(trigger_block):
 
 func reset_trigger(trigger_block):
 	for key in trigger_block.keys():
-		counters[key] = 0
+		for k in color_counters.keys():
+			if k == key:
+				color_counters[key] = 0
+		for k in feedback_counters.keys():
+			if k == key:
+				feedback_counters[key] = 0
+	emit_signal("feedback_counters_updated", feedback_counters.duplicate())
+	emit_signal("color_counters_updated",color_counters.duplicate())
 
 
 # =========================
@@ -302,6 +314,8 @@ func spawn_goop_from_black(board, black_count):
 	
 	for i in range(black_count):
 		var goop = preload("res://scenes/Phys_Peg.tscn").instantiate()
+		
+		AudioLoader.play_sound("goop")
 		
 		goop.is_special = true
 		goop.is_copy = true

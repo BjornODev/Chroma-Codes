@@ -28,31 +28,18 @@ var special_type := ""
 var shader_material: ShaderMaterial
 
 @onready var modifier = ""
-
-#func _ready() -> void:
-#	get_parent().connect_peg_signals(self)
-#	add_to_group("pegs")
-#	if is_special:
-#		modifier = "_" + special_type
-#	peg_database_reference = preload("res://scripts/peg_data.gd")
-#	peg_down_reference = load("res://assets/peg_down" + modifier + ".svg")
-#	peg_out_reference = load("res://assets/peg_out" + modifier + ".svg")
-#	peg_sprite2D = $Sprite2D
-#	
-#	peg_sprite2D.material = peg_sprite2D.material.duplicate()
-#	last_position = position
-#	shader_material = peg_sprite2D.material as ShaderMaterial
-#	if shader_material == null:
-#		print("Error: Material is not a ShaderMaterial")
-#		return
-
+@onready var counter = $Counter
 
 func _ready():
 	get_parent().connect_peg_signals(self)
 	add_to_group("pegs")
 	peg_database_reference = preload("res://scripts/peg_data.gd")
 	peg_sprite2D = $Sprite2D
-	
+	if is_copy == false:
+		counter.visible = true
+	else:
+		counter.visible = false
+	BoardModifierEngine.connect("color_counters_updated", _on_counters_updated)
 	setup_visuals()
 	
 	peg_sprite2D.material = peg_sprite2D.material.duplicate()
@@ -93,6 +80,11 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	emit_signal("hovered_off", self)
 
+func _on_counters_updated(counters):
+	for key in counters.keys():
+		var color = get_id_from_color_name(key)
+		if peg_id == color:
+			counter.text = str(counters[key])
 
 func get_submission_value():
 	if is_special:
@@ -100,3 +92,14 @@ func get_submission_value():
 			"goop":
 				return 0  # Special non-color ID
 	return peg_id
+
+
+func get_id_from_color_name(color):
+	match color:
+		"red": return 1
+		"yellow": return 2
+		"green": return 3
+		"white": return 4
+		"purple": return 5
+		"orange": return 6
+		"unknown": return 0

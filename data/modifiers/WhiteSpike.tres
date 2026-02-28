@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://cp88h5l28rsq6"]
+
+[ext_resource type="Texture2D" uid="uid://bhpugh56evu5g" path="res://assets/mod_icons/nailed-head 6.svg" id="1_pbymm"]
+[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_7pusb"]
+
+[resource]
+script = ExtResource("2_7pusb")
+modifier_name = "White Spike"
+icon = ExtResource("1_pbymm")
+trigger = {
+"white": 6
+}
+effect = {
+"sudden_spike": 4
+}

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxhfhsxwlmjqq"]
+[gd_scene load_steps=7 format=3 uid="uid://bxhfhsxwlmjqq"]
 
 [ext_resource type="Script" uid="uid://c3rktvftjw1b4" path="res://scripts/phys_peg.gd" id="1_b2cxf"]
 [ext_resource type="Texture2D" uid="uid://dgftl7gndgv2d" path="res://assets/pegs/peg_out.svg" id="2_b2cxf"]
 [ext_resource type="Shader" uid="uid://eq3ddakaeydg" path="res://shaders/peg_outline.gdshader" id="2_jvobn"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="4_0nd3c"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0nd3c"]
 shader = ExtResource("2_jvobn")
@@ -19,6 +20,26 @@ script = ExtResource("1_b2cxf")
 material = SubResource("ShaderMaterial_0nd3c")
 scale = Vector2(0.16637117, 0.16637117)
 texture = ExtResource("2_b2cxf")
+
+[node name="Counter" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -20.0
+offset_right = 21.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_0nd3c")
+theme_override_font_sizes/font_size = 25
+text = "0"
+horizontal_alignment = 1
 
 [node name="Area2D" type="Area2D" parent="."]
 
