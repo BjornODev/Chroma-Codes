@@ -33,7 +33,6 @@ func _ready() -> void:
 	pattern_engine = PatternEngine
 	item_system = ItemManager
 	$"../InputManager".connect("left_mouse_button_released", on_left_click_released)
-	start_reveal(2)
 
 func _process(delta: float) -> void:
 	if peg_being_dragged:
@@ -57,8 +56,17 @@ func start_drag(peg_stack):
 
 	elif peg_stack.row == cur_row:
 		peg = peg_stack
-	elif peg_stack.is_special and peg_stack.row == -1:
-		peg = peg_stack
+	elif peg_stack.is_stack():
+		if not peg_stack.take_from_stack():
+			return
+		var new_peg = peg_reference.instantiate()
+		new_peg.is_special = true
+		new_peg.is_copy = true
+		new_peg.special_type = peg_stack.special_type
+		new_peg.peg_id = peg_stack.peg_id
+		new_peg.setup_visuals()
+		add_child(new_peg)
+		peg = new_peg
 	else:
 		return
 	drag_start_pos = peg.position
@@ -150,8 +158,8 @@ func finish_drag():
 		peg_being_dragged.row = peg_slot_found.row
 		peg_being_dragged.column = peg_slot_found.column
 		
-		if peg_being_dragged.is_special:
-			player_hand_reference.remove_peg_from_hand(peg_being_dragged)
+#		if peg_being_dragged.is_special:
+#			player_hand_reference.remove_peg_from_hand(peg_being_dragged)
 		AudioLoader.play_sound("peg_snap")
 		# If slot already had peg
 		if other_peg:
@@ -169,10 +177,13 @@ func finish_drag():
 				)
 			else:
 				# Peg came from hand → send old peg back to hand
-				other_peg.current_slot = null
-				other_peg.peg_sprite2D.texture = other_peg.peg_out_reference
-				player_hand_reference.return_peg_to_hand(other_peg)
-				
+				if !other_peg.is_special:
+					other_peg.current_slot = null
+					other_peg.peg_sprite2D.texture = other_peg.peg_out_reference
+					player_hand_reference.return_peg_to_hand(other_peg)
+				else:
+					player_hand_reference.return_special_to_stack(other_peg)
+					other_peg.peg_sprite2D.texture = other_peg.peg_out_reference
 			if replace_mode:
 				replaces_left -= 1
 				peg_being_dragged.update_shader_value(16)
@@ -186,7 +197,7 @@ func finish_drag():
 		peg_being_dragged.current_slot = null
 		player_hand_reference.return_peg_to_hand(peg_being_dragged)
 		if peg_being_dragged.is_special:
-			player_hand_reference.player_hand.append(peg_being_dragged)
+			player_hand_reference.return_special_to_stack(peg_being_dragged)
 	
 	peg_being_dragged = null
 
@@ -332,7 +343,7 @@ func destroy_obstacle(slot):
 	if delete_mode:
 		if slot.row >= cur_row:
 			var obstacle = slot.peg_in_slot
-			if obstacle and obstacle.get("is_spike"):
+			if obstacle and obstacle.get("is_spike") or obstacle.get("is_obscure"):
 				var tween = create_tween()
 				
 				tween.tween_property(obstacle.sprite, "scale", Vector2.ZERO, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
@@ -358,6 +369,7 @@ func start_clear(amount):
 func reveal_code(code_peg):
 	if reveal_mode == true:
 		if !code_peg.revealed:
+			AudioLoader.play_sound("reveal")
 			code_peg.reveal()
 			reveals_left -= 1
 			if reveals_left <= 0:
@@ -366,6 +378,7 @@ func reveal_code(code_peg):
 func start_reveal(amount):
 	reveal_mode = true
 	reveals_left += amount
+	print("Reveals left: ", reveals_left)
 
 func _on_pressed() -> void:
 	confirm_replace()

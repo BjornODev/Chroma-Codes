@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://yf7mm5urskrc"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_n2axm"]
+
+[resource]
+script = ExtResource("1_n2axm")
+pattern_name = "Landing Strip"
+width = 3
+height = 3
+grid = [[0, 2, 0], [2, 2, 2], [6, 2, 6]]

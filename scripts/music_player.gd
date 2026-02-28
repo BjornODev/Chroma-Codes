@@ -1,9 +1,10 @@
 extends Node
 
 var sound_library := {}
-
+@onready var music = AudioSystem.get_node("Music")
 
 func _ready():
+#	music.play()
 	sound_library = {
 		"peg_snap": preload("res://sounds/sfx/PegSnap.wav"),
 		"popup": preload("res://sounds/sfx/Popup.wav"),
@@ -16,7 +17,16 @@ func _ready():
 		"goop": preload("res://sounds/sfx/Goop.wav")
 	}
 
+var music_muted := false
 
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("m"):
+		music_muted = !music_muted
+		
+		if music_muted:
+			music.volume_db = -80  # effectively silent
+		else:
+			music.volume_db = -15
 func play_sound(name: String, db: float = 0.0):
 	name = name.to_lower()
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b4neorel7veww"
-path="res://.godot/imported/aura.svg-92f640edbfeceec620d751db2fd3a347.ctex"
+uid="uid://jn8scdvtv0rq"
+path="res://.godot/imported/hydra.svg-c0cf64eaacdf00e07648409c2560beb2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/item_icons/aura.svg"
-dest_files=["res://.godot/imported/aura.svg-92f640edbfeceec620d751db2fd3a347.ctex"]
+source_file="res://assets/item_icons/hydra.svg"
+dest_files=["res://.godot/imported/hydra.svg-c0cf64eaacdf00e07648409c2560beb2.ctex"]
 
 [params]
 

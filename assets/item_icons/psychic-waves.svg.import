@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bv038umqnl51v"
-path="res://.godot/imported/heart-inside.svg-18fd62c572639fbcd007ac54a36b12a2.ctex"
+uid="uid://cd6c7wbn5bwox"
+path="res://.godot/imported/psychic-waves.svg-99f830680e31ea2366433bcb942744b6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/item_icons/heart-inside.svg"
-dest_files=["res://.godot/imported/heart-inside.svg-18fd62c572639fbcd007ac54a36b12a2.ctex"]
+source_file="res://assets/item_icons/psychic-waves.svg"
+dest_files=["res://.godot/imported/psychic-waves.svg-99f830680e31ea2366433bcb942744b6.ctex"]
 
 [params]
 

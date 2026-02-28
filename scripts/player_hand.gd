@@ -61,6 +61,47 @@ func remove_peg_from_hand(peg):
 
 
 func add_special_peg(peg):
+	# Try to find existing stack of same type
+	for existing in player_hand:
+		if existing.is_stack() and existing.special_type == peg.special_type:
+			existing.add_to_stack(1)
+			return
+	
+	# Otherwise create new stack peg
+	peg.is_special = true
+	peg.is_copy = false
+	peg.stack_count = 1
+	
 	$"../PegManager".add_child(peg)
 	player_hand.append(peg)
 	update_hand_positions()
+
+
+func return_special_to_stack(peg):
+	var target_stack = null
+	
+	for existing in player_hand:
+		if existing.is_stack() and existing.special_type == peg.special_type:
+			target_stack = existing
+			break
+	# If stack exists → tween back to it
+	if target_stack:
+		var tween = get_tree().create_tween()
+		tween.set_trans(Tween.TRANS_CUBIC)
+		tween.set_ease(Tween.EASE_IN_OUT)
+		tween.tween_property(peg, "position", target_stack.position, 0.2)
+		await tween.finished
+		target_stack.add_to_stack(1)
+		peg.queue_free()
+		return
+	
+	# If no stack exists → peg becomes the new stack
+	peg.is_copy = false
+	peg.stack_count = 1
+	player_hand.append(peg)
+	update_hand_positions()
+
+#func add_special_peg(peg):
+#	$"../PegManager".add_child(peg)
+#	player_hand.append(peg)
+#	update_hand_positions()

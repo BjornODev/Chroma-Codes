@@ -1,17 +1,18 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://ctebabiue8ijd"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://boima0lri0jww"]
 
 [ext_resource type="Texture2D" uid="uid://jn8scdvtv0rq" path="res://assets/item_icons/hydra.svg" id="1_dtfiv"]
 [ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_dy1kv"]
 
 [resource]
 script = ExtResource("2_dy1kv")
-item_name = "Arcane Pillar"
-description = "It's just a rock. Promise"
+item_name = "Terrible T"
+description = "Just terrible"
 icon = ExtResource("1_dtfiv")
-triggers = Array[Dictionary]([{
+triggers = [{
 "event": "pattern_triggered",
-"pattern": "3 Vertical Purple"
-}])
+"pattern": "3 Vertical Yellow Purple T"
+}]
 keywords = {
+"Clear": 2,
 "Multiply": 1
 }

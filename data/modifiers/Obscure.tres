@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://hasqbvc631wr"]
 
-[ext_resource type="Texture2D" uid="uid://bowijvkkflwwf" path="res://assets/mod_icons/misdirection.svg" id="1_fbk4n"]
+[ext_resource type="Texture2D" uid="uid://dof3ure88hw4k" path="res://assets/mod_icons/misdirection 4.svg" id="1_fbk4n"]
 [ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_hslb1"]
 
 [resource]

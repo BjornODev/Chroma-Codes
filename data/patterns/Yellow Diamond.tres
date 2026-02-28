@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://dy2xus7w6feq6"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_hd2m8"]
+
+[resource]
+script = ExtResource("1_hd2m8")
+pattern_name = "Yellow Diamond"
+width = 3
+height = 3
+grid = [[0, 2, 0], [2, 0, 2], [0, 2, 0]]
+allowed_rows = Array[int]([0])

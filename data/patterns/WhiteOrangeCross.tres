@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://tkrtyp7dsxa3"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_s7cwq"]
+
+[resource]
+script = ExtResource("1_s7cwq")
+pattern_name = "White Orange Cross"
+width = 3
+height = 3
+grid = [[0, 6, 0], [4, 6, 4], [0, 4, 0]]

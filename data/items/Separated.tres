@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://porypk6s4s8g"]
+
+[ext_resource type="Texture2D" uid="uid://cd6c7wbn5bwox" path="res://assets/item_icons/psychic-waves.svg" id="1_2fqaj"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_vi8f3"]
+
+[resource]
+script = ExtResource("2_vi8f3")
+item_name = "Separated"
+description = "Like oil and water"
+icon = ExtResource("1_2fqaj")
+triggers = [{
+"event": "pattern_triggered",
+"pattern": "Separation"
+}]
+keywords = {
+"Multiply": 1,
+"Reveal": 1
+}

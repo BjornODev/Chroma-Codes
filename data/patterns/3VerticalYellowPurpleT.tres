@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://ca1rfpt6hmrud"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_bw5xy"]
+
+[resource]
+script = ExtResource("1_bw5xy")
+pattern_name = "3 Vertical Yellow Purple T"
+width = 3
+height = 3
+grid = [[0, 5, 0], [0, 2, 0], [2, 5, 2]]

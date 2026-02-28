@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5ljfe2evmbwl"
-path="res://.godot/imported/tabletop-players.svg-2722ac82b870dce9108cf0b077d553b3.ctex"
+uid="uid://cy53lokbni23f"
+path="res://.godot/imported/aura 2.svg-6230654792e42c3848c29e0b907f6283.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/item_icons/tabletop-players.svg"
-dest_files=["res://.godot/imported/tabletop-players.svg-2722ac82b870dce9108cf0b077d553b3.ctex"]
+source_file="res://assets/item_icons/aura 2.svg"
+dest_files=["res://.godot/imported/aura 2.svg-6230654792e42c3848c29e0b907f6283.ctex"]
 
 [params]
 

@@ -45,14 +45,14 @@ layout_mode = 2
 
 [node name="ItemsGrid" type="GridContainer" parent="VBoxContainer/HSplitContainer/ItemsPanel"]
 layout_mode = 2
-columns = 10
+columns = 9
 
 [node name="ModifiersPanel" type="PanelContainer" parent="VBoxContainer/HSplitContainer"]
 layout_mode = 2
 
 [node name="ModifiersGrid" type="GridContainer" parent="VBoxContainer/HSplitContainer/ModifiersPanel"]
 layout_mode = 2
-columns = 10
+columns = 9
 
 [node name="PanelContainer" parent="." instance=ExtResource("3_p0svl")]
 visible = false

@@ -476,13 +476,15 @@ func submit_guess():
 			spawn_pattern_markers(p.positions)
 	item_system.process_turn_events()
 	
+	if peg_manager_reference.cur_row >= 10:
+		await collapse_bottom_rows()
+		damage_per_row += 1
+		print(peg_manager_reference.cur_row)
 	
 	peg_manager_reference.cur_row += 1
 
 	# Collapse BEFORE spawning new danger rows
-	if peg_manager_reference.cur_row >= 11:
-		await collapse_bottom_rows()
-		
+	
 	
 	# Add new row
 	if peg_manager_reference.cur_row >= rows_generated - 3 and rows_generated < 11:

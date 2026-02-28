@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://nkmpnb3mquh4"]
+
+[ext_resource type="Texture2D" uid="uid://cy53lokbni23f" path="res://assets/item_icons/aura 2.svg" id="1_hq5c5"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_ogbxs"]
+
+[resource]
+script = ExtResource("2_ogbxs")
+item_name = "Swapperooski"
+description = "Swap with a friend. It's fun"
+icon = ExtResource("1_hq5c5")
+triggers = [{
+"event": "pattern_triggered",
+"pattern": "2x2 Green Yellow Checkers"
+}]
+keywords = {
+"Clear": 2,
+"Replace": 1
+}

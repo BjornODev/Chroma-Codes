@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://s468g4lggfpb"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_isk7v"]
+
+[resource]
+script = ExtResource("1_isk7v")
+pattern_name = "2 Red Row"
+width = 2
+height = 1
+grid = [[1, 1]]

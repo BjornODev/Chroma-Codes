@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://dab10usl2ed4x"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_52pv5"]
+
+[resource]
+script = ExtResource("1_52pv5")
+pattern_name = "2x2 Green Yellow Checkers"
+width = 2
+height = 2
+grid = [[3, 2], [2, 3]]

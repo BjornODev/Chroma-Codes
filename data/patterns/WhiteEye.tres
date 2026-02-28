@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://bs5n7xuywtjku"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_ii28o"]
+
+[resource]
+script = ExtResource("1_ii28o")
+pattern_name = "White Eye"
+width = 4
+height = 3
+grid = [[0, 4, 4, 0], [4, 0, 0, 4], [0, 4, 4, 0]]

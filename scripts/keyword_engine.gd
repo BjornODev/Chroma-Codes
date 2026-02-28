@@ -25,13 +25,13 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 			popup_reference.show_popup(
 				"[center][b][color=#ffff33]CLEAR %d[/color][/b][/center]" % final_value
 			)
-			peg_manager_reference.start_clear(final_value * multiplier)
+			peg_manager_reference.start_clear(final_value)
 
 		"Reveal":
 			popup_reference.show_popup(
-				"[center][b][color=#fbffff]REVEAL %d[/color][/b][/center]" % final_value
+				"[center][b][color=#FBFFFF]REVEAL %d[/color][/b][/center]" % final_value
 			)
-			peg_manager_reference.start_reveal(final_value * multiplier)
+			peg_manager_reference.start_reveal(final_value)
 
 		"Multiply":
 			popup_reference.show_popup(
@@ -47,7 +47,6 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 			var cost = base_value
 #			if board_reference.player_health >= cost:
 			board_reference.apply_damage(cost)
-#				BoardModifierEngine.start_disable_mode(final_value * multiplier)
 
 		"Create Healing":
 			popup_reference.show_popup(

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://bip87gcte2kag"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_j2xi2"]
+
+[resource]
+script = ExtResource("1_j2xi2")
+pattern_name = "Separation"
+width = 4
+height = 3
+grid = [[4, 4, 4, 4], [0, 0, 0, 0], [5, 5, 5, 5]]
+metadata/_custom_type_script = "uid://hy1bu6e7fi6a"

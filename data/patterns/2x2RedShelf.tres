@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://cq76e4tprlab3"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_v8w65"]
+
+[resource]
+script = ExtResource("1_v8w65")
+pattern_name = "2x2 Red Shelf"
+width = 2
+height = 2
+grid = [[0, 1], [1, 1]]

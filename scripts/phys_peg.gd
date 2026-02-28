@@ -23,7 +23,7 @@ var max_tilt = 0.75
 
 var is_special := false
 var special_type := ""
-
+var stack_count := 0
 
 var shader_material: ShaderMaterial
 
@@ -35,7 +35,7 @@ func _ready():
 	add_to_group("pegs")
 	peg_database_reference = preload("res://scripts/peg_data.gd")
 	peg_sprite2D = $Sprite2D
-	if is_copy == false:
+	if !is_copy and not is_special:
 		counter.visible = true
 	else:
 		counter.visible = false
@@ -71,6 +71,39 @@ func update_shader_value(new_value):
 	if shader_material:
 		shader_material.set_shader_parameter("outline_thickness", new_value)
 
+
+func is_stack() -> bool:
+	return is_special and not is_copy
+
+
+func take_from_stack() -> bool:
+	if not is_stack():
+		return false
+	
+	if stack_count <= 0:
+		return false
+	
+	stack_count -= 1
+	update_stack_counter()
+	
+	if stack_count <= 0:
+		# stack disappears
+		var hand = get_node("../../PlayerHand")
+		hand.player_hand.erase(self)
+		hand.update_hand_positions()
+		queue_free()
+	
+	return true
+
+
+func add_to_stack(amount := 1):
+	stack_count += amount
+	update_stack_counter()
+
+
+func update_stack_counter():
+	counter.text = str(stack_count)
+	counter.visible = stack_count > 1
 
 
 func _on_mouse_entered() -> void:

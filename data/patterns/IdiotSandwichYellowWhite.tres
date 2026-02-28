@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PatternData" load_steps=2 format=3 uid="uid://uvm5uealyrit"]
+
+[ext_resource type="Script" uid="uid://hy1bu6e7fi6a" path="res://data/resources/pattern_data.gd" id="1_qxwya"]
+
+[resource]
+script = ExtResource("1_qxwya")
+pattern_name = "Idiot Sandwich Yellow White"
+width = 3
+height = 3
+grid = [[4, 4, 4], [2, 2, 2], [4, 4, 4]]
+metadata/_custom_type_script = "uid://hy1bu6e7fi6a"
