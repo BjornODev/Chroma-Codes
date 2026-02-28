@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Mastermind Roguelite"
-run/main_scene="res://scenes/RunSetupScreen.tscn"
+run/main_scene="res://scenes/TutorialScreen.tscn"
 config/features=PackedStringArray("4.5", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
@@ -67,7 +67,7 @@ project/editorState=[{
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
-"column": 20,
+"column": 0,
 "line": 7,
 "path": "res://scripts/item_manager.gd",
 "type": "file"
@@ -92,7 +92,7 @@ project/editorState=[{
 "path": "res://scripts/keyword_engine.gd",
 "type": "file"
 }, {
-"column": 5,
+"column": 0,
 "line": 5,
 "path": "res://scripts/obscure_obstacle.gd",
 "type": "file"
@@ -102,7 +102,7 @@ project/editorState=[{
 "path": "res://scripts/player_hand.gd",
 "type": "file"
 }, {
-"column": 17,
+"column": 0,
 "line": 246,
 "path": "res://scripts/pattern_engine.gd",
 "type": "file"
@@ -112,15 +112,20 @@ project/editorState=[{
 "path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
-"column": 24,
-"current": true,
+"column": 0,
 "line": 28,
 "path": "res://scripts/music_player.gd",
 "type": "file"
 }, {
-"column": 1,
+"column": 0,
 "line": 13,
 "path": "res://scripts/main.gd",
+"type": "file"
+}, {
+"column": 0,
+"current": true,
+"line": 0,
+"path": "res://scripts/tutorial_screen.gd",
 "type": "file"
 }]
 project/breakpoints={
