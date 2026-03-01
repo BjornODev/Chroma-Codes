@@ -14,22 +14,17 @@ func _ready() -> void:
 
 func load_patterns():
 	patterns.clear()
-
-	var dir = DirAccess.open("res://data/patterns")
-	if dir == null:
+	
+	var files = ResourceLoader.list_directory("res://data/patterns")
+	files.sort()
+	if files.is_empty():
 		push_error("Patterns folder missing")
 		return
 
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-
-	while file_name != "":
+	for file_name in files:
 		if file_name.ends_with(".tres"):
 			var pattern : PatternData = load("res://data/patterns/" + file_name)
 			patterns.append(pattern)
-		file_name = dir.get_next()
-
-	dir.list_dir_end()
 
 	print("Loaded patterns:", patterns.size())
 

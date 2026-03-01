@@ -30,23 +30,25 @@ func load_items():
 	all_items.clear()
 	items_by_name.clear()
 	
-	var dir = DirAccess.open("res://data/items")
-	if dir == null:
+	var files = ResourceLoader.list_directory("res://data/items")
+	files.sort()
+	if files.is_empty():
 		push_error("Items folder missing")
 		return
 	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	
-	while file_name != "":
+	for file_name in files:
 		if file_name.ends_with(".tres"):
-			var item : ItemData = load("res://data/items/" + file_name)
-			all_items.append(item)
-			items_by_name[item.item_name] = item
-		
-		file_name = dir.get_next()
+			#if file_name.ends_with(".remap"):
+				#file_name = file_name.replace(".remap", "")
+			var path = "res://data/items/" + file_name
+			var item : ItemData = ResourceLoader.load(path)
+			if item:
+				all_items.append(item)
+				items_by_name[item.item_name] = item
+			else:
+				push_warning("Failed to load item: " + path)
 	
-	dir.list_dir_end()
+	print("Loaded items: ", all_items.size())
 
 
 func emit_game_event(event_name, payload = {}):

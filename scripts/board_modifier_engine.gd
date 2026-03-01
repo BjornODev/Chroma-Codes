@@ -63,23 +63,25 @@ func load_modifiers():
 	all_modifiers.clear()
 	modifiers_by_name.clear()
 	
-	var dir = DirAccess.open("res://data/modifiers")
-	if dir == null:
+	var files := ResourceLoader.list_directory("res://data/modifiers")
+	files.sort()
+	if files.is_empty():
 		push_error("Modifiers folder missing")
 		return
 	
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
 	
-	while file_name != "":
+	for file_name in files:
 		if file_name.ends_with(".tres"):
-			var modifier : ModifierData = load("res://data/modifiers/" + file_name)
-			all_modifiers.append(modifier)
-			modifiers_by_name[modifier.modifier_name] = modifier
-		
-		file_name = dir.get_next()
-	
-	dir.list_dir_end()
+			#if file_name.ends_with(".remap"):
+				#file_name = file_name.replace(".remap", "")
+			var path = "res://data/modifiers/" + file_name
+			var modifier : ModifierData =ResourceLoader.load(path)
+			if modifier:
+				all_modifiers.append(modifier)
+				modifiers_by_name[modifier.modifier_name] = modifier
+			else:
+				push_warning("Failed to load modifiers: " + path)
+	print("Loaded modifiers: ", all_modifiers.size())
 
 
 # =========================
