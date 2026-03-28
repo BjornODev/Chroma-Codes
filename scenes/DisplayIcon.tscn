@@ -1,19 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://dprxw0ir8udvo"]
+[gd_scene load_steps=5 format=3 uid="uid://dprxw0ir8udvo"]
 
 [ext_resource type="Script" uid="uid://bshe1qhbcel7o" path="res://scripts/display_icon.gd" id="1_1fjsh"]
-[ext_resource type="Shader" uid="uid://cvih1xjh0ydgu" path="res://shaders/pulse_glow.gdshader" id="2_1fjsh"]
+[ext_resource type="Shader" uid="uid://bjvc6laf2083l" path="res://shaders/dashed_outline.gdshader" id="2_o35dh"]
+[ext_resource type="Texture2D" uid="uid://b5ht02ih168t3" path="res://assets/item_icons/remedy.svg" id="3_2scc0"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o35dh"]
-shader = ExtResource("2_1fjsh")
-shader_parameter/glow_color = Color(0.69410706, 0.86665344, 0.5450897, 1)
-shader_parameter/intensity = 0.7010000332975
-shader_parameter/spread = 1.0000000475000002
-shader_parameter/pulse_speed = 0.998000047405
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8xjju"]
+shader = ExtResource("2_o35dh")
+shader_parameter/radius = 40.0
+shader_parameter/thickness = 10.0
+shader_parameter/color = Color(1, 1, 1, 0.024940118)
+shader_parameter/dash_count = 10.0
+shader_parameter/dash_ratio = 0.5
+shader_parameter/speed = 0.8
 
 [node name="PanelContainer" type="PanelContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("1_1fjsh")
+
+[node name="HoverOutline" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_8xjju")
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("3_2scc0")
+expand_mode = 1
 
 [node name="Icon" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(50, 50)
@@ -21,13 +33,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 expand_mode = 1
-
-[node name="HoverGlow" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_o35dh")
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 2
-mouse_filter = 2
-color = Color(0.8039093, 0.90979004, 0.7097931, 0.6917382)
 
 [connection signal="mouse_entered" from="Icon" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Icon" to="." method="_on_mouse_exited"]

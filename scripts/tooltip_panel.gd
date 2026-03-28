@@ -47,7 +47,7 @@ func display_item(item : ItemData):
 
 func display_modifier(modifier):
 
-	name_label.text = modifier.modifier_name
+	name_label.text = modifier.modifier_name + " (Lv " + str(modifier.level) + ")"
 	description_label.text = ""
 	
 	clear_preview()
@@ -61,7 +61,7 @@ func display_modifier(modifier):
 		for key in modifier.trigger.keys():
 			trigger_text += "- %s: %d\n" % [key, modifier.trigger[key]]
 	
-	effect_label.text = trigger_text + build_effect_text(modifier.effect)
+	effect_label.text = trigger_text + build_effect_text(modifier.get_scaled_effect())
 #	queue_sort()
 	update_minimum_size()
 	print("Tooltip size:", size)

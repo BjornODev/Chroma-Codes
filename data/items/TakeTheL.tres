@@ -13,6 +13,5 @@ triggers = Array[Dictionary]([{
 "pattern": "2x2 Orange L"
 }])
 keywords = {
-"Clear": 2,
-"Create Healing": 2
+"Create Healing": 1
 }

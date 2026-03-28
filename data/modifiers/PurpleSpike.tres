@@ -8,8 +8,8 @@ script = ExtResource("2_y3e7m")
 modifier_name = "Purple Spike"
 icon = ExtResource("1_512hs")
 trigger = {
-"purple": 6
+"purple": 1
 }
-effect = {
-"sudden_spike": 4
+base_effect = {
+"Sudden Spike": 1
 }

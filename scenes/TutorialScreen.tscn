@@ -1,12 +1,12 @@
-[gd_scene format=3 uid="uid://djynpn6st1bgb"]
+[gd_scene load_steps=3 format=3 uid="uid://djynpn6st1bgb"]
 
 [ext_resource type="Script" uid="uid://b8cw1d1qt8ppo" path="res://scripts/tutorial_screen.gd" id="1_pe08h"]
 [ext_resource type="Texture2D" uid="uid://c078144xys2mf" path="res://assets/backgrounds/TutorialBackground.png" id="1_yvb13"]
 
-[node name="Node2D" type="Node2D" unique_id=1382213380]
+[node name="Node2D" type="Node2D"]
 script = ExtResource("1_pe08h")
 
-[node name="Background" type="Sprite2D" parent="." unique_id=1681303939]
+[node name="Background" type="Sprite2D" parent="."]
 scale = Vector2(1.4972223, 1.4972224)
 texture = ExtResource("1_yvb13")
 centered = false

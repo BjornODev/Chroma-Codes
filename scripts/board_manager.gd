@@ -4,7 +4,7 @@ extends Node2D
 @export var spacing := 45
 @export var slot_size := 35
 
-@export var soft_row_limit := 6
+@export var soft_row_limit := 5
 @export var damage_per_row := 1
 @export var player_health := 5
 
@@ -13,6 +13,7 @@ var in_game = true
 @export var visible_row_window := 6
 @onready var damage_overlay = $DamageOverlay
 @onready var bg = $"../BackgroundLayer/ColorRect"
+@onready var fade_rect = $CanvasLayer/FadeOut
 
 var slot_scene
 var feedback_scene
@@ -39,6 +40,9 @@ var scroll_offset := 0.0
 # =========================
 
 func _ready():
+	if !RunProgressionManager.run_active:
+		RunProgressionManager.start_new_run()
+	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
 	peg_manager_reference = $"../PegManager"
@@ -49,7 +53,7 @@ func _ready():
 	print("Modifiers on Board load: ", BoardModifierEngine.active_modifiers)
 	print("Items on Board load: ", ItemManager.player_items)
 	$"../BackgroundLayer".change_background(randi() % 5)
-	
+	KeywordEngine.multiplier = 1
 	KeywordEngine.set_context(
 		self,
 		peg_manager_reference,
@@ -62,6 +66,10 @@ func _ready():
 	# Create safe rows + one danger row
 	for i in range(soft_row_limit):
 		add_row()
+	for child in get_children():
+		if child is SnapZone:
+			if child.row == 0:
+				child.update_shader_value(50)
 	
 	update_safe_background()
 	
@@ -406,6 +414,10 @@ func submit_guess():
 
 	var result = evaluate_guess(guess)
 	
+	for r in guess:
+		if r == -1:
+			obscurities += 1
+	
 	if obscurities > 0:
 		result = apply_obscure_logic(obscurities, result)
 		obscurities = 0
@@ -435,17 +447,12 @@ func submit_guess():
 				"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 			)
 		AudioLoader.play_sound("win")
-		await get_tree().create_timer(5.0).timeout
-		var tween = create_tween().set_ease(Tween.EASE_IN)
-		tween.tween_property(
-			$CanvasLayer/FadeOut, 
-			"modulate:a",
-			1,
-			2.5
-		)
-		await tween.finished
-		get_tree().change_scene_to_file("res://scenes/RunSetupScreen.tscn")
-		return
+		var reward_ui = preload("res://scenes/RewardsSelectionUI.tscn").instantiate()
+		add_child(reward_ui)
+		
+		var choices = RunProgressionManager.get_reward_choices()
+		reward_ui.connect("reward_confirmed", _on_reward_confirmed)
+		reward_ui.show_rewards(choices)
 		
 	if in_game:
 		BoardModifierEngine.process_row_submission(self, guess, result)
@@ -466,28 +473,33 @@ func submit_guess():
 	)
 
 	for p in triggered:
-    # Always emit event
 		item_system.emit_game_event("pattern_triggered", {
-			"pattern_name": p.name,
-			"positions": p.positions
+			"pattern_name": p["name"],
+			"positions": p["positions"]
 		})
-	    # Only show visuals if an item actually responded
-		if item_system.has_item_trigger_for_pattern(p.name):
-			spawn_pattern_markers(p.positions)
+		
+		if item_system.has_item_trigger_for_pattern(p["name"]):
+			spawn_pattern_markers(p["positions"])
 	item_system.process_turn_events()
 	
-	if peg_manager_reference.cur_row >= 10:
+	if peg_manager_reference.cur_row >= 9:
 		await collapse_bottom_rows()
 		damage_per_row += 1
 		print(peg_manager_reference.cur_row)
 	
 	peg_manager_reference.cur_row += 1
-
+	
+	ChaosManager.fire_chaos_event()
+	
+	for child in get_children():
+		if child is SnapZone:
+			if child.row == peg_manager_reference.cur_row:
+				child.update_shader_value(50)
 	# Collapse BEFORE spawning new danger rows
 	
 	
 	# Add new row
-	if peg_manager_reference.cur_row >= rows_generated - 3 and rows_generated < 11:
+	if peg_manager_reference.cur_row >= rows_generated - 3 and rows_generated < 10:
 		add_row()
 		tween_last_row()
 
@@ -498,6 +510,7 @@ func submit_guess():
 
 func apply_damage(damage):
 	player_health -= damage
+	ChaosManager.add_chaos_from_damage()
 	print("Health:", player_health)
 	
 	flash_damage()
@@ -588,8 +601,12 @@ func re_evaluate_row(row_index):
 				guess.append(child.peg_in_slot.get_submission_value())
 			else:
 				guess.append(0)
-
+	
 	var result = evaluate_guess(guess)
+	for r in guess:
+		if r == -1:
+			obscurities += 1
+	
 	if obscurities > 0:
 		result = apply_obscure_logic(obscurities, result)
 		obscurities = 0
@@ -612,16 +629,12 @@ func re_evaluate_row(row_index):
 						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 					)
 		AudioLoader.play_sound("win")
-		await get_tree().create_timer(5.0).timeout
-		var tween = create_tween().set_ease(Tween.EASE_IN)
-		tween.tween_property(
-			$CanvasLayer/FadeOut, 
-			"modulate:a",
-			1,
-			2.5
-		)
-		await tween.finished
-		get_tree().change_scene_to_file("res://scenes/RunSetupScreen.tscn")
+		var reward_ui = preload("res://scenes/RewardsSelectionUI.tscn").instantiate()
+		add_child(reward_ui)
+		
+		var choices = RunProgressionManager.get_reward_choices()
+		reward_ui.connect("reward_confirmed", _on_reward_confirmed)
+		reward_ui.show_rewards(choices)
 		return
 	
 	if row_index >= board_state.size():
@@ -645,12 +658,12 @@ func re_evaluate_row(row_index):
 	)
 
 	for p in triggered:
-		if item_system.has_item_trigger_for_pattern(p.name):
-			spawn_pattern_markers(p.positions)
-	
+		if item_system.has_item_trigger_for_pattern(p["name"]):
+			spawn_pattern_markers(p["positions"])
+		
 			item_system.emit_game_event("pattern_triggered", {
-				"pattern_name": p.name,
-				"positions": p.positions
+				"pattern_name": p["name"],
+				"positions": p["positions"]
 			})
 
 	print("Row re-evaluated:", row_index, result)
@@ -732,18 +745,92 @@ func apply_heal(amount):
 func apply_obscure_logic(obscurities, result):
 	var black = result[0]
 	var white = result[1]
-	
+	var obscured := 0
 	for g in range(obscurities):
 		if randf() < 0.5:
-			PopUpText.show_popup(
-				"[center][b][color=#BC13FE]OBSCURE 1[/color][/b][/center]"
-			)
+			obscured += 1
 			if black > 0:
 				black -= 1
 			elif white > 0:
 				white -= 1
+	PopUpText.show_popup(
+				"[center][b][color=#BC13FE]OBSCURE %d [/color][/b][/center]" % obscured
+			)
 	return [black, white]
 
+
+func start_next_board():
+	in_game = true
+	
+	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
+	
+	# Reset board state cleanly
+	board_state.clear()
+	slot_lookup.clear()
+	PatternEngine.triggered_patterns.clear()
+	rows_generated = 0
+	peg_manager_reference.cur_row = 0
+	columns = 4
+	
+	# Clear children rows
+	for child in get_children():
+		if child is SnapZone: 
+			if child.peg_in_slot:
+				child.peg_in_slot.queue_free()
+			child.queue_free()
+		if child is Feedback_Grid:
+			child.queue_free()
+	
+	for bg in $DangerBGContainer.get_children():
+		bg.queue_free()
+	
+	BoardModifierEngine.pre_board_build(self)
+	print("Modifiers on Board load: ", BoardModifierEngine.active_modifiers)
+	print("Items on Board load: ", ItemManager.player_items)
+	$"../BackgroundLayer".change_background(randi() % 5)
+	KeywordEngine.multiplier = 1
+	KeywordEngine.set_context(
+		self,
+		peg_manager_reference,
+		popup_manager
+	)
+	BoardModifierEngine.color_counters.clear()
+	BoardModifierEngine.feedback_counters.clear()
+	generate_code()
+	$"../SecretCodeDisplay".build(secret_code)
+	get_parent().populate_hud()
+	for i in range(soft_row_limit):
+		add_row()
+	
+	update_safe_background()
+	
+	BoardModifierEngine.post_board_build(self)
+
+
+func _on_reward_confirmed(_choice):
+	await fade_out()
+	
+	ChaosManager.cleanse_on_board_clear()
+	ChaosManager.reset_dollars()
+	
+	start_next_board()
+	
+	await fade_in()
+
+
+func fade_out():
+	var tween = create_tween()
+	tween.tween_property(fade_rect, "modulate:a", 1.0, 0.6)
+	await tween.finished
+
+
+func fade_in():
+	var tween = create_tween()
+	tween.tween_property(fade_rect, "modulate:a", 0.0, 0.6)
+	await tween.finished
+
+
 func _on_pressed() -> void:
-	submit_guess()
-	AudioLoader.play_sound("select")
+	if in_game:
+		submit_guess()
+		AudioLoader.play_sound("select")

@@ -8,6 +8,6 @@ script = ExtResource("1_v282c")
 modifier_name = "Trapped Board"
 icon = ExtResource("1_48c16")
 phase = "post_build"
-effect = {
-"trapped": 2
+base_effect = {
+"Trapped": 2
 }

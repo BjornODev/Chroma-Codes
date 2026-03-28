@@ -15,8 +15,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Mastermind Roguelite"
-run/main_scene="res://scenes/TutorialScreen.tscn"
-config/features=PackedStringArray("4.6", "Mobile")
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.5", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
 
@@ -33,6 +33,8 @@ PopUpText="*res://scenes/PopUpText.tscn"
 KeywordEngine="*res://scripts/keyword_engine.gd"
 AudioSystem="*res://scenes/music_player.tscn"
 AudioLoader="*res://scripts/music_player.gd"
+RunProgressionManager="*res://scripts/run_progression_manager.gd"
+ChaosManager="*res://scripts/ChaosManager.gd"
 
 [display]
 
@@ -41,6 +43,10 @@ window/size/viewport_height=1080
 window/size/mode=3
 window/size/initial_position_type=5
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/segmented_bar/plugin.cfg")
 
 [input]
 
@@ -70,12 +76,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 348,
+"line": 0,
 "path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 7,
+"line": 0,
 "path": "res://scripts/item_manager.gd",
 "type": "file"
 }, {
@@ -85,32 +91,33 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"current": true,
+"line": 50,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 772,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 69,
 "path": "res://scripts/keyword_engine.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 5,
+"line": 0,
 "path": "res://scripts/obscure_obstacle.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 62,
+"line": 110,
 "path": "res://scripts/player_hand.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 246,
+"line": 0,
 "path": "res://scripts/pattern_engine.gd",
 "type": "file"
 }, {
@@ -120,19 +127,93 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 28,
+"line": 0,
 "path": "res://scripts/music_player.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 13,
+"line": 22,
 "path": "res://scripts/main.gd",
 "type": "file"
 }, {
 "column": 0,
-"current": true,
 "line": 0,
 "path": "res://scripts/tutorial_screen.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://data/resources/modifiers_data.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/run_progression_manager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/display_icon.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 72,
+"path": "res://scripts/rewards_selection_ui.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/selectable_icon.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/reward_icon.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/tooltip_panel.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/reward_column.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://addons/segmented_bar/examples/chevron/chevron.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 20,
+"path": "res://addons/segmented_bar/examples/shake/shake.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://data/resources/item_data.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/pop_up_text.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 195,
+"path": "res://scripts/ChaosManager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 16,
+"path": "res://scripts/ChaosBar.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/feedback_peg.gd",
 "type": "file"
 }]
 project/breakpoints={
@@ -143,5 +224,6 @@ project/breakpoints={
 "res://scripts/pattern_engine.gd": PackedInt32Array(),
 "res://scripts/peg.gd": PackedInt32Array(),
 "res://scripts/peg_manager.gd": PackedInt32Array(),
-"res://scripts/phys_peg.gd": PackedInt32Array()
+"res://scripts/phys_peg.gd": PackedInt32Array(),
+"res://scripts/reward_column.gd": PackedInt32Array()
 }

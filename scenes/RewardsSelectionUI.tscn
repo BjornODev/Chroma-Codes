@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://02784uexgte2"]
+
+[ext_resource type="Script" uid="uid://boqib7fe21n2b" path="res://scripts/rewards_selection_ui.gd" id="1_g67pf"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="2_g67pf"]
+
+[sub_resource type="Theme" id="Theme_1iufq"]
+
+[sub_resource type="Theme" id="Theme_53r7l"]
+default_font = ExtResource("2_g67pf")
+default_font_size = 50
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_g67pf")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -220.0
+offset_right = 220.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_1iufq")
+color = Color(0, 0.21568298, 0.2901764, 0.7784633)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -220.0
+offset_right = 220.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 35
+alignment = 1
+
+[node name="ConfirmButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_53r7l")
+text = "Confirm"
+
+[connection signal="pressed" from="VBoxContainer/ConfirmButton" to="." method="_on_confirmation_button_pressed"]

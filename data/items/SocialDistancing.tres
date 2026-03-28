@@ -8,11 +8,11 @@ script = ExtResource("2_jhljm")
 item_name = "Social Distancing"
 description = "Bad times"
 icon = ExtResource("1_cdnrg")
-triggers = [{
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "Purple Orange Distance"
-}]
+}])
 keywords = {
 "Create Healing": 2,
-"Multiply": 1
+"Multiply": 0
 }

@@ -8,6 +8,6 @@ script = ExtResource("1_tp420")
 modifier_name = "Short Board"
 icon = ExtResource("1_xyogv")
 phase = "pre_build"
-effect = {
-"short": 1
+base_effect = {
+"Short": 1
 }

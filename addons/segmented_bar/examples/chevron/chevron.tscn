@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://bjmmaki4svr13"]
+
+[ext_resource type="Script" uid="uid://ca620c0blomly" path="res://addons/segmented_bar/examples/chevron/chevron.gd" id="1_3cdjh"]
+[ext_resource type="PackedScene" uid="uid://dv4s5pmdxo13n" path="res://addons/segmented_bar/segmented_bar.tscn" id="2_vniba"]
+[ext_resource type="Texture2D" uid="uid://2yc6elvqah6d" path="res://icon.svg" id="3_7or6g"]
+[ext_resource type="Texture2D" uid="uid://ci0a0eun2a5og" path="res://addons/segmented_bar/examples/chevron/assets/center.png" id="4_lbrtc"]
+
+[node name="Chevron" type="MarginContainer"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -45.0
+offset_right = 1090.0
+offset_bottom = 45.0
+grow_vertical = 2
+script = ExtResource("1_3cdjh")
+heal_color = Color(0.0976563, 0.09375, 0.109375, 1)
+damage_color = Color(0.835938, 0.804688, 0.695313, 1)
+
+[node name="HBoxContainer" type="Control" parent="."]
+custom_minimum_size = Vector2(1090, 90)
+layout_mode = 2
+
+[node name="SegmentedBarL" parent="HBoxContainer" instance=ExtResource("2_vniba")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 49.0
+offset_right = 49.0
+offset_bottom = 9.0
+grow_horizontal = 1
+grow_vertical = 1
+theme_override_constants/separation = -6
+foreground_color = Color(0.839216, 0.807843, 0.698039, 1)
+background_color = Color(0.0980392, 0.0941176, 0.109804, 1)
+value = 0.5
+segment_texture = ExtResource("3_7or6g")
+total_segments = 50
+seperation = -6
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+self_modulate = Color(0.839216, 0.807843, 0.698039, 1)
+layout_mode = 0
+offset_left = 50.0
+offset_right = 59.0
+offset_bottom = 9.0
+texture = ExtResource("4_lbrtc")
+
+[node name="SegmentedBarR" parent="HBoxContainer" instance=ExtResource("2_vniba")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 55.0
+offset_right = 109.0
+offset_bottom = 9.0
+grow_horizontal = 1
+grow_vertical = 1
+theme_override_constants/separation = -4
+foreground_color = Color(0.839216, 0.807843, 0.698039, 1)
+background_color = Color(0.0980392, 0.0941176, 0.109804, 1)
+value = 0.5
+segment_texture = ExtResource("3_7or6g")
+total_segments = 50
+seperation = -4

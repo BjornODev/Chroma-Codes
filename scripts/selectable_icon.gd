@@ -8,13 +8,12 @@ var data
 var enabled := false
 
 @onready var overlay = $SelectionOverlay
-@onready var hover_glow = $HoverGlow
 
 func setup(resource_data):
 	data = resource_data
 	$Icon.texture = data.icon
 	overlay.visible = false
-	hover_glow.visible = false
+	$HoverOutline.material = $HoverOutline.material.duplicate()
 
 func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed:
@@ -23,9 +22,13 @@ func _gui_input(event):
 		emit_signal("toggled", data, enabled)
 
 func _on_mouse_entered():
-	hover_glow.visible = true
+	var mat = $HoverOutline.material
+	if mat:
+		mat.set_shader_parameter("color", Color(1, 1, 1, 1))
 	emit_signal("hovered", data)
 
 func _on_mouse_exited():
-	hover_glow.visible = false
+	var mat = $HoverOutline.material
+	if mat:
+		mat.set_shader_parameter("color", Color(1, 1, 1, 0))
 	emit_signal("hovered_off", data)

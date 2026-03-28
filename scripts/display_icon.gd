@@ -6,13 +6,15 @@ signal modifier_clicked(resource_data)
 
 var data
 
+@onready var hover_outline = $HoverOutline
 
-@onready var hover_glow = $HoverGlow
 
 func setup(resource_data):
 	data = resource_data
 	$Icon.texture = data.icon
-	hover_glow.visible = false
+	
+	if hover_outline and hover_outline.material:
+		hover_outline.material = hover_outline.material.duplicate()
 
 
 func _gui_input(event):
@@ -21,10 +23,14 @@ func _gui_input(event):
 
 
 func _on_mouse_entered():
-	hover_glow.visible = true
+	if hover_outline and hover_outline.material:
+		hover_outline.material.set_shader_parameter("color", Color(1, 1, 1, 1))
+	
 	emit_signal("hovered", data)
 
 
 func _on_mouse_exited():
-	hover_glow.visible = false
+	if hover_outline and hover_outline.material:
+		hover_outline.material.set_shader_parameter("color", Color(1, 1, 1, 0))
+	
 	emit_signal("hovered_off", data)

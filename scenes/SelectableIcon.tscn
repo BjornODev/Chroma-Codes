@@ -1,31 +1,34 @@
-[gd_scene load_steps=4 format=3 uid="uid://6ycitbu6by6e"]
+[gd_scene load_steps=5 format=3 uid="uid://6ycitbu6by6e"]
 
 [ext_resource type="Script" uid="uid://bq7j1g4hrdtwn" path="res://scripts/selectable_icon.gd" id="1_jto20"]
-[ext_resource type="Shader" uid="uid://cvih1xjh0ydgu" path="res://shaders/pulse_glow.gdshader" id="2_72pab"]
+[ext_resource type="Shader" uid="uid://bjvc6laf2083l" path="res://shaders/dashed_outline.gdshader" id="2_72pab"]
+[ext_resource type="Texture2D" uid="uid://b5ht02ih168t3" path="res://assets/item_icons/remedy.svg" id="3_aw2sw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aw2sw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_72pab"]
 shader = ExtResource("2_72pab")
-shader_parameter/glow_color = Color(0.69410706, 0.86665344, 0.5450897, 1)
-shader_parameter/intensity = 0.6999999999999997
-shader_parameter/spread = 1.0
-shader_parameter/pulse_speed = 1.0
+shader_parameter/radius = 40.0
+shader_parameter/thickness = 10.0
+shader_parameter/color = Color(1, 1, 1, 0.024940118)
+shader_parameter/dash_count = 10.0
+shader_parameter/dash_ratio = 0.5
+shader_parameter/speed = 0.8
 
 [node name="PanelContainer" type="PanelContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_jto20")
 
+[node name="HoverOutline" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_72pab")
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("3_aw2sw")
+expand_mode = 1
+
 [node name="Icon" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 expand_mode = 1
-
-[node name="HoverGlow" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_aw2sw")
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-mouse_filter = 2
-color = Color(0.8039093, 0.90979004, 0.7097931, 0.6917382)
 
 [node name="SelectionOverlay" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(100, 100)
@@ -33,5 +36,7 @@ layout_mode = 2
 mouse_filter = 2
 color = Color(0.46273804, 0.73332214, 0.25097656, 0.5991849)
 
+[connection signal="mouse_entered" from="HoverOutline" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="HoverOutline" to="." method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="Icon" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Icon" to="." method="_on_mouse_exited"]

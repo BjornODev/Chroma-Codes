@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://csbh45l8r6xr6"]
+
+[ext_resource type="Script" uid="uid://db1rt8luh8fjx" path="res://scripts/reward_column.gd" id="1_4h7nl"]
+[ext_resource type="PackedScene" uid="uid://eyi3t4tenuqt" path="res://scenes/RewardIcon.tscn" id="2_1k1lo"]
+
+[node name="RewardColumn" type="PanelContainer"]
+offset_right = 150.0
+offset_bottom = 104.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_4h7nl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="ItemIcon" parent="VBoxContainer" instance=ExtResource("2_1k1lo")]
+layout_mode = 2
+
+[node name="ModifierIcon" parent="VBoxContainer" instance=ExtResource("2_1k1lo")]
+layout_mode = 2

@@ -10,6 +10,6 @@ icon = ExtResource("1_d5mb0")
 trigger = {
 "black": 1
 }
-effect = {
-"goop": 1
+base_effect = {
+"Goop": 1
 }

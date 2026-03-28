@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=24 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="2_1iba3"]
@@ -16,6 +16,7 @@
 [ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="13_cvmbd"]
 [ext_resource type="Texture2D" uid="uid://delxlc11h4gkr" path="res://assets/button_unpressed.svg" id="17_bb450"]
 [ext_resource type="Texture2D" uid="uid://5ee8tiys5wfv" path="res://assets/button_pressed.svg" id="18_nfivy"]
+[ext_resource type="Script" uid="uid://dxt827h5admkd" path="res://scripts/ChaosBar.gd" id="19_1nqs0"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="19_nfivy"]
 [ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="21_1iba3"]
 
@@ -117,7 +118,7 @@ offset_bottom = 1080.0
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="SecretCodeDisplay" type="Node2D" parent="."]
-position = Vector2(-640, 288)
+position = Vector2(0, -491)
 script = ExtResource("2_3p2gp")
 
 [node name="BoardManager" type="Node2D" parent="."]
@@ -228,6 +229,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HUDLayer" type="CanvasLayer" parent="."]
+layer = 10
 
 [node name="HUDRoot" type="Control" parent="HUDLayer"]
 layout_mode = 3
@@ -256,8 +258,20 @@ grow_horizontal = 0
 theme_override_constants/separation = 8
 alignment = 2
 
-[node name="PanelContainer" parent="HUDLayer" instance=ExtResource("21_1iba3")]
+[node name="Tooltip" parent="HUDLayer" instance=ExtResource("21_1iba3")]
 visible = false
+
+[node name="ChaosMeter" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1895.0
+offset_top = 108.0
+offset_right = -1855.0
+offset_bottom = 148.0
+grow_horizontal = 0
+script = ExtResource("19_1nqs0")
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]

@@ -5,9 +5,9 @@
 
 [resource]
 script = ExtResource("2_ccw71")
-modifier_name = "Lightly Obscure"
+modifier_name = "Obscure"
 icon = ExtResource("1_vkcmy")
 phase = "post_build"
-effect = {
-"obscure": 3
+base_effect = {
+"Obscure": 3
 }

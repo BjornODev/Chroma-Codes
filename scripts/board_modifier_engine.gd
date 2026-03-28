@@ -7,6 +7,8 @@ var modifiers_by_name := {}
 
 var color_counters := {}
 var feedback_counters := {}   # keyword counters
+var prev_color_counters := {}
+var prev_feedback_counters := {}
 signal color_counters_updated(counters: Dictionary)
 signal feedback_counters_updated(counters: Dictionary)
 
@@ -44,9 +46,12 @@ func disable_modifier(modifier):
 
 func _ready() -> void:
 	initialize()
+#	activate_modifier_by_name("Green Spike")
+#	activate_modifier_by_name("Wide Board")
 
 func initialize():
-	load_modifiers()
+	if all_modifiers.size() == 0:
+		load_modifiers()
 	
 	# Example: auto-activate first modifier for testing
 #	if all_modifiers.size() > 0:
@@ -90,11 +95,25 @@ func load_modifiers():
 
 func activate_modifier_by_name(name : String):
 	if not modifiers_by_name.has(name):
-		print("Modifier not found:", name)
 		return
+	    
+	var existing = null
 	
-	active_modifiers.append(modifiers_by_name[name])
-	print("Activated modifier:", name)
+	for mod in active_modifiers:
+		if mod.modifier_name == name:
+			existing = mod
+			break
+	
+	if existing:
+		existing.level += 1
+		print(name, " upgraded to level ", existing.level)
+	else:
+		var new_mod = modifiers_by_name[name].duplicate()
+		new_mod.level = 1
+		active_modifiers.append(new_mod)
+		print("Activated modifier:", name)
+
+
 func get_active_modifiers():
 	return active_modifiers
 
@@ -107,15 +126,15 @@ func pre_board_build(board):
 	for modifier in active_modifiers:
 		if modifier in disabled_modifiers_this_round:
 			continue
-		if modifier.phase == "pre_build" and modifier.effect != null:
-			apply_effect(board, modifier.effect)
+		if modifier.phase == "pre_build" and modifier.get_scaled_effect != null:
+			apply_effect(board, modifier.get_scaled_effect())
 
 func post_board_build(board):
 	for modifier in active_modifiers:
 		if modifier in disabled_modifiers_this_round:
 			continue
-		if modifier.phase == "post_build" and modifier.effect != null:
-			apply_effect(board, modifier.effect)
+		if modifier.phase == "post_build" and modifier.get_scaled_effect() != null:
+			apply_effect(board, modifier.get_scaled_effect())
 
 # =========================
 # RUNTIME PROCESSING
@@ -132,9 +151,9 @@ func process_row_submission(board, guess, result):
 	for modifier in active_modifiers:
 		if modifier in disabled_modifiers_this_round:
 			continue
-		if modifier.effect != null and modifier.effect.has("goop"):
-			var multiplier = modifier.effect["goop"]
-			spawn_goop_from_black(board, black_this_row * multiplier)
+		if modifier.base_effect != null and modifier.base_effect.has("Goop"):
+			var multiplier = modifier.get_scaled_effect()
+			spawn_goop_from_black(board, black_this_row * multiplier["Goop"])
 
 
 func update_color_counters(guess):
@@ -146,23 +165,50 @@ func update_color_counters(guess):
 		
 		if not color_counters.has(color):
 			color_counters[color] = 0
-		
+	
 		color_counters[color] += 1
-		emit_signal("color_counters_updated", color_counters.duplicate())
-
+	emit_signal("color_counters_updated", color_counters.duplicate())
 
 func check_triggers(board):
+	var snap_prev_color = prev_color_counters.duplicate()
+	var snap_prev_feedback = prev_feedback_counters.duplicate()
+	
 	for modifier in active_modifiers:
 		if modifier in disabled_modifiers_this_round:
 			continue
 		if modifier.trigger == null:
 			continue
+		var times = trigger_count(modifier.trigger, snap_prev_color, snap_prev_feedback)
+		if times > 0:
+			for i in range(times):
+				if modifier.get_scaled_effect() != null:
+					apply_effect(board, modifier.get_scaled_effect())
+	
+	prev_color_counters = color_counters.duplicate()
+	prev_feedback_counters = feedback_counters.duplicate()
+
+
+func trigger_count(trigger_block, snap_prev_color, snap_prev_feedback) -> int:
+	if trigger_block == null or trigger_block.is_empty():
+		return 0
+	
+	var times := 0
+	
+	for key in trigger_block.keys():
+		var threshold = trigger_block[key]
 		
-		if trigger_satisfied(modifier.trigger):
-			if modifier.effect != null:
-				apply_effect(board, modifier.effect)
-			
-			reset_trigger(modifier.trigger)
+		if color_counters.has(key):
+			var current = color_counters.get(key, 0)
+			var previous = snap_prev_color.get(key, 0)
+			times = max(times, int(current / threshold) - int(previous / threshold))
+		
+		if feedback_counters.has(key):
+			var current_f = feedback_counters.get(key, 0)
+			var previous_f = snap_prev_feedback.get(key, 0)
+			times = max(times, int(current_f / threshold) - int(previous_f / threshold))
+	
+	return times
+
 
 
 func update_feedback_counters(result):
@@ -177,18 +223,8 @@ func update_feedback_counters(result):
 	
 	feedback_counters["black"] += black
 	feedback_counters["white"] += white
+	
 	emit_signal("feedback_counters_updated", feedback_counters.duplicate())
-
-
-func trigger_satisfied(trigger_block):
-	if trigger_block == null or trigger_block.is_empty():
-		return false
-	
-	for key in trigger_block.keys():
-		if color_counters.get(key, 0) < trigger_block[key] and feedback_counters.get(key, 0) < trigger_block[key]:
-			return false
-	
-	return true
 
 
 func reset_trigger(trigger_block):
@@ -210,18 +246,18 @@ func reset_trigger(trigger_block):
 func apply_effect(board, effect):
 	for key in effect.keys():
 		match key:
-			"wide":
+			"Wide":
 				apply_wide(board, effect[key])
 			
-			"trapped":
+			"Trapped":
 				spawn_traps(board, effect[key])
 			
-			"sudden_spike":
+			"Sudden Spike":
 				spawn_spikes(board, effect[key])
 			
-			"obscure":
+			"Obscure":
 				spawn_obscure(board, effect[key])
-			"short":
+			"Short":
 				apply_short(board, effect[key])
 # =========================
 # WIDE (Pre-Build Effect)
@@ -322,7 +358,7 @@ func spawn_goop_from_black(board, black_count):
 		goop.is_special = true
 		goop.is_copy = true
 		goop.special_type = "goop"
-		goop.peg_id = 0
+		goop.peg_id = -1
 		goop.setup_visuals()
 		
 		# IMPORTANT: configure BEFORE adding to scene

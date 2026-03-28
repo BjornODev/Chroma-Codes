@@ -3,7 +3,7 @@ extends Node2D
 
 @onready var items_hud = $HUDLayer/HUDRoot/ItemsHUD
 @onready var modifiers_hud = $HUDLayer/HUDRoot/ModifiersHUD
-@onready var tooltip = $HUDLayer/PanelContainer
+@onready var tooltip = $HUDLayer/Tooltip
 @onready var crt_filter = $CanvasLayer/CRTFilter
 
 func _ready():
@@ -19,7 +19,13 @@ func _process(delta: float) -> void:
 
 
 func populate_hud():
-
+	# Clear old icons first
+	for child in items_hud.get_children():
+		child.queue_free()
+	for child in modifiers_hud.get_children():
+		child.queue_free()
+	
+	
 	# Items (top left)
 	for item in ItemManager.player_items:
 		var icon = preload("res://scenes/DisplayIcon.tscn").instantiate()

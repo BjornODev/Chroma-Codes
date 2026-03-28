@@ -8,6 +8,6 @@ script = ExtResource("2_kwcdq")
 modifier_name = "Wide Board"
 icon = ExtResource("1_xyogv")
 phase = "pre_build"
-effect = {
-"wide": 1
+base_effect = {
+"Wide": 1
 }

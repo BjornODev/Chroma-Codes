@@ -124,7 +124,7 @@ func finish_drag():
 			
 			if replace_mode:
 				replaces_left -= 1
-				peg_being_dragged.update_shader_value(16)
+				peg_being_dragged.update_shader_value(50)
 				edited_rows[peg_slot_found.row] = true
 				
 				print("Replacements left:", replaces_left)

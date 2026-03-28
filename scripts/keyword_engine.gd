@@ -63,3 +63,8 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 				heal_peg.setup_visuals()
 				
 				peg_manager_reference.player_hand_reference.add_special_peg(heal_peg)
+		"Cleanse":
+			popup_reference.show_popup(
+				"[center][b][color=#00FF44]CLEANSE %d[/color][/b][/center]" % final_value
+			)
+			ChaosManager.cleanse_chaos(final_value)
