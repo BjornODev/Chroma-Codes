@@ -58,8 +58,8 @@ func toggle_mult(state):
 
 
 func mult_increase(amount):
-	mult_label.text = "Multiplier: " + str(amount) + "x"
+	mult_label.text = "Multiplier: " + str(amount) + "x "
 
 
 func mult_reset():
-	mult_label.text = "Multiplier: 1x"
+	mult_label.text = "Multiplier: 1x "

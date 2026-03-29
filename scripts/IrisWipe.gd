@@ -42,6 +42,10 @@ func iris_close(world_pos: Vector2):
 
 
 func iris_open(world_pos: Vector2):
+	if not shader_rect or not shader_rect.material:
+		emit_signal("opened")
+		return
+	
 	visible = true
 	is_animating = true
 
@@ -51,14 +55,21 @@ func iris_open(world_pos: Vector2):
 
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_interval(0.05)
 	tween.tween_method(
 		func(val): shader_rect.material.set_shader_parameter("radius", val),
 		0.0,
 		SCREEN_DIAGONAL_HALF,
-		1.5
+		0.6
 	)
 	await tween.finished
-	visible = false
 	is_animating = false
 	emit_signal("opened")
+
+
+func instant_close():
+	visible = true
+	if not shader_rect or not shader_rect.material:
+		return
+	shader_rect.material.set_shader_parameter("radius", 0.0)

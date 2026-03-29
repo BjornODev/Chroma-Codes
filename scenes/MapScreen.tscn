@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dmpklyo2tmuv6"]
+[gd_scene load_steps=18 format=3 uid="uid://dmpklyo2tmuv6"]
 
 [ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/IrisWipe.gd" id="1_e0ph6"]
 [ext_resource type="Script" uid="uid://txb2pir8wxjd" path="res://scripts/MapScreen.gd" id="1_k1etw"]
@@ -6,6 +6,13 @@
 [ext_resource type="Script" uid="uid://do4yr6rvliv4k" path="res://scripts/CautionOverlay.gd" id="3_jyaso"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="5_cehh4"]
 [ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="5_sqypw"]
+[ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="7_ch6n0"]
+[ext_resource type="Script" uid="uid://dxt827h5admkd" path="res://scripts/ChaosBar.gd" id="8_q7c8e"]
+[ext_resource type="Script" uid="uid://bwce2aqtv3mcl" path="res://scripts/background_layer.gd" id="9_i6ni7"]
+[ext_resource type="Texture2D" uid="uid://c8u5amc2052kk" path="res://assets/backgrounds/background_image_0.jpg" id="10_jd80c"]
+[ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="11_0q6xy"]
+[ext_resource type="Texture2D" uid="uid://djsed6bun1tnn" path="res://assets/backgrounds/background_image_3.jpg" id="12_8t4ed"]
+[ext_resource type="Shader" uid="uid://df3pi3khvsebn" path="res://shaders/lava_lamp.gdshader" id="13_sd4vv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cehh4"]
 shader = ExtResource("5_sqypw")
@@ -36,6 +43,37 @@ shader = ExtResource("2_lb6md")
 shader_parameter/radius = 0.0
 shader_parameter/center = Vector2(0.5, 0.5)
 shader_parameter/screen_size = Vector2(1920, 1080)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yn8di"]
+shader = ExtResource("11_0q6xy")
+shader_parameter/screen_height = 2160.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 1.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 1.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tttdm"]
+shader = ExtResource("13_sd4vv")
+shader_parameter/top = 1.0
+shader_parameter/bottom = 0.0
+shader_parameter/blob_threshold = 1.5
+shader_parameter/random_seed = 0.0
+shader_parameter/blob_scale_x = 2.0
+shader_parameter/blob_scale_y = 2.0
+shader_parameter/blobs_enabled = true
+shader_parameter/blob_speed = 1.0
+shader_parameter/background_edge = Color(0.1, 0, 0.2, 1)
+shader_parameter/background_center = Color(0.5, 0, 0.8, 1)
+shader_parameter/background_alpha = 1.0
+shader_parameter/blob_top = Color(1, 0.4, 0.4, 1)
+shader_parameter/blob_bottom = Color(1, 1, 0.3, 1)
+shader_parameter/blob_alpha = 1.0
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -124,7 +162,7 @@ offset_bottom = 1080.0
 mouse_filter = 2
 
 [node name="IrisWipe" type="CanvasLayer" parent="."]
-layer = 2
+layer = 15
 script = ExtResource("1_e0ph6")
 
 [node name="ShaderRect" type="ColorRect" parent="IrisWipe"]
@@ -134,6 +172,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -144,3 +183,81 @@ material = SubResource("ShaderMaterial_cehh4")
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="HUDRoot" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemsHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+theme_override_constants/separation = 20
+
+[node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1820.0
+offset_top = 20.0
+offset_right = 1860.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="Tooltip" parent="HUDLayer" instance=ExtResource("7_ch6n0")]
+visible = false
+
+[node name="ChaosMeter" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1895.0
+offset_top = 100.0
+offset_right = -1855.0
+offset_bottom = 140.0
+grow_horizontal = 0
+script = ExtResource("8_q7c8e")
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("9_i6ni7")
+
+[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("10_jd80c")
+
+[node name="Background" type="TextureRect" parent="BackgroundLayer"]
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_yn8di")
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("12_8t4ed")
+metadata/_edit_lock_ = true
+
+[node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+visible = false
+material = SubResource("ShaderMaterial_tttdm")
+offset_right = 1920.0
+offset_bottom = 1080.0

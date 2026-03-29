@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=27 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/main.gd" id="1_rvslj"]
 [ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="2_1iba3"]
@@ -18,7 +18,9 @@
 [ext_resource type="Texture2D" uid="uid://5ee8tiys5wfv" path="res://assets/button_pressed.svg" id="18_nfivy"]
 [ext_resource type="Script" uid="uid://dxt827h5admkd" path="res://scripts/ChaosBar.gd" id="19_1nqs0"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="19_nfivy"]
+[ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/IrisWipe.gd" id="20_1iba3"]
 [ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="21_1iba3"]
+[ext_resource type="Shader" uid="uid://dhnljtdx7tjn8" path="res://shaders/IrisWipe.gdshader" id="21_yxlcp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
 shader = ExtResource("2_1iba3")
@@ -78,6 +80,12 @@ shader_parameter/vignette_opacity = 0.5
 [sub_resource type="Theme" id="Theme_1nqs0"]
 default_font = ExtResource("19_nfivy")
 default_font_size = 20
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xa025"]
+shader = ExtResource("21_yxlcp")
+shader_parameter/radius = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/screen_size = Vector2(1920, 1080)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rvslj")
@@ -267,11 +275,37 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -1895.0
-offset_top = 108.0
+offset_top = 100.0
 offset_right = -1855.0
-offset_bottom = 148.0
+offset_bottom = 140.0
 grow_horizontal = 0
 script = ExtResource("19_1nqs0")
+
+[node name="IrisWipe" type="CanvasLayer" parent="."]
+layer = 15
+script = ExtResource("20_1iba3")
+
+[node name="ShaderRect" type="ColorRect" parent="IrisWipe"]
+material = SubResource("ShaderMaterial_xa025")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BlackFrameLayer" type="CanvasLayer" parent="."]
+layer = 15
+
+[node name="BlackFrame" type="ColorRect" parent="BlackFrameLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]

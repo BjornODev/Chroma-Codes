@@ -52,19 +52,36 @@ func _build_bar():
 	segment_column.add_theme_constant_override("separation", SEGMENT_GAP)
 	add_child(segment_column)
 
-	# Build top to bottom visually (segment index 0 = bottom of meter)
 	for i in range(SEGMENT_COUNT - 1, -1, -1):
 		var chevron = TextureRect.new()
 		chevron.texture = chevron_texture
 		chevron.custom_minimum_size = Vector2(SEGMENT_WIDTH, SEGMENT_HEIGHT)
 		chevron.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		chevron.stretch_mode = TextureRect.STRETCH_SCALE
+		chevron.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		chevron.modulate = Color(1.0, 1.0, 1.0, SEGMENT_OFF_OPACITY)
 		segment_column.add_child(chevron)
 		segments.insert(0, chevron)
 
 	await get_tree().process_frame
 	_overlay_dollar_labels(segment_column)
+
+	await get_tree().process_frame
+	_sync_to_current_chaos()
+
+
+func _sync_to_current_chaos():
+	current_chaos = ChaosManager.chaos
+	for i in range(SEGMENT_COUNT):
+		if i < current_chaos:
+			segments[i].modulate = _get_segment_color(i)
+		else:
+			segments[i].modulate = Color(1.0, 1.0, 1.0, SEGMENT_OFF_OPACITY)
+
+	for entry in dollar_labels:
+		var threshold_index = entry.index
+		if not ChaosManager.dollars_active[threshold_index]:
+			entry.label.add_theme_color_override("font_color", DOLLAR_LOST_COLOR)
+
 
 
 func _overlay_dollar_labels(segment_column: VBoxContainer):
@@ -126,7 +143,7 @@ func _animate_segments_on(from: int, to: int):
 	for i in range(from, to):
 		if i >= SEGMENT_COUNT:
 			break
-		var delay = (i - from) * 0.075
+		var delay = (i - from) * 0.115
 		var seg = segments[i]
 		var color = _get_segment_color(i)
 

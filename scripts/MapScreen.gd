@@ -23,6 +23,8 @@ func _ready():
 	if MapManager.boss_ready:
 		MapManager.boss_ready = false
 		_show_caution()
+		iris_wipe.instant_close()
+		await get_tree().create_timer(0.5).timeout
 		iris_wipe.iris_open(MapManager.last_panel_world_pos)
 		await iris_wipe.opened
 		iris_wipe.iris_close(get_viewport().get_visible_rect().size / 2.0)
@@ -30,6 +32,8 @@ func _ready():
 		await get_tree().create_timer(0.5).timeout
 		# get_tree().change_scene_to_file("res://scenes/BossBoard.tscn")
 	elif MapManager.last_panel_world_pos != Vector2.ZERO:
+		iris_wipe.instant_close()
+		await get_tree().create_timer(0.5).timeout
 		iris_wipe.iris_open(MapManager.last_panel_world_pos)
 
 
@@ -76,7 +80,7 @@ func _on_panel_clicked(row: int, col: int, panel_type: String, global_pos: Vecto
 
 	iris_wipe.iris_close(pending_global_pos)
 	await iris_wipe.closed
-	await get_tree().create_timer(0.5).timeout
+#	await get_tree().create_timer(0.5).timeout
 	_load_panel_scene(panel_type)
 
 

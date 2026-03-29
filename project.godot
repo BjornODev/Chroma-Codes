@@ -66,7 +66,7 @@ m={
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0.19999695, 0.19999695, 0.19999695, 1)
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 
 [xogot]
 
@@ -74,11 +74,6 @@ project/editorState=[{
 "column": 0,
 "line": 0,
 "path": "res://scripts/phys_peg.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/peg_manager.gd",
 "type": "file"
 }, {
 "column": 0,
@@ -96,8 +91,8 @@ project/editorState=[{
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 45,
+"column": 28,
+"line": 70,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -196,18 +191,18 @@ project/editorState=[{
 "path": "res://data/resources/item_data.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 56,
+"column": 35,
+"line": 64,
 "path": "res://scripts/pop_up_text.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 195,
+"column": 1,
+"line": 79,
 "path": "res://scripts/ChaosManager.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 16,
+"column": 32,
+"line": 145,
 "path": "res://scripts/ChaosBar.gd",
 "type": "file"
 }, {
@@ -221,8 +216,8 @@ project/editorState=[{
 "path": "res://scripts/MapSystemSetup.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 31,
+"column": 21,
+"line": 65,
 "path": "res://scripts/IrisWipe.gd",
 "type": "file"
 }, {
@@ -236,9 +231,9 @@ project/editorState=[{
 "path": "res://scripts/MapManager.gd",
 "type": "file"
 }, {
-"column": 24,
+"column": 27,
 "current": true,
-"line": 26,
+"line": 34,
 "path": "res://scripts/MapScreen.gd",
 "type": "file"
 }, {

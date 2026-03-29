@@ -14,6 +14,8 @@ var in_game = true
 @onready var damage_overlay = $DamageOverlay
 @onready var bg = $"../BackgroundLayer/ColorRect"
 @onready var fade_rect = $CanvasLayer/FadeOut
+@onready var iris_wipe = $"../IrisWipe"
+@onready var black_frame = $"../BlackFrameLayer/BlackFrame"
 
 var slot_scene
 var feedback_scene
@@ -40,41 +42,38 @@ var scroll_offset := 0.0
 # =========================
 
 func _ready():
+	black_frame.visible = true
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
-	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
-	PopUpText.toggle_mult(true)
+	iris_wipe.instant_close()
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
 	peg_manager_reference = $"../PegManager"
-	print("Items at board start:", item_system.player_items)
+	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
+	PopUpText.toggle_mult(true)
 	BoardModifierEngine.pre_board_build(self)
 	health_text.initialize()
 	health_text.change_health(player_health)
-	print("Modifiers on Board load: ", BoardModifierEngine.active_modifiers)
-	print("Items on Board load: ", ItemManager.player_items)
 	$"../BackgroundLayer".change_background(randi() % 5)
 	KeywordEngine.multiplier = 1
-	KeywordEngine.set_context(
-		self,
-		peg_manager_reference,
-		popup_manager
-	)
-	
+	KeywordEngine.set_context(self, peg_manager_reference, popup_manager)
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)
-	
-	# Create safe rows + one danger row
 	for i in range(soft_row_limit):
 		add_row()
 	for child in get_children():
 		if child is SnapZone:
 			if child.row == 0:
 				child.update_shader_value(50)
-	
 	update_safe_background()
-	
 	BoardModifierEngine.post_board_build(self)
+	await get_tree().create_timer(0.5).timeout
+	black_frame.visible = false
+	call_deferred("_open_iris")
+
+func _open_iris():
+	var pos = MapManager.last_panel_world_pos if MapManager.last_panel_world_pos != Vector2.ZERO else get_viewport().get_visible_rect().size / 2.0
+	iris_wipe.iris_open(pos)
 
 
 # =========================
@@ -810,14 +809,10 @@ func start_next_board():
 
 
 func _on_reward_confirmed(_choice):
-	await fade_out()
-	
+	iris_wipe.iris_close(get_viewport().get_visible_rect().size / 2.0)
 	ChaosManager.cleanse_on_board_clear()
-	ChaosManager.reset_dollars()
-	
+	await iris_wipe.closed
 	get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
-	
-	await fade_in()
 
 
 func fade_out():
