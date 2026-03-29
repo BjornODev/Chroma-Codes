@@ -10,6 +10,9 @@ func start_new_run():
 	run_active = true
 	boards_cleared = 0
 	
+	var seed = randi()
+	MapManager.start_run(seed)
+	
 	reward_pool_items = ItemManager.all_items.duplicate()
 	reward_pool_modifiers = BoardModifierEngine.all_modifiers.duplicate()
 

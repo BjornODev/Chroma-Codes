@@ -1,0 +1,25 @@
+// IrisWipe.gdshader
+// Attach this to a ShaderMaterial on a full-screen ColorRect (black color)
+// The rect covers the whole screen as a CanvasLayer child
+
+shader_type canvas_item;
+
+uniform float radius : hint_range(0.0, 1) = 0.5;
+uniform vec2 center = vec2(0.5, 0.5);
+
+void fragment() {
+	// UV is 0..1, convert center to same space
+	// Use pixel distance from center point
+	vec2 screen_uv = UV;
+	vec2 pixel_pos = screen_uv * vec2(textureSize(TEXTURE, 0));
+	vec2 center_px = center * vec2(textureSize(TEXTURE, 0));
+
+	float dist = length(pixel_pos - center_px);
+
+	// Inside radius = transparent (see through), outside = black
+	if (dist < radius) {
+		discard;
+	}
+
+	COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+}

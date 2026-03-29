@@ -207,9 +207,9 @@ stretch_mode = 0
 [node name="Health Text" parent="." instance=ExtResource("12_cvmbd")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
 
 [node name="CRTFilter" type="ColorRect" parent="CanvasLayer"]
-visible = false
 material = SubResource("ShaderMaterial_mwfav")
 offset_right = 1920.0
 offset_bottom = 1080.0

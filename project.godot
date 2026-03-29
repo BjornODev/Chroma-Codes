@@ -35,6 +35,7 @@ AudioSystem="*res://scenes/music_player.tscn"
 AudioLoader="*res://scripts/music_player.gd"
 RunProgressionManager="*res://scripts/run_progression_manager.gd"
 ChaosManager="*res://scripts/ChaosManager.gd"
+MapManager="*res://scripts/MapManager.gd"
 
 [display]
 
@@ -65,7 +66,7 @@ m={
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+environment/defaults/default_clear_color=Color(0.19999695, 0.19999695, 0.19999695, 1)
 
 [xogot]
 
@@ -91,13 +92,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"current": true,
 "line": 50,
 "path": "res://scripts/board_modifier_engine.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 772,
+"line": 45,
 "path": "res://scripts/board_manager.gd",
 "type": "file"
 }, {
@@ -132,7 +132,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 22,
+"line": 21,
 "path": "res://scripts/main.gd",
 "type": "file"
 }, {
@@ -147,7 +147,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 17,
 "path": "res://scripts/run_progression_manager.gd",
 "type": "file"
 }, {
@@ -197,7 +197,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 56,
 "path": "res://scripts/pop_up_text.gd",
 "type": "file"
 }, {
@@ -215,8 +215,40 @@ project/editorState=[{
 "line": 0,
 "path": "res://scripts/feedback_peg.gd",
 "type": "file"
+}, {
+"column": 0,
+"line": 51,
+"path": "res://scripts/MapSystemSetup.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 31,
+"path": "res://scripts/IrisWipe.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 96,
+"path": "res://scripts/MapPanel.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/MapManager.gd",
+"type": "file"
+}, {
+"column": 24,
+"current": true,
+"line": 26,
+"path": "res://scripts/MapScreen.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 10,
+"path": "res://scripts/CautionOverlay.gd",
+"type": "file"
 }]
 project/breakpoints={
+"res://scripts/IrisWipe.gd": PackedInt32Array(),
 "res://scripts/board_manager.gd": PackedInt32Array(),
 "res://scripts/board_modifier_engine.gd": PackedInt32Array(),
 "res://scripts/item_manager.gd": PackedInt32Array(),

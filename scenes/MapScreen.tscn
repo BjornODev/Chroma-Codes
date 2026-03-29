@@ -1,0 +1,146 @@
+[gd_scene load_steps=9 format=3 uid="uid://dmpklyo2tmuv6"]
+
+[ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/IrisWipe.gd" id="1_e0ph6"]
+[ext_resource type="Script" uid="uid://txb2pir8wxjd" path="res://scripts/MapScreen.gd" id="1_k1etw"]
+[ext_resource type="Shader" uid="uid://dhnljtdx7tjn8" path="res://shaders/IrisWipe.gdshader" id="2_lb6md"]
+[ext_resource type="Script" uid="uid://do4yr6rvliv4k" path="res://scripts/CautionOverlay.gd" id="3_jyaso"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="5_cehh4"]
+[ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="5_sqypw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cehh4"]
+shader = ExtResource("5_sqypw")
+shader_parameter/overlay = false
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.1
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(320, 180)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 0.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.075
+shader_parameter/noise_speed = 50.0
+shader_parameter/static_noise_intensity = 0.0
+shader_parameter/aberration = 0.0
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.150000007125
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.400000019
+shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d1huf"]
+shader = ExtResource("2_lb6md")
+shader_parameter/radius = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/screen_size = Vector2(1920, 1080)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k1etw")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -330.0
+offset_right = 330.0
+offset_bottom = 330.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 6
+
+[node name="CautionOverlay" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("3_jyaso")
+
+[node name="Control" type="Control" parent="CautionOverlay"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG" type="ColorRect" parent="CautionOverlay/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -940.0
+offset_top = -520.0
+offset_right = 940.0
+offset_bottom = 520.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CautionLabel" type="Label" parent="CautionOverlay/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -11.5
+offset_right = 21.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_cehh4")
+text = "Label"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CautionOverlay/Control/CautionLabel"]
+layer = 100
+
+[node name="CRTFilter" type="ColorRect" parent="CautionOverlay/Control/CautionLabel/CanvasLayer"]
+visible = false
+material = SubResource("ShaderMaterial_cehh4")
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="IrisWipe" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource("1_e0ph6")
+
+[node name="ShaderRect" type="ColorRect" parent="IrisWipe"]
+material = SubResource("ShaderMaterial_d1huf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="CRTFilter" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_cehh4")
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2

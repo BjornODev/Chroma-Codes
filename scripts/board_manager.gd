@@ -43,6 +43,7 @@ func _ready():
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
 	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
+	PopUpText.toggle_mult(true)
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
 	peg_manager_reference = $"../PegManager"
@@ -794,6 +795,7 @@ func start_next_board():
 		peg_manager_reference,
 		popup_manager
 	)
+	popup_manager.mult_reset()
 	BoardModifierEngine.color_counters.clear()
 	BoardModifierEngine.feedback_counters.clear()
 	generate_code()
@@ -813,7 +815,7 @@ func _on_reward_confirmed(_choice):
 	ChaosManager.cleanse_on_board_clear()
 	ChaosManager.reset_dollars()
 	
-	start_next_board()
+	get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
 	
 	await fade_in()
 

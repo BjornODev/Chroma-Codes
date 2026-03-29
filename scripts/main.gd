@@ -16,6 +16,10 @@ func _process(delta: float) -> void:
 			crt_filter.visible = true
 		else:
 			crt_filter.visible = false
+	
+	if Input.is_action_just_pressed("ui_select"):
+		get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
+
 
 
 func populate_hud():

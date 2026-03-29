@@ -50,5 +50,16 @@ func _animate_popup(text: String):
 	label.visible = false
 
 
+func toggle_mult(state):
+	if state:
+		mult_label.visible = true
+	else:
+		mult_label.visible = false
+
+
 func mult_increase(amount):
 	mult_label.text = "Multiplier: " + str(amount) + "x"
+
+
+func mult_reset():
+	mult_label.text = "Multiplier: 1x"
