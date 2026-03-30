@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4mi8uw1dhtbe"]
+
+[ext_resource type="Script" uid="uid://begirm1qthdbt" path="res://scripts/ui/DollarDisplay.gd" id="1_vgmpa"]
+
+[node name="CenterContainer" type="CenterContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_vgmpa")
+
+[node name="DotsContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1

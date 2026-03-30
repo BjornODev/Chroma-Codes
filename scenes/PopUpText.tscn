@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bjcxyo7gyqgoc"]
 
-[ext_resource type="Script" uid="uid://dohj0uoqoio1c" path="res://scripts/pop_up_text.gd" id="1_tyklc"]
+[ext_resource type="Script" uid="uid://dohj0uoqoio1c" path="res://scripts/ui/pop_up_text.gd" id="1_tyklc"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="2_oddxa"]
 
 [sub_resource type="Theme" id="Theme_1p0ck"]

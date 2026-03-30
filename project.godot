@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Mastermind Roguelite"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/MapScreen.tscn"
 config/features=PackedStringArray("4.5", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
@@ -26,16 +26,16 @@ buses/default_bus_layout=""
 
 [autoload]
 
-ItemManager="*res://scripts/item_manager.gd"
-BoardModifierEngine="*res://scripts/board_modifier_engine.gd"
-PatternEngine="*res://scripts/pattern_engine.gd"
+ItemManager="*res://scripts/basics/item_manager.gd"
+BoardModifierEngine="*res://scripts/basics/board_modifier_engine.gd"
+PatternEngine="*res://scripts/basics/pattern_engine.gd"
 PopUpText="*res://scenes/PopUpText.tscn"
-KeywordEngine="*res://scripts/keyword_engine.gd"
+KeywordEngine="*res://scripts/basics/keyword_engine.gd"
 AudioSystem="*res://scenes/music_player.tscn"
 AudioLoader="*res://scripts/music_player.gd"
-RunProgressionManager="*res://scripts/run_progression_manager.gd"
-ChaosManager="*res://scripts/ChaosManager.gd"
-MapManager="*res://scripts/MapManager.gd"
+RunProgressionManager="*res://scripts/basics/run_progression_manager.gd"
+ChaosManager="*res://scripts/basics/ChaosManager.gd"
+MapManager="*res://scripts/map_screen/MapManager.gd"
 
 [display]
 
@@ -73,62 +73,12 @@ environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 project/editorState=[{
 "column": 0,
 "line": 0,
-"path": "res://scripts/phys_peg.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/item_manager.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/snap_zone.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 50,
-"path": "res://scripts/board_modifier_engine.gd",
-"type": "file"
-}, {
-"column": 28,
-"line": 70,
-"path": "res://scripts/board_manager.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 69,
-"path": "res://scripts/keyword_engine.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
 "path": "res://scripts/obscure_obstacle.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 110,
-"path": "res://scripts/player_hand.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/pattern_engine.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/input_manager.gd",
 "type": "file"
 }, {
 "column": 0,
 "line": 0,
 "path": "res://scripts/music_player.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 21,
-"path": "res://scripts/main.gd",
 "type": "file"
 }, {
 "column": 0,
@@ -142,38 +92,8 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 17,
-"path": "res://scripts/run_progression_manager.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/display_icon.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 72,
-"path": "res://scripts/rewards_selection_ui.gd",
-"type": "file"
-}, {
-"column": 0,
 "line": 0,
 "path": "res://scripts/selectable_icon.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/reward_icon.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/tooltip_panel.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/reward_column.gd",
 "type": "file"
 }, {
 "column": 0,
@@ -191,55 +111,55 @@ project/editorState=[{
 "path": "res://data/resources/item_data.gd",
 "type": "file"
 }, {
-"column": 35,
-"line": 64,
-"path": "res://scripts/pop_up_text.gd",
-"type": "file"
-}, {
-"column": 1,
-"line": 79,
-"path": "res://scripts/ChaosManager.gd",
-"type": "file"
-}, {
-"column": 32,
-"line": 145,
-"path": "res://scripts/ChaosBar.gd",
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/board_modifier_engine.gd",
 "type": "file"
 }, {
 "column": 0,
 "line": 0,
-"path": "res://scripts/feedback_peg.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 51,
-"path": "res://scripts/MapSystemSetup.gd",
-"type": "file"
-}, {
-"column": 21,
-"line": 65,
-"path": "res://scripts/IrisWipe.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 96,
-"path": "res://scripts/MapPanel.gd",
+"path": "res://scripts/basics/slot.gd",
 "type": "file"
 }, {
 "column": 0,
 "line": 0,
-"path": "res://scripts/MapManager.gd",
+"path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
-"column": 27,
+"column": 0,
+"line": 0,
+"path": "res://scripts/reward_screen/RewardScreenIntegration.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/reward_screen/RewardScreenNotes.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 68,
+"path": "res://scripts/reward_screen/rewards_selection_ui.gd",
+"type": "file"
+}, {
+"column": 23,
+"line": 0,
+"path": "res://scripts/ui/DollarDisplay.gd",
+"type": "file"
+}, {
+"column": 18,
+"line": 31,
+"path": "res://scripts/reward_screen/RunSummary.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 126,
+"path": "res://scripts/basics/run_progression_manager.gd",
+"type": "file"
+}, {
+"column": 38,
 "current": true,
-"line": 34,
-"path": "res://scripts/MapScreen.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 10,
-"path": "res://scripts/CautionOverlay.gd",
+"line": 812,
+"path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }]
 project/breakpoints={
@@ -252,5 +172,7 @@ project/breakpoints={
 "res://scripts/peg.gd": PackedInt32Array(),
 "res://scripts/peg_manager.gd": PackedInt32Array(),
 "res://scripts/phys_peg.gd": PackedInt32Array(),
-"res://scripts/reward_column.gd": PackedInt32Array()
+"res://scripts/reward_column.gd": PackedInt32Array(),
+"res://scripts/reward_screen/rewards_selection_ui.gd": PackedInt32Array(),
+"res://scripts/run_progression_manager.gd": PackedInt32Array()
 }

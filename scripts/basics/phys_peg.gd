@@ -33,7 +33,7 @@ var shader_material: ShaderMaterial
 func _ready():
 	get_parent().connect_peg_signals(self)
 	add_to_group("pegs")
-	peg_database_reference = preload("res://scripts/peg_data.gd")
+	peg_database_reference = preload("res://scripts/basics/peg_data.gd")
 	peg_sprite2D = $Sprite2D
 	if !is_copy and not is_special:
 		counter.visible = true

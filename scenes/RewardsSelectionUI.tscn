@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://02784uexgte2"]
+[gd_scene load_steps=7 format=3 uid="uid://02784uexgte2"]
 
-[ext_resource type="Script" uid="uid://boqib7fe21n2b" path="res://scripts/rewards_selection_ui.gd" id="1_g67pf"]
+[ext_resource type="Script" uid="uid://boqib7fe21n2b" path="res://scripts/reward_screen/rewards_selection_ui.gd" id="1_g67pf"]
+[ext_resource type="PackedScene" uid="uid://c4mi8uw1dhtbe" path="res://scenes/DollarDisplay.tscn" id="2_53r7l"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="2_g67pf"]
+[ext_resource type="PackedScene" uid="uid://47l4xibsb37" path="res://scenes/RunSummary.tscn" id="4_20cyt"]
 
 [sub_resource type="Theme" id="Theme_1iufq"]
 
@@ -21,7 +23,7 @@ anchor_bottom = 0.5
 offset_left = -220.0
 offset_top = -220.0
 offset_right = 220.0
-offset_bottom = 220.0
+offset_bottom = 460.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_1iufq")
@@ -42,6 +44,9 @@ grow_vertical = 2
 theme_override_constants/separation = 50
 alignment = 1
 
+[node name="DollarDisplay" parent="VBoxContainer" instance=ExtResource("2_53r7l")]
+layout_mode = 2
+
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 35
@@ -51,5 +56,8 @@ alignment = 1
 layout_mode = 2
 theme = SubResource("Theme_53r7l")
 text = "Confirm"
+
+[node name="RunSummary" parent="VBoxContainer" instance=ExtResource("4_20cyt")]
+layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/ConfirmButton" to="." method="_on_confirmation_button_pressed"]

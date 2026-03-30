@@ -16,20 +16,12 @@ var is_locked: bool = false
 @onready var lock_overlay = $LockOverlay
 
 # Placeholder icon colors per type — swap with real textures later
-const TYPE_ICON_COLORS := {
-	"Board": Color("#000000"),
-	"Shop": Color("#FFD700"),
-	"Event": Color("#FF69B4"),
-	"Forge": Color("#FF8C00"),
-	"Gamble": Color("#00FFFF"),
-}
-
-const TYPE_SHAPES := {
-	"Board": "rect",
-	"Shop": "circle",
-	"Event": "diamond",
-	"Forge": "triangle",
-	"Gamble": "star",
+const TYPE_ICONS := {
+	"Board": preload("res://assets/ui/Board.svg"),
+	"Shop": preload("res://assets/ui/Shop.svg"),
+	"Event": preload("res://assets/ui/Event.svg"),
+	"Forge": preload("res://assets/ui/Forge.svg"),
+	"Gamble": preload("res://assets/ui/Gamble.svg"),
 }
 
 
@@ -53,7 +45,9 @@ func _apply_visuals():
 		color_rect.color = panel_color
 		lock_overlay.visible = false
 	
-	icon_rect.color = TYPE_ICON_COLORS.get(panel_type, Color.WHITE)
+	icon_rect.texture = TYPE_ICONS.get(panel_type, null)
+	icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	modulate = Color.WHITE
 
 

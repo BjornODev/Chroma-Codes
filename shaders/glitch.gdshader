@@ -147,8 +147,8 @@ void fragment()
         text.rgb += clamp(random((ceil(uv * resolution) / resolution) + fract(TIME)).x, 0.0, 1.0) * static_noise_intensity;
     }
 
-    text.rgb *= border(uv);
-    text.rgb *= vignette(uv);
+    // text.rgb *= border(uv);
+    // text.rgb *= vignette(uv);
 
     if (clip_warp){
         text.a = border(uv);

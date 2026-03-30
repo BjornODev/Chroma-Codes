@@ -6,7 +6,6 @@ extends Node2D
 
 @export var soft_row_limit := 5
 @export var damage_per_row := 1
-@export var player_health := 5
 
 var in_game = true
 
@@ -23,7 +22,6 @@ var radar_blip_scene = preload("res://scenes/RadarBlip.tscn")
 
 var peg_manager_reference
 @onready var popup_manager = $"../PopUpText"
-@onready var health_text = $"../Health Text"
 
 var secret_code = []
 var board_state = []
@@ -45,6 +43,7 @@ func _ready():
 	black_frame.visible = true
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
+	RunProgressionManager.reset_board_stats()
 	iris_wipe.instant_close()
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
@@ -52,8 +51,6 @@ func _ready():
 	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
 	PopUpText.toggle_mult(true)
 	BoardModifierEngine.pre_board_build(self)
-	health_text.initialize()
-	health_text.change_health(player_health)
 	$"../BackgroundLayer".change_background(randi() % 5)
 	KeywordEngine.multiplier = 1
 	KeywordEngine.set_context(self, peg_manager_reference, popup_manager)
@@ -411,7 +408,11 @@ func submit_guess():
 	# Save guess
 	for c in range(columns):
 		board_state[row_index][c] = guess[c]
-
+	
+	print("About to record row submitted")
+	RunProgressionManager.record_row_submitted(guess)
+	print("Recorded row submitted:", RunProgressionManager.board_rows_submitted)
+	
 	var result = evaluate_guess(guess)
 	
 	for r in guess:
@@ -442,7 +443,7 @@ func submit_guess():
 		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
-		if player_health > 0:
+		if RunProgressionManager.player_health > 0:
 			popup_manager.show_popup(
 				"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 			)
@@ -490,7 +491,7 @@ func submit_guess():
 	peg_manager_reference.cur_row += 1
 	
 	ChaosManager.fire_chaos_event()
-	
+	ChaosManager.add_chaos(1)
 	for child in get_children():
 		if child is SnapZone:
 			if child.row == peg_manager_reference.cur_row:
@@ -509,19 +510,19 @@ func submit_guess():
 # =========================
 
 func apply_damage(damage):
-	player_health -= damage
+	RunProgressionManager.record_damage_taken(damage)
 	ChaosManager.add_chaos_from_damage()
-	print("Health:", player_health)
+	print("Health:", RunProgressionManager.player_health)
 	
 	flash_damage()
-	health_text.change_health(player_health)
+	RunProgressionManager.remove_health(damage)
 	AudioLoader.play_sound("damage")
 	item_system.emit_game_event("health_lost", {
 		"amount": damage_per_row,
-		"health": player_health
+		"health": RunProgressionManager.player_health
 	})
 
-	if player_health <= 0:
+	if RunProgressionManager.player_health <= 0:
 		print("Game Over")
 		in_game = false
 		popup_manager.show_popup(
@@ -624,7 +625,7 @@ func re_evaluate_row(row_index):
 		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
-		if player_health > 0:
+		if RunProgressionManager.player_health > 0:
 			popup_manager.show_popup(
 						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 					)
@@ -733,9 +734,8 @@ func generate_code():
 
 
 func apply_heal(amount):
-	player_health += amount
 	print("Healed:", amount)
-	health_text.change_health(player_health)
+	RunProgressionManager.add_health(amount)
 
 	popup_manager.show_popup(
 		"[center][b][color=#ED7117]+%d HEALTH[/color][/b][/center]" % amount

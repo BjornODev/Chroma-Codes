@@ -6,7 +6,7 @@ signal dollar_flickered(threshold_index: int)
 
 const MAX_CHAOS := 30
 const CHAOS_PER_DAMAGE := 3
-const CHAOS_CLEAR_ON_BOARD := 3
+const CHAOS_CLEAR_ON_BOARD := 5
 
 # Thresholds are OVER/UNDER — if chaos > threshold, dollar is lost
 # Stored as the segment count after which the dollar is lost

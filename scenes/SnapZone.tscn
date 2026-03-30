@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bgsqf585lrwlq"]
 
-[ext_resource type="Script" uid="uid://bqulclgokawqe" path="res://scripts/snap_zone.gd" id="1_04kem"]
+[ext_resource type="Script" uid="uid://bqulclgokawqe" path="res://scripts/basics/snap_zone.gd" id="1_04kem"]
 [ext_resource type="Shader" uid="uid://eq3ddakaeydg" path="res://shaders/peg_outline.gdshader" id="2_7fwlt"]
 [ext_resource type="Texture2D" uid="uid://duvbdmqkitnu2" path="res://assets/circle.svg" id="2_s4yuw"]
 [ext_resource type="Shader" uid="uid://cvih1xjh0ydgu" path="res://shaders/pulse_glow.gdshader" id="3_38nbk"]

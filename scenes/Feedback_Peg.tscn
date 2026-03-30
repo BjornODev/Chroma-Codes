@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dtprhtpskf5sw"]
 
 [ext_resource type="Texture2D" uid="uid://bunkokyi6n86m" path="res://assets/circle_black.svg" id="1_fiaiv"]
-[ext_resource type="Script" uid="uid://bownrsg5r2h8n" path="res://scripts/feedback_peg.gd" id="2_p7ttd"]
+[ext_resource type="Script" uid="uid://bownrsg5r2h8n" path="res://scripts/basics/feedback_peg.gd" id="2_p7ttd"]
 
 [node name="TextureRect" type="TextureRect"]
 custom_minimum_size = Vector2(16, 16)

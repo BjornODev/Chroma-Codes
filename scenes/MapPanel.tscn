@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ck3xm24la78ur"]
+[gd_scene load_steps=3 format=3 uid="uid://ck3xm24la78ur"]
 
-[ext_resource type="Script" uid="uid://doiylxmkk3eui" path="res://scripts/MapPanel.gd" id="1_eartb"]
+[ext_resource type="Script" uid="uid://doiylxmkk3eui" path="res://scripts/map_screen/MapPanel.gd" id="1_eartb"]
+[ext_resource type="Texture2D" uid="uid://ij07wnp2ae0w" path="res://assets/ui/Board.svg" id="2_8nn3m"]
 
 [node name="ColorRect" type="ColorRect"]
 custom_minimum_size = Vector2(110, 110)
@@ -44,10 +45,11 @@ offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Icon" type="ColorRect" parent="CenterContainer"]
-custom_minimum_size = Vector2(24, 24)
+[node name="Icon" type="TextureRect" parent="CenterContainer"]
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
-mouse_filter = 2
+texture = ExtResource("2_8nn3m")
+expand_mode = 1
 
 [node name="LockOverlay" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(100, 100)

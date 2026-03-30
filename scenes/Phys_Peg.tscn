@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bxhfhsxwlmjqq"]
 
-[ext_resource type="Script" uid="uid://c3rktvftjw1b4" path="res://scripts/phys_peg.gd" id="1_b2cxf"]
+[ext_resource type="Script" uid="uid://c3rktvftjw1b4" path="res://scripts/basics/phys_peg.gd" id="1_b2cxf"]
 [ext_resource type="Texture2D" uid="uid://dgftl7gndgv2d" path="res://assets/pegs/peg_out.svg" id="2_b2cxf"]
 [ext_resource type="Shader" uid="uid://eq3ddakaeydg" path="res://shaders/peg_outline.gdshader" id="2_jvobn"]
 [ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="4_0nd3c"]

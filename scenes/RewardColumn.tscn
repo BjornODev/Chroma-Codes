@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://csbh45l8r6xr6"]
 
-[ext_resource type="Script" uid="uid://db1rt8luh8fjx" path="res://scripts/reward_column.gd" id="1_4h7nl"]
+[ext_resource type="Script" uid="uid://db1rt8luh8fjx" path="res://scripts/reward_screen/reward_column.gd" id="1_4h7nl"]
 [ext_resource type="PackedScene" uid="uid://eyi3t4tenuqt" path="res://scenes/RewardIcon.tscn" id="2_1k1lo"]
 
 [node name="RewardColumn" type="PanelContainer"]

@@ -13,7 +13,7 @@ func _ready():
 	var mat = cover.material as ShaderMaterial
 	mat.set_shader_parameter("progress", -1.0)
 	
-	peg_database_reference = preload("res://scripts/peg_data.gd")
+	peg_database_reference = preload("res://scripts/basics/peg_data.gd")
 
 
 func set_color_from_id(texture):

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dprxw0ir8udvo"]
 
-[ext_resource type="Script" uid="uid://bshe1qhbcel7o" path="res://scripts/display_icon.gd" id="1_1fjsh"]
+[ext_resource type="Script" uid="uid://bshe1qhbcel7o" path="res://scripts/ui/display_icon.gd" id="1_1fjsh"]
 [ext_resource type="Shader" uid="uid://bjvc6laf2083l" path="res://shaders/dashed_outline.gdshader" id="2_o35dh"]
 [ext_resource type="Texture2D" uid="uid://b5ht02ih168t3" path="res://assets/item_icons/remedy.svg" id="3_2scc0"]
 

@@ -13,7 +13,7 @@ var peg_database_reference
 func _ready() -> void:
 	center_screen_x = $"../Camera2D".position.x
 	var peg_scene = preload(PEG_SCENE_PATH)
-	peg_database_reference = preload("res://scripts/peg_data.gd")
+	peg_database_reference = preload("res://scripts/basics/peg_data.gd")
 	for i in peg_bag:
 		var new_peg = peg_scene.instantiate()
 		new_peg.peg_id = i
