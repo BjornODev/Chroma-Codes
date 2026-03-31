@@ -2,6 +2,7 @@ extends Node
 
 var run_active := false
 var boards_cleared := 0
+var first_time_on_map := true
 
 var reward_pool_items := []
 var reward_pool_modifiers := []
@@ -54,6 +55,8 @@ func start_new_run():
 	boards_cleared = 0
 	player_health = 5
 	dollars = 0
+	
+	BackgroundGenerator.clear_cache()
 	
 	var seed = randi()
 	MapManager.start_run(seed)

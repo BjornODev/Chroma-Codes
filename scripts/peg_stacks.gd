@@ -5,7 +5,7 @@ extends Node2D
 
 var peg_manager_reference
 
-var peg_database = preload("res://scripts/peg_data.gd")
+var peg_database = preload("res://scripts/basics/peg_data.gd")
 
 func _ready():
 	modulate = Color(peg_database.PEG_TYPES[peg_id][0])

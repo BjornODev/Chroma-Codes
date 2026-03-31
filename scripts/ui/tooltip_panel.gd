@@ -25,7 +25,7 @@ func display_item(item : ItemData):
 
 	name_label.text = item.item_name
 	description_label.text = item.description
-	
+	var trigger_text = ""
 	clear_preview()
 	# Look for pattern trigger
 	for trigger in item.triggers:
@@ -38,8 +38,16 @@ func display_item(item : ItemData):
 				preview_container.add_child(preview)
 				preview.display_pattern(pattern)
 			break  # Only show first pattern
+		else:
+			trigger_text += "Trigger:\n"
+			var triggers := []
+			for key in item.triggers[0]:
+				triggers.append(item.triggers[0][key])
+				print(triggers)
+			trigger_text += "- %s: %d\n" % [triggers[1], triggers[0]]
 
-	effect_label.text = build_effect_text(item.keywords)
+
+	effect_label.text = trigger_text + build_effect_text(item.keywords)
 #	queue_sort()
 	update_minimum_size()
 	print("Tooltip size:", size)

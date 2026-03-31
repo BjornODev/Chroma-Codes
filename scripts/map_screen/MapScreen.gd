@@ -25,11 +25,15 @@ var pending_global_pos: Vector2 = Vector2.ZERO
 func _ready():
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
+	if RunProgressionManager.first_time_on_map:
+		$BackgroundLayer.change_background("Map")
+		RunProgressionManager.first_time_on_map = false
 	_build_grid()
 	_build_color_tracker()
 	PopUpText.toggle_mult(false)
 	populate_hud()
 	if MapManager.boss_ready:
+		RunProgressionManager.first_time_on_map = true
 		MapManager.boss_ready = false
 		_show_caution()
 		iris_wipe.instant_close()

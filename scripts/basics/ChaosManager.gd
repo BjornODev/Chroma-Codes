@@ -3,6 +3,7 @@ extends Node
 signal chaos_changed(new_value: int)
 signal dollar_lost(threshold_index: int)
 signal dollar_flickered(threshold_index: int)
+signal dollars_reset
 
 const MAX_CHAOS := 30
 const CHAOS_PER_DAMAGE := 3
@@ -23,11 +24,10 @@ const CHAOS_EVENTS := {
 	"mid": [        # chaos 11-20
 		"flip_feedback",
 		"hide_pegs",
-		"shift_code",
 	],
 	"high": [       # chaos 21-30
 		"hide_pegs",
-		"shift_code",
+#		"shift_code",
 		"deal_damage",
 	]
 }
@@ -103,6 +103,7 @@ func get_earned_dollars() -> int:
 
 func reset_dollars():
 	dollars_active = [true, true, true, true, true]
+	emit_signal("dollars_reset")
 
 
 # =========================

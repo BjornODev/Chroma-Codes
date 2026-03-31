@@ -85,6 +85,10 @@ func process_item_event(item, event_name, payload):
 			if payload.get("pattern_name") != trigger.pattern:
 				continue
 		
+		if trigger.has("amount"):
+			if payload.get("amount") != trigger.amount:
+				continue
+		
 		apply_item_effects(item, payload)
 
 

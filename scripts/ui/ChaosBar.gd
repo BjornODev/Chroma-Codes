@@ -39,7 +39,13 @@ func _ready():
 	dollar_font = preload("res://assets/gomarice_goma_block.ttf")
 	ChaosManager.connect("chaos_changed", _on_chaos_changed)
 	ChaosManager.connect("dollar_flickered", _on_dollar_flickered)
+	ChaosManager.connect("dollars_reset", _on_dollars_reset)
 	_build_bar()
+
+
+func _on_dollars_reset():
+	for entry in dollar_labels:
+		entry.label.add_theme_color_override("font_color", DOLLAR_ACTIVE_COLOR)
 
 
 func _build_bar():

@@ -185,18 +185,42 @@ func _check_boss_trigger():
 	if boss_triggered:
 		return
 
-	for color in COLORS:
-		if color_activation_counts[color] < 1:
-			return
+#	for color in COLORS:
+#		if color_activation_counts[color] < 1:
+#			return
 
-	# All colors have at least one activation
-	boss_triggered = true
-	boss_ready = true
+	var rows = grid_activated.size()
+	var cols = grid_activated[0].size()
+
+	# Check Horizontally (Rows)
+	for r in range(rows):
+		if _row_is_all_true(grid_activated[r]):
+			boss_triggered = true
+			boss_ready = true
+
+	# Check Vertically (Columns)
+	for c in range(cols):
+		if _col_is_all_true(grid_activated, c, rows):
+			boss_triggered = true
+			boss_ready = true
+
+
+
+# Helper for horizontal
+func _row_is_all_true(row: Array) -> bool:
+	return row.all(func(cell): return cell == true)
+
+
+# Helper for vertical
+func _col_is_all_true(board: Array, col_idx: int, rows: int) -> bool:
+	for r in range(rows):
+		if not board[r][col_idx]:
+			return false
+	return true
 
 
 func is_panel_locked(row: int, col: int) -> bool:
 	return grid_activated[row][col]
-
 
 
 # =========================

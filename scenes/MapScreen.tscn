@@ -10,11 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="7_ch6n0"]
 [ext_resource type="PackedScene" uid="uid://oc11oeqiu24y" path="res://scenes/HealthText.tscn" id="7_jd80c"]
 [ext_resource type="Script" uid="uid://dxt827h5admkd" path="res://scripts/ui/ChaosBar.gd" id="8_q7c8e"]
-[ext_resource type="Script" uid="uid://bwce2aqtv3mcl" path="res://scripts/background_layer.gd" id="9_i6ni7"]
 [ext_resource type="Texture2D" uid="uid://c8u5amc2052kk" path="res://assets/backgrounds/background_image_0.jpg" id="10_jd80c"]
 [ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="11_0q6xy"]
-[ext_resource type="Texture2D" uid="uid://djsed6bun1tnn" path="res://assets/backgrounds/background_image_3.jpg" id="12_8t4ed"]
-[ext_resource type="Shader" uid="uid://df3pi3khvsebn" path="res://shaders/lava_lamp.gdshader" id="13_sd4vv"]
+[ext_resource type="Script" uid="uid://dyjuerpu4qupn" path="res://scripts/ui/BackgroundLayer.gd" id="11_jd80c"]
+[ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="14_0q6xy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d1huf"]
 shader = ExtResource("2_lb6md")
@@ -46,7 +45,7 @@ shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.400000019
 shader_parameter/vignette_opacity = 0.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yn8di"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8t4ed"]
 shader = ExtResource("11_0q6xy")
 shader_parameter/screen_height = 2160.0
 shader_parameter/amplitude = 0.075
@@ -60,22 +59,35 @@ shader_parameter/scrolling_speed = 0.08
 shader_parameter/enable_palette_cycling = false
 shader_parameter/palette_speed = 0.1
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tttdm"]
-shader = ExtResource("13_sd4vv")
-shader_parameter/top = 1.0
-shader_parameter/bottom = 0.0
-shader_parameter/blob_threshold = 1.5
-shader_parameter/random_seed = 0.0
-shader_parameter/blob_scale_x = 2.0
-shader_parameter/blob_scale_y = 2.0
-shader_parameter/blobs_enabled = true
-shader_parameter/blob_speed = 1.0
-shader_parameter/background_edge = Color(0.1, 0, 0.2, 1)
-shader_parameter/background_center = Color(0.5, 0, 0.8, 1)
-shader_parameter/background_alpha = 1.0
-shader_parameter/blob_top = Color(1, 0.4, 0.4, 1)
-shader_parameter/blob_bottom = Color(1, 1, 0.3, 1)
-shader_parameter/blob_alpha = 1.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sd4vv"]
+shader = ExtResource("11_0q6xy")
+shader_parameter/screen_height = 1080.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 2.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 2.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yn8di"]
+shader = ExtResource("14_0q6xy")
+shader_parameter/amplitude = 0.15
+shader_parameter/frequency = 8.0
+shader_parameter/speed = 2.0
+shader_parameter/scroll_direction = Vector2(0.5, 0.5)
+shader_parameter/scrolling_speed = 0.05
+shader_parameter/blob_scale = 1.0
+shader_parameter/blob_count = 15
+shader_parameter/color_a = Vector4(0.2, 0.4, 0.9, 1)
+shader_parameter/color_b = Vector4(0.6, 0.2, 0.8, 1)
+shader_parameter/color_c = Vector4(0.9, 0.3, 0.5, 1)
+shader_parameter/color_d = Vector4(0.2, 0.8, 0.7, 1)
+shader_parameter/color_e = Vector4(0.9, 0.7, 0.2, 1)
+shader_parameter/seed = 0.0
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -244,9 +256,21 @@ offset_bottom = 140.0
 grow_horizontal = 0
 script = ExtResource("8_q7c8e")
 
+[node name="ColorTracker" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -346.0
+offset_top = -469.0
+offset_right = 346.0
+offset_bottom = -393.0
+grow_horizontal = 2
+alignment = 1
+
 [node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1
-script = ExtResource("9_i6ni7")
+script = ExtResource("11_jd80c")
 
 [node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer"]
 visible = false
@@ -260,31 +284,76 @@ offset_bottom = 1248.0
 texture = ExtResource("10_jd80c")
 
 [node name="Background" type="TextureRect" parent="BackgroundLayer"]
+visible = false
 z_index = -100
 z_as_relative = false
 texture_repeat = 2
-material = SubResource("ShaderMaterial_yn8di")
+material = SubResource("ShaderMaterial_8t4ed")
 offset_left = -227.55566
 offset_top = -232.0
 offset_right = 2218.6665
 offset_bottom = 1248.0
-texture = ExtResource("12_8t4ed")
+texture = ExtResource("10_jd80c")
 metadata/_edit_lock_ = true
 
-[node name="ColorRect" type="ColorRect" parent="BackgroundLayer"]
+[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer"]
 visible = false
-material = SubResource("ShaderMaterial_tttdm")
-offset_right = 1920.0
-offset_bottom = 1080.0
-
-[node name="ColorTracker" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -346.0
-offset_top = -469.0
-offset_right = 346.0
-offset_bottom = -393.0
+material = SubResource("ShaderMaterial_sd4vv")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-alignment = 1
+grow_vertical = 2
+
+[node name="BGRect" type="ColorRect" parent="BackgroundLayer"]
+material = SubResource("ShaderMaterial_yn8di")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackgroundLayer2" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("11_jd80c")
+
+[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer2"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("10_jd80c")
+
+[node name="Background" type="TextureRect" parent="BackgroundLayer2"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_8t4ed")
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("10_jd80c")
+metadata/_edit_lock_ = true
+
+[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer2"]
+visible = false
+material = SubResource("ShaderMaterial_sd4vv")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BGRect" type="ColorRect" parent="BackgroundLayer2"]
+material = SubResource("ShaderMaterial_yn8di")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

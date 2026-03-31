@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://bsih3j1mn6kuc"]
+
+[ext_resource type="Texture2D" uid="uid://b8tp86w35k8fh" path="res://assets/item_icons/sacrificial-dagger.svg" id="1_yjwed"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_85e7b"]
+
+[resource]
+script = ExtResource("2_85e7b")
+item_name = "Ups and Downs"
+description = "If you're kicked while you're down, replace your legs with better ones."
+icon = ExtResource("1_yjwed")
+triggers = [{
+"amount": 1,
+"event": "Damage Taken"
+}]
+keywords = {
+"Replace": 2
+}

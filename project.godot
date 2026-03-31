@@ -36,6 +36,7 @@ AudioLoader="*res://scripts/music_player.gd"
 RunProgressionManager="*res://scripts/basics/run_progression_manager.gd"
 ChaosManager="*res://scripts/basics/ChaosManager.gd"
 MapManager="*res://scripts/map_screen/MapManager.gd"
+BackgroundGenerator="*res://scripts/ui/BackgroundGenerator.gd"
 
 [display]
 
@@ -121,8 +122,9 @@ project/editorState=[{
 "path": "res://scripts/basics/slot.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 36,
+"current": true,
+"line": 202,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
@@ -141,29 +143,64 @@ project/editorState=[{
 "path": "res://scripts/reward_screen/rewards_selection_ui.gd",
 "type": "file"
 }, {
-"column": 23,
+"column": 0,
 "line": 0,
 "path": "res://scripts/ui/DollarDisplay.gd",
 "type": "file"
 }, {
-"column": 18,
+"column": 0,
 "line": 31,
 "path": "res://scripts/reward_screen/RunSummary.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 126,
+"column": 29,
+"line": 4,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
-"column": 38,
-"current": true,
-"line": 812,
+"column": 0,
+"line": 0,
 "path": "res://scripts/basics/board_manager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/keyword_engine.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 89,
+"path": "res://scripts/basics/item_manager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 192,
+"path": "res://scripts/basics/pattern_engine.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 46,
+"path": "res://scripts/ui/tooltip_panel.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/ChaosManager.gd",
+"type": "file"
+}, {
+"column": 70,
+"line": 27,
+"path": "res://scripts/ui/BackgroundLayer.gd",
+"type": "file"
+}, {
+"column": 48,
+"line": 35,
+"path": "res://scripts/map_screen/MapScreen.gd",
 "type": "file"
 }]
 project/breakpoints={
 "res://scripts/IrisWipe.gd": PackedInt32Array(),
+"res://scripts/basics/board_manager.gd": PackedInt32Array(),
 "res://scripts/board_manager.gd": PackedInt32Array(),
 "res://scripts/board_modifier_engine.gd": PackedInt32Array(),
 "res://scripts/item_manager.gd": PackedInt32Array(),

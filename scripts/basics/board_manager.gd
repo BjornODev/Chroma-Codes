@@ -51,7 +51,7 @@ func _ready():
 	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
 	PopUpText.toggle_mult(true)
 	BoardModifierEngine.pre_board_build(self)
-	$"../BackgroundLayer".change_background(randi() % 5)
+	$"../BackgroundLayer".change_background("Board")
 	KeywordEngine.multiplier = 1
 	KeywordEngine.set_context(self, peg_manager_reference, popup_manager)
 	generate_code()
@@ -67,6 +67,7 @@ func _ready():
 	await get_tree().create_timer(0.5).timeout
 	black_frame.visible = false
 	call_deferred("_open_iris")
+	pattern_engine.triggered_patterns.clear()
 
 func _open_iris():
 	var pos = MapManager.last_panel_world_pos if MapManager.last_panel_world_pos != Vector2.ZERO else get_viewport().get_visible_rect().size / 2.0
@@ -517,7 +518,7 @@ func apply_damage(damage):
 	flash_damage()
 	RunProgressionManager.remove_health(damage)
 	AudioLoader.play_sound("damage")
-	item_system.emit_game_event("health_lost", {
+	item_system.emit_game_event("Damage Taken", {
 		"amount": damage_per_row,
 		"health": RunProgressionManager.player_health
 	})
@@ -811,6 +812,7 @@ func start_next_board():
 func _on_reward_confirmed(_choice):
 	iris_wipe.iris_close(get_viewport().get_visible_rect().size / 2.0)
 	ChaosManager.cleanse_on_board_clear()
+	ChaosManager.reset_dollars()
 	await iris_wipe.closed
 	get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
 
