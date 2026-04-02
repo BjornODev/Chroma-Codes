@@ -8,10 +8,11 @@ script = ExtResource("2_7sx53")
 item_name = "Third Eye"
 description = "Open your third eye and see"
 icon = ExtResource("1_5g5ex")
-triggers = [{
+rarity = 3
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "White Eye"
-}]
+}])
 keywords = {
 "Reveal": 1
 }

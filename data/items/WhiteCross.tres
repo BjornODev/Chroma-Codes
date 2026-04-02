@@ -8,10 +8,11 @@ script = ExtResource("2_g71hy")
 item_name = "White Cross"
 description = "We have hospital at home"
 icon = ExtResource("1_uif5b")
-triggers = [{
+rarity = 2
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "White Orange Cross"
-}]
+}])
 keywords = {
 "Create Healing": 1,
 "Reveal": 1

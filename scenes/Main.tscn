@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=30 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/basics/main.gd" id="1_rvslj"]
 [ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="2_1iba3"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/map_screen/IrisWipe.gd" id="20_1iba3"]
 [ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://dhnljtdx7tjn8" path="res://shaders/IrisWipe.gdshader" id="21_yxlcp"]
+[ext_resource type="PackedScene" uid="uid://dv7xb81iu655c" path="res://scenes/ActiveItemPanel.tscn" id="23_ebg2g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
 shader = ExtResource("2_1iba3")
@@ -237,8 +238,10 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="PopUpText" parent="." instance=ExtResource("10_mwfav")]
+layer = 11
 
 [node name="Health Text" parent="." instance=ExtResource("12_cvmbd")]
+layer = 11
 visible = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -293,6 +296,22 @@ color = Color(0, 0, 0, 1)
 layer = 10
 script = ExtResource("18_yxlcp")
 
+[node name="ActiveItemPanel" parent="HUDLayer" instance=ExtResource("23_ebg2g")]
+offset_left = 141.0
+offset_right = 261.0
+
+[node name="ChaosMeter" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1895.0
+offset_top = 100.0
+offset_right = -1855.0
+offset_bottom = 140.0
+grow_horizontal = 0
+script = ExtResource("19_1nqs0")
+
 [node name="HUDRoot" type="Control" parent="HUDLayer"]
 layout_mode = 3
 anchors_preset = 0
@@ -342,18 +361,6 @@ vertical_alignment = 2
 
 [node name="Tooltip" parent="HUDLayer" instance=ExtResource("21_1iba3")]
 visible = false
-
-[node name="ChaosMeter" type="Control" parent="HUDLayer"]
-layout_mode = 3
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -1895.0
-offset_top = 100.0
-offset_right = -1855.0
-offset_bottom = 140.0
-grow_horizontal = 0
-script = ExtResource("19_1nqs0")
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]

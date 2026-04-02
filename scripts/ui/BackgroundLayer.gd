@@ -14,7 +14,7 @@ const BLOB_COUNT_RANGE := Vector2i(8, 15)
 # -----------------------------------------------
 
 
-func change_background(panel_type: String):
+func change_background(seed_offset: float):
 	var mat = bg_rect.material as ShaderMaterial
 	if not mat:
 		push_error("BGRect has no ShaderMaterial")
@@ -23,12 +23,7 @@ func change_background(panel_type: String):
 	var run_seed = MapManager.run_seed
 	var board_index = RunProgressionManager.boards_cleared
 
-	var offsets := {
-		"Board": randi(), "Shop": randi(), "Event": randi(),
-		"Forge": randi(), "Gamble": randi(), "Map": randi(), "Boss": randi()
-	}
-	var offset = offsets.get(panel_type, 0)
-	var final_seed = run_seed + offset + board_index
+	var final_seed = run_seed + seed_offset + board_index
 
 	var rng = RandomNumberGenerator.new()
 	rng.seed = final_seed

@@ -9,6 +9,8 @@ var is_processing_turn_events = false
 
 @onready var popup_manager = PopUpText
 
+signal items_changed
+
 func _ready():
 	load_items()
 	# TEMP: give player first item
@@ -100,12 +102,12 @@ func apply_item_effects(item, payload):
 			payload
 		)
 
-func give_item_by_name(name : String):
-	if not items_by_name.has(name):
-		print("Item not found:", name)
-		return
-	
-	player_items.append(items_by_name[name])
+#func give_item_by_name(name : String):
+#	if not items_by_name.has(name):
+#		print("Item not found:", name)
+#		return
+#	
+#	player_items.append(items_by_name[name])
 
 func has_item_trigger_for_pattern(pattern_name):
 	for item in player_items:
@@ -114,3 +116,13 @@ func has_item_trigger_for_pattern(pattern_name):
 				if trigger.has("pattern") and trigger.pattern == pattern_name:
 					return true
 	return false
+
+
+func give_item_by_name(name: String):
+	if not items_by_name.has(name):
+		return
+	var item = items_by_name[name]
+	player_items.append(item)
+	if item.is_active:
+		ActiveItemManager.add_item(item)
+	emit_signal("items_changed")

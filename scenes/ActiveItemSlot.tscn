@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://cencgw3r22eyv"]
+
+[ext_resource type="Script" uid="uid://bhccycifjbful" path="res://scripts/items/ActiveItemSlot.gd" id="1_3saph"]
+
+[node name="PanelContainer" type="PanelContainer"]
+custom_minimum_size = Vector2(276, 138)
+offset_right = 41.0
+offset_bottom = 40.0
+script = ExtResource("1_3saph")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="FillContainer" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="BGFill" type="ColorRect" parent="VBoxContainer/FillContainer"]
+custom_minimum_size = Vector2(276, 138)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.19999695, 0.19999695, 0.19999695, 0.84855676)
+
+[node name="FillBar" type="ColorRect" parent="VBoxContainer/FillContainer"]
+custom_minimum_size = Vector2(0, 138)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_bottom = 138.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.65489197, 0.77645874, 1, 0.85)
+
+[node name="ChargeIcons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2

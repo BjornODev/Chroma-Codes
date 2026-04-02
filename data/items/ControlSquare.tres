@@ -8,6 +8,7 @@ script = ExtResource("2_7x0f5")
 item_name = "Control Square"
 description = "Like simon but all green"
 icon = ExtResource("1_qyo8f")
+rarity = 3
 triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "2x2 Green Square"

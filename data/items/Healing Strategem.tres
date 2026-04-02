@@ -8,10 +8,11 @@ script = ExtResource("2_7t5h2")
 item_name = "Healing Strategem"
 description = "Were sending healing... BACK IN TIME!"
 icon = ExtResource("1_dngm7")
-triggers = [{
+rarity = 3
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "2 Green 2 Orange"
-}]
+}])
 keywords = {
 "Create Healing": 1,
 "Replace": 1

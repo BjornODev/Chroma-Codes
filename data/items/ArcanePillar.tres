@@ -8,6 +8,7 @@ script = ExtResource("2_dy1kv")
 item_name = "Arcane Pillar"
 description = "It's just a rock. Promise"
 icon = ExtResource("1_dtfiv")
+rarity = 3
 triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "3 Vertical Purple"

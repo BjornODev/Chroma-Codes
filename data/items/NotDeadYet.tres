@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://enu81j14lt4f"]
+
+[ext_resource type="Texture2D" uid="uid://cd6c7wbn5bwox" path="res://assets/item_icons/psychic-waves.svg" id="1_ov07e"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_olmvd"]
+
+[resource]
+script = ExtResource("2_olmvd")
+item_name = "Not Dead Yet"
+description = "What doesn't kill you makes you know more things"
+icon = ExtResource("1_ov07e")
+is_active = true
+charge_max = 7.0
+charge_conditions = Array[Dictionary]([{
+"amount": 1,
+"stat": "damage_taken"
+}])
+active_keywords = {
+"Reveal": 2
+}
+metadata/_custom_type_script = "uid://byr4oyeful2c4"

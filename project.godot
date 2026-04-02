@@ -26,7 +26,7 @@ buses/default_bus_layout=""
 
 [autoload]
 
-ItemManager="*res://scripts/basics/item_manager.gd"
+ItemManager="*res://scripts/items/item_manager.gd"
 BoardModifierEngine="*res://scripts/basics/board_modifier_engine.gd"
 PatternEngine="*res://scripts/basics/pattern_engine.gd"
 PopUpText="*res://scenes/PopUpText.tscn"
@@ -37,6 +37,7 @@ RunProgressionManager="*res://scripts/basics/run_progression_manager.gd"
 ChaosManager="*res://scripts/basics/ChaosManager.gd"
 MapManager="*res://scripts/map_screen/MapManager.gd"
 BackgroundGenerator="*res://scripts/ui/BackgroundGenerator.gd"
+ActiveItemManager="*res://scripts/items/ActiveItemManager.gd"
 
 [display]
 
@@ -122,8 +123,7 @@ project/editorState=[{
 "path": "res://scripts/basics/slot.gd",
 "type": "file"
 }, {
-"column": 36,
-"current": true,
+"column": 0,
 "line": 202,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
@@ -153,13 +153,13 @@ project/editorState=[{
 "path": "res://scripts/reward_screen/RunSummary.gd",
 "type": "file"
 }, {
-"column": 29,
-"line": 4,
+"column": 0,
+"line": 121,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 46,
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
@@ -169,17 +169,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 89,
-"path": "res://scripts/basics/item_manager.gd",
-"type": "file"
-}, {
-"column": 0,
 "line": 192,
 "path": "res://scripts/basics/pattern_engine.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 46,
+"column": 8,
+"line": 26,
 "path": "res://scripts/ui/tooltip_panel.gd",
 "type": "file"
 }, {
@@ -188,14 +183,40 @@ project/editorState=[{
 "path": "res://scripts/basics/ChaosManager.gd",
 "type": "file"
 }, {
-"column": 70,
-"line": 27,
+"column": 0,
+"current": true,
+"line": 0,
 "path": "res://scripts/ui/BackgroundLayer.gd",
 "type": "file"
 }, {
-"column": 48,
-"line": 35,
+"column": 0,
+"line": 29,
 "path": "res://scripts/map_screen/MapScreen.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 297,
+"path": "res://scripts/items/ActiveItemIntegration.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/items/item_manager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 154,
+"path": "res://scripts/items/ActiveItemManager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/items/ActiveItemPanel.gd",
+"type": "file"
+}, {
+"column": 74,
+"line": 35,
+"path": "res://scripts/items/ActiveItemSlot.gd",
 "type": "file"
 }]
 project/breakpoints={

@@ -26,15 +26,16 @@ func _ready():
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
 	if RunProgressionManager.first_time_on_map:
-		$BackgroundLayer.change_background("Map")
+		RunProgressionManager.map_offset = randi()
 		RunProgressionManager.first_time_on_map = false
+	$BackgroundLayer.change_background(RunProgressionManager.map_offset)
 	_build_grid()
 	_build_color_tracker()
 	PopUpText.toggle_mult(false)
 	populate_hud()
 	if MapManager.boss_ready:
-		RunProgressionManager.first_time_on_map = true
 		MapManager.boss_ready = false
+		RunProgressionManager.first_time_on_map = true
 		_show_caution()
 		iris_wipe.instant_close()
 		await get_tree().create_timer(0.5).timeout

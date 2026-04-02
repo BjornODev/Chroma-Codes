@@ -8,10 +8,10 @@ script = ExtResource("2_wdrxb")
 item_name = "Opposite Day"
 description = "I'm going to hurt you"
 icon = ExtResource("1_cjpxw")
-triggers = [{
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "2 Red Row"
-}]
+}])
 keywords = {
 "Bleed": 1,
 "Create Healing": 2

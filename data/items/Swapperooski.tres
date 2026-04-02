@@ -8,10 +8,11 @@ script = ExtResource("2_ogbxs")
 item_name = "Swapperooski"
 description = "Swap with a friend. It's fun"
 icon = ExtResource("1_hq5c5")
-triggers = [{
+rarity = 3
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "2x2 Green Yellow Checkers"
-}]
+}])
 keywords = {
 "Clear": 2,
 "Replace": 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dmpklyo2tmuv6"]
+[gd_scene load_steps=21 format=3 uid="uid://dmpklyo2tmuv6"]
 
 [ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/map_screen/IrisWipe.gd" id="1_e0ph6"]
 [ext_resource type="Script" uid="uid://txb2pir8wxjd" path="res://scripts/map_screen/MapScreen.gd" id="1_k1etw"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://c8u5amc2052kk" path="res://assets/backgrounds/background_image_0.jpg" id="10_jd80c"]
 [ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="11_0q6xy"]
 [ext_resource type="Script" uid="uid://dyjuerpu4qupn" path="res://scripts/ui/BackgroundLayer.gd" id="11_jd80c"]
+[ext_resource type="PackedScene" uid="uid://dv7xb81iu655c" path="res://scenes/ActiveItemPanel.tscn" id="12_0q6xy"]
 [ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="14_0q6xy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d1huf"]
@@ -190,72 +191,6 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
-[node name="HUDLayer" type="CanvasLayer" parent="."]
-layer = 10
-script = ExtResource("7_0q6xy")
-
-[node name="HUDRoot" type="Control" parent="HUDLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ItemsHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
-layout_mode = 0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 60.0
-offset_bottom = 60.0
-theme_override_constants/separation = 20
-
-[node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = 1820.0
-offset_top = 20.0
-offset_right = 1860.0
-offset_bottom = 60.0
-grow_horizontal = 0
-theme_override_constants/separation = 8
-alignment = 2
-
-[node name="HealthText" parent="HUDLayer/HUDRoot" instance=ExtResource("7_jd80c")]
-
-[node name="MoneyLabel" type="Label" parent="HUDLayer/HUDRoot"]
-layout_mode = 0
-offset_left = 407.0
-offset_top = 911.0
-offset_right = 720.0
-offset_bottom = 1063.0
-theme_override_colors/font_color = Color(0.99606323, 0.9842987, 0.25489807, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 10
-theme_override_constants/shadow_offset_y = 0
-theme_override_constants/outline_size = 30
-theme_override_constants/shadow_outline_size = 20
-theme_override_fonts/font = ExtResource("5_cehh4")
-theme_override_font_sizes/font_size = 115
-text = "$ 10"
-vertical_alignment = 2
-
-[node name="Tooltip" parent="HUDLayer" instance=ExtResource("7_ch6n0")]
-visible = false
-
-[node name="ChaosMeter" type="Control" parent="HUDLayer"]
-layout_mode = 3
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -1895.0
-offset_top = 100.0
-offset_right = -1855.0
-offset_bottom = 140.0
-grow_horizontal = 0
-script = ExtResource("8_q7c8e")
-
 [node name="ColorTracker" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -313,47 +248,72 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BackgroundLayer2" type="CanvasLayer" parent="."]
-layer = -1
-script = ExtResource("11_jd80c")
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("7_0q6xy")
 
-[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer2"]
-visible = false
-z_index = -100
-z_as_relative = false
-texture_repeat = 2
-offset_left = -227.55566
-offset_top = -232.0
-offset_right = 2218.6665
-offset_bottom = 1248.0
-texture = ExtResource("10_jd80c")
+[node name="ActiveItemPanel" parent="HUDLayer" instance=ExtResource("12_0q6xy")]
+offset_left = 141.0
+offset_right = 261.0
 
-[node name="Background" type="TextureRect" parent="BackgroundLayer2"]
-visible = false
-z_index = -100
-z_as_relative = false
-texture_repeat = 2
-material = SubResource("ShaderMaterial_8t4ed")
-offset_left = -227.55566
-offset_top = -232.0
-offset_right = 2218.6665
-offset_bottom = 1248.0
-texture = ExtResource("10_jd80c")
-metadata/_edit_lock_ = true
-
-[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer2"]
-visible = false
-material = SubResource("ShaderMaterial_sd4vv")
-anchors_preset = 15
+[node name="ChaosMeter" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -1895.0
+offset_top = 100.0
+offset_right = -1855.0
+offset_bottom = 140.0
+grow_horizontal = 0
+script = ExtResource("8_q7c8e")
 
-[node name="BGRect" type="ColorRect" parent="BackgroundLayer2"]
-material = SubResource("ShaderMaterial_yn8di")
-anchors_preset = 15
+[node name="HUDRoot" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemsHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+theme_override_constants/separation = 20
+
+[node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 1820.0
+offset_top = 20.0
+offset_right = 1860.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="HealthText" parent="HUDLayer/HUDRoot" instance=ExtResource("7_jd80c")]
+
+[node name="MoneyLabel" type="Label" parent="HUDLayer/HUDRoot"]
+layout_mode = 0
+offset_left = 407.0
+offset_top = 911.0
+offset_right = 720.0
+offset_bottom = 1063.0
+theme_override_colors/font_color = Color(0.99606323, 0.9842987, 0.25489807, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 10
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 30
+theme_override_constants/shadow_outline_size = 20
+theme_override_fonts/font = ExtResource("5_cehh4")
+theme_override_font_sizes/font_size = 115
+text = "$ 10"
+vertical_alignment = 2
+
+[node name="Tooltip" parent="HUDLayer" instance=ExtResource("7_ch6n0")]
+visible = false

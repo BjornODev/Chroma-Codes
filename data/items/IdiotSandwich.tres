@@ -8,10 +8,11 @@ script = ExtResource("2_l25g8")
 item_name = "Idiot Sandwhich"
 description = "WHAT ARE YOU!!!"
 icon = ExtResource("1_kb030")
-triggers = [{
+rarity = 3
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "Idiot Sandwich Yellow White"
-}]
+}])
 keywords = {
 "Clear": 4
 }

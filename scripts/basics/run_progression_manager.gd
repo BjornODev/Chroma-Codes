@@ -2,7 +2,9 @@ extends Node
 
 var run_active := false
 var boards_cleared := 0
+
 var first_time_on_map := true
+var map_offset : int
 
 var reward_pool_items := []
 var reward_pool_modifiers := []
@@ -57,6 +59,7 @@ func start_new_run():
 	dollars = 0
 	
 	BackgroundGenerator.clear_cache()
+	ActiveItemManager.reset_on_new_run()
 	
 	var seed = randi()
 	MapManager.start_run(seed)
@@ -67,6 +70,7 @@ func start_new_run():
 func end_run():
 	run_active = false
 	boards_cleared = 0
+
 
 func board_cleared():
 	boards_cleared += 1
@@ -92,25 +96,36 @@ func board_cleared():
 #	return choices
 
 
-func get_reward_choices():
+func get_reward_choices() -> Array:
 	var choices := []
-	
-	reward_pool_items.shuffle()
+	var weighted_items = _get_weighted_pool(reward_pool_items)
+	weighted_items.shuffle()
 	reward_pool_modifiers.shuffle()
-	
 	for i in range(3):
-		if reward_pool_items.is_empty() or reward_pool_modifiers.is_empty():
+		if weighted_items.is_empty() or reward_pool_modifiers.is_empty():
 			break
-		
-		var item = reward_pool_items.pop_front()
-		var mod = reward_pool_modifiers.pop_front()
-		
 		choices.append({
-			"item": item,
-			"modifier": mod
+			"item": weighted_items.pop_front(),
+			"modifier": reward_pool_modifiers.pop_front()
 		})
-	
 	return choices
+
+func _get_weighted_pool(pool: Array) -> Array:
+	var weighted := []
+	for item in pool:
+		var weight = _rarity_weight(item.rarity)
+		for i in range(weight):
+			weighted.append(item)
+	weighted.shuffle()
+	return weighted
+
+func _rarity_weight(rarity: int) -> int:
+	match rarity:
+		0: return 8   # Common
+		1: return 4   # Uncommon
+		2: return 2   # Rare
+		3: return 1   # Legendary
+	return 8
 
 
 func reset_board_stats():

@@ -44,6 +44,7 @@ func _ready():
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
 	RunProgressionManager.reset_board_stats()
+	ActiveItemManager.set_context(self, peg_manager_reference, popup_manager)
 	iris_wipe.instant_close()
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
@@ -51,7 +52,7 @@ func _ready():
 	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
 	PopUpText.toggle_mult(true)
 	BoardModifierEngine.pre_board_build(self)
-	$"../BackgroundLayer".change_background("Board")
+	$"../BackgroundLayer".change_background(randi())
 	KeywordEngine.multiplier = 1
 	KeywordEngine.set_context(self, peg_manager_reference, popup_manager)
 	generate_code()
@@ -420,6 +421,13 @@ func submit_guess():
 		if r == -1:
 			obscurities += 1
 	
+	ActiveItemManager.on_row_submitted()
+	for peg_id in guess:
+		ActiveItemManager.on_peg_placed(peg_id)
+	# After showing feedback:
+	ActiveItemManager.on_feedback_received(result[0], result[1])
+
+	
 	if obscurities > 0:
 		result = apply_obscure_logic(obscurities, result)
 		obscurities = 0
@@ -511,6 +519,7 @@ func submit_guess():
 # =========================
 
 func apply_damage(damage):
+	ActiveItemManager.on_damage_taken(damage)
 	RunProgressionManager.record_damage_taken(damage)
 	ChaosManager.add_chaos_from_damage()
 	print("Health:", RunProgressionManager.player_health)
@@ -608,6 +617,12 @@ func re_evaluate_row(row_index):
 	for r in guess:
 		if r == -1:
 			obscurities += 1
+	
+	ActiveItemManager.on_row_submitted()
+	for peg_id in guess:
+		ActiveItemManager.on_peg_placed(peg_id)
+	# After showing feedback:
+	ActiveItemManager.on_feedback_received(result[0], result[1])
 	
 	if obscurities > 0:
 		result = apply_obscure_logic(obscurities, result)
@@ -737,7 +752,8 @@ func generate_code():
 func apply_heal(amount):
 	print("Healed:", amount)
 	RunProgressionManager.add_health(amount)
-
+	ActiveItemManager.on_health_healed(amount)
+	
 	popup_manager.show_popup(
 		"[center][b][color=#ED7117]+%d HEALTH[/color][/b][/center]" % amount
 	)

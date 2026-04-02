@@ -1,0 +1,158 @@
+extends PanelContainer
+
+signal slot_clicked(item)
+
+# Rarity border colors
+const RARITY_COLORS := {
+	0: Color("#888888"),  # Common
+	1: Color("#00CC44"),  # Uncommon
+	2: Color("#4488FF"),  # Rare
+	3: Color("#FFD700"),  # Legendary
+}
+
+# Charge condition stat -> placeholder color (swap with real icons later)
+const STAT_COLORS := {
+	"damage_taken":      Color("#FF4444"),
+	"health_healed":     Color("#44FF88"),
+	"pegs_placed_any":   Color("#AAAAAA"),
+	"pegs_placed_red":   Color("#E05555"),
+	"pegs_placed_yellow":Color("#E0C055"),
+	"pegs_placed_green": Color("#55A855"),
+	"pegs_placed_white": Color("#DDDDDD"),
+	"pegs_placed_purple":Color("#8855CC"),
+	"pegs_placed_orange":Color("#E08040"),
+	"rows_submitted":    Color("#4488FF"),
+	"active_activated":  Color("#FFD700"),
+	"replace_used":      Color("#39FF14"),
+	"black_pegs":        Color("#111111"),
+	"white_pegs":        Color("#EEEEEE"),
+}
+
+var item: ItemData = null
+var is_empty: bool = true
+
+@onready var bg_fill = $VBoxContainer/FillContainer/BGFill
+@onready var fill_bar = $VBoxContainer/FillContainer/FillBar
+@onready var icon_rect = $VBoxContainer/FillContainer/CenterContainer/Icon
+@onready var charge_icons = $VBoxContainer/ChargeIcons
+@onready var border_panel = $BorderPanel
+@onready var ready_glow = $ReadyGlow
+
+
+func _ready():
+	set_empty()
+	ActiveItemManager.connect("charge_updated", _on_charge_updated)
+	ActiveItemManager.connect("active_items_changed", _refresh)
+
+
+func setup(p_item: ItemData):
+	item = p_item
+	is_empty = false
+
+	# Rarity border
+	if border_panel and border_panel.material:
+		border_panel.material = border_panel.material.duplicate()
+		border_panel.material.set_shader_parameter("color", item.get_rarity_color())
+
+	# Icon
+	if icon_rect and item.icon:
+		icon_rect.texture = item.icon
+		icon_rect.visible = true
+
+	# Charge condition icons
+	_build_charge_icons()
+
+	# Initial fill
+	_update_fill(ActiveItemManager.get_charge_fraction(item))
+
+	modulate = Color.WHITE
+
+
+func set_empty():
+	item = null
+	is_empty = true
+	modulate = Color(0.4, 0.4, 0.4, 1.0)
+	if icon_rect:
+		icon_rect.visible = false
+	if fill_bar:
+		fill_bar.size.x = 0
+	if ready_glow:
+		ready_glow.visible = false
+	_clear_charge_icons()
+
+
+func _build_charge_icons():
+	_clear_charge_icons()
+	if not item:
+		return
+
+	for condition in item.charge_conditions:
+		var stat = condition.get("stat", "")
+		var color = STAT_COLORS.get(stat, Color("#AAAAAA"))
+
+		# Placeholder colored square — swap with real icon TextureRect later
+		var icon = ColorRect.new()
+		icon.custom_minimum_size = Vector2(36, 36)
+		icon.color = color
+		charge_icons.add_child(icon)
+
+
+func _clear_charge_icons():
+	if not charge_icons:
+		return
+	for child in charge_icons.get_children():
+		child.queue_free()
+
+
+func _update_fill(fraction: float):
+	if not fill_bar:
+		return
+
+	# Use the container's width as the max, not bg_fill
+	var container = fill_bar.get_parent()
+	var max_width = container.size.x if container else 120.0
+	var tween = create_tween()
+	
+	if max_width <= 0:
+		# Size not ready yet — defer
+		await get_tree().process_frame
+		max_width = container.size.x if container else 120.0
+
+#	fill_bar.size.x = max_width * clamp(fraction, 0.0, 1.0)
+	tween.tween_property(fill_bar, "size:x", max_width * clamp(fraction, 0.0, 1.0), 0.2)
+	fill_bar.position.x = 0
+
+	if ready_glow:
+		ready_glow.visible = fraction >= 1.0
+		if fraction >= 1.0 and not _is_pulsing:
+			_start_pulse()
+
+
+
+var _is_pulsing := false
+
+func _start_pulse():
+	_is_pulsing = true
+	var tween = create_tween().set_loops()
+	tween.tween_property(ready_glow, "modulate:a", 0.2, 0.6)
+	tween.tween_property(ready_glow, "modulate:a", 1.0, 0.6)
+
+
+func _on_charge_updated(item_name: String, current: float, maximum: float):
+	if item and item_name == item.item_name:
+		_update_fill(current / max(maximum, 1.0))
+		if current < maximum:
+			_is_pulsing = false
+			if ready_glow:
+				ready_glow.visible = false
+
+
+func _refresh():
+	if is_empty:
+		set_empty()
+
+
+func _gui_input(event):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if not is_empty and item:
+			emit_signal("slot_clicked", item)

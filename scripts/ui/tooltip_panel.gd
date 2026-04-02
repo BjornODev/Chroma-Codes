@@ -22,8 +22,11 @@ func _ready():
 	print("Tooltip ready")
 
 func display_item(item : ItemData):
-
+	if item.is_active:
+		display_active_item(item)
+		return
 	name_label.text = item.item_name
+	name_label.add_theme_color_override("font_color", item.get_rarity_color())
 	description_label.text = item.description
 	var trigger_text = ""
 	clear_preview()
@@ -70,15 +73,33 @@ func display_modifier(modifier):
 			trigger_text += "- %s: %d\n" % [key, modifier.trigger[key]]
 	
 	effect_label.text = trigger_text + build_effect_text(modifier.get_scaled_effect())
-#	queue_sort()
+	queue_sort()
 	update_minimum_size()
 	print("Tooltip size:", size)
+
+
+func display_active_item(item: ItemData):
+	name_label.text = item.item_name + " [" + item.get_rarity_name() + "]"
+	name_label.add_theme_color_override("font_color", item.get_rarity_color())
+
+	clear_preview()
+
+	#Show charge conditions
+	var charge_text = "Charge: "
+	for condition in item.charge_conditions:
+		charge_text += "%s x%.0f  " % [condition.get("stat", ""), condition.get("amount", 1.0)]
+	charge_text += "\nMax Charge: %.0f" % item.charge_max
+
+	description_label.text = item.description
+	effect_label.text = charge_text + "\n" + build_effect_text(item.active_keywords)
+	update_minimum_size()
 
 
 func clear_preview():
 	for child in preview_container.get_children():
 		child.queue_free()
 	preview_container.update_minimum_size()
+
 
 func build_effect_text(effect_dict):
 	var text = "Effects:\n"

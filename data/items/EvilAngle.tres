@@ -8,10 +8,11 @@ script = ExtResource("2_ipael")
 item_name = "Evil Angle"
 description = "Watch out it's sharp around the edges"
 icon = ExtResource("1_lqaq8")
-triggers = [{
+rarity = 3
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "2x2 Red Shelf"
-}]
+}])
 keywords = {
 "Bleed": 2,
 "Multiply": 2

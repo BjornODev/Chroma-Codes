@@ -20,6 +20,7 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 				"[center][b][color=#39FF14]REPLACE %d[/color][/b][/center]" % final_value
 			)
 			peg_manager_reference.start_replace_mode(final_value)
+			ActiveItemManager.on_replace_used(final_value)
 
 		"Clear":
 			popup_reference.show_popup(

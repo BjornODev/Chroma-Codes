@@ -8,10 +8,11 @@ script = ExtResource("2_dy1kv")
 item_name = "Terrible T"
 description = "Just terrible"
 icon = ExtResource("1_dtfiv")
-triggers = [{
+rarity = 3
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "3 Vertical Yellow Purple T"
-}]
+}])
 keywords = {
 "Clear": 2,
 "Multiply": 1

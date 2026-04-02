@@ -8,10 +8,11 @@ script = ExtResource("2_vi8f3")
 item_name = "Separated"
 description = "Like oil and water"
 icon = ExtResource("1_2fqaj")
-triggers = [{
+rarity = 3
+triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "Separation"
-}]
+}])
 keywords = {
 "Multiply": 1,
 "Reveal": 1

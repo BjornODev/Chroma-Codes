@@ -8,6 +8,7 @@ script = ExtResource("2_b3c8k")
 item_name = "Aura of Protection"
 description = "It's over 9000!"
 icon = ExtResource("1_uebc1")
+rarity = 3
 triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "Yellow Diamond"

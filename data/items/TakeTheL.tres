@@ -8,6 +8,7 @@ script = ExtResource("2_1vroo")
 item_name = "Take the L"
 description = "Sometimes it feels good to take the L"
 icon = ExtResource("1_4u64a")
+rarity = 3
 triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
 "pattern": "2x2 Orange L"
