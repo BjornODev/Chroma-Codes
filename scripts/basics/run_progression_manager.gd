@@ -60,6 +60,7 @@ func start_new_run():
 	
 	BackgroundGenerator.clear_cache()
 	ActiveItemManager.reset_on_new_run()
+	ShopManager.is_initialized = false
 	
 	var seed = randi()
 	MapManager.start_run(seed)

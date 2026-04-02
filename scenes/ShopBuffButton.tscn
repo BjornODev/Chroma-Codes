@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://c37h60iw3ptrx"]
+
+[ext_resource type="Script" uid="uid://bqsk4jubvtsa" path="res://scripts/shop/ShopBuffButton.gd" id="1_4eqnt"]
+
+[node name="ShopBuffButton" type="PanelContainer"]
+custom_minimum_size = Vector2(100, 120)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_4eqnt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Icon" type="ColorRect" parent="VBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="PriceLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Label"
+
+[node name="RemainingLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Label"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

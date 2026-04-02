@@ -1,0 +1,282 @@
+[gd_scene load_steps=19 format=3 uid="uid://0cmtq7pxrshw"]
+
+[ext_resource type="Script" uid="uid://mu4o80i7adph" path="res://scripts/shop/ShopScreen.gd" id="1_qm43e"]
+[ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/map_screen/IrisWipe.gd" id="2_6fls3"]
+[ext_resource type="Shader" uid="uid://dhnljtdx7tjn8" path="res://shaders/IrisWipe.gdshader" id="3_5pgfs"]
+[ext_resource type="PackedScene" uid="uid://c37h60iw3ptrx" path="res://scenes/ShopBuffButton.tscn" id="4_evw12"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="4_so04c"]
+[ext_resource type="Script" uid="uid://dwy8ihxgnsr8v" path="res://scripts/ui/hud_layer.gd" id="6_8im1p"]
+[ext_resource type="PackedScene" uid="uid://dv7xb81iu655c" path="res://scenes/ActiveItemPanel.tscn" id="7_ik2ys"]
+[ext_resource type="Script" uid="uid://dxt827h5admkd" path="res://scripts/ui/ChaosBar.gd" id="8_cybmg"]
+[ext_resource type="PackedScene" uid="uid://oc11oeqiu24y" path="res://scenes/HealthText.tscn" id="9_sjqts"]
+[ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="10_l2miu"]
+[ext_resource type="Script" uid="uid://dyjuerpu4qupn" path="res://scripts/ui/BackgroundLayer.gd" id="11_idtl2"]
+[ext_resource type="Texture2D" uid="uid://c8u5amc2052kk" path="res://assets/backgrounds/background_image_0.jpg" id="12_jrg0l"]
+[ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="13_mmw28"]
+[ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="14_qjgha"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_img1g"]
+shader = ExtResource("3_5pgfs")
+shader_parameter/radius = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/screen_size = Vector2(1920, 1080)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aij8b"]
+shader = ExtResource("13_mmw28")
+shader_parameter/screen_height = 2160.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 1.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 1.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qtair"]
+shader = ExtResource("13_mmw28")
+shader_parameter/screen_height = 1080.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 2.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 2.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_as3p2"]
+shader = ExtResource("14_qjgha")
+shader_parameter/amplitude = 0.15
+shader_parameter/frequency = 8.0
+shader_parameter/speed = 2.0
+shader_parameter/scroll_direction = Vector2(0.5, 0.5)
+shader_parameter/scrolling_speed = 0.05
+shader_parameter/blob_scale = 1.0
+shader_parameter/blob_count = 15
+shader_parameter/color_a = Vector4(0.2, 0.4, 0.9, 1)
+shader_parameter/color_b = Vector4(0.6, 0.2, 0.8, 1)
+shader_parameter/color_c = Vector4(0.9, 0.3, 0.5, 1)
+shader_parameter/color_d = Vector4(0.2, 0.8, 0.7, 1)
+shader_parameter/color_e = Vector4(0.9, 0.7, 0.2, 1)
+shader_parameter/seed = 0.0
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qm43e")
+
+[node name="IrisWipe" type="CanvasLayer" parent="."]
+layer = 15
+visible = false
+script = ExtResource("2_6fls3")
+
+[node name="ShaderRect" type="ColorRect" parent="IrisWipe"]
+material = SubResource("ShaderMaterial_img1g")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 299.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BuffSection" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="HealthButton" parent="HBoxContainer/BuffSection" instance=ExtResource("4_evw12")]
+layout_mode = 2
+
+[node name="ChaosButton" parent="HBoxContainer/BuffSection" instance=ExtResource("4_evw12")]
+layout_mode = 2
+
+[node name="ItemSection" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer/ItemSection"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="RerollButton" type="Button" parent="HBoxContainer/ItemSection"]
+custom_minimum_size = Vector2(240, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+
+[node name="Label" type="Label" parent="HBoxContainer/ItemSection/RerollButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -11.5
+offset_right = 21.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Reroll"
+horizontal_alignment = 1
+
+[node name="LeaveButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -250.25
+offset_top = -84.0
+offset_right = 250.25
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("4_so04c")
+theme_override_font_sizes/font_size = 75
+text = "Leave"
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("6_8im1p")
+
+[node name="ActiveItemPanel" parent="HUDLayer" instance=ExtResource("7_ik2ys")]
+offset_left = 141.0
+offset_right = 261.0
+
+[node name="ChaosMeter" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1895.0
+offset_top = 100.0
+offset_right = -1855.0
+offset_bottom = 140.0
+grow_horizontal = 0
+script = ExtResource("8_cybmg")
+
+[node name="HUDRoot" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemsHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+theme_override_constants/separation = 20
+
+[node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1820.0
+offset_top = 20.0
+offset_right = 1860.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="HealthText" parent="HUDLayer/HUDRoot" instance=ExtResource("9_sjqts")]
+
+[node name="MoneyLabel" type="Label" parent="HUDLayer/HUDRoot"]
+layout_mode = 0
+offset_left = 407.0
+offset_top = 911.0
+offset_right = 720.0
+offset_bottom = 1063.0
+theme_override_colors/font_color = Color(0.99606323, 0.9842987, 0.25489807, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 10
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 30
+theme_override_constants/shadow_outline_size = 20
+theme_override_fonts/font = ExtResource("4_so04c")
+theme_override_font_sizes/font_size = 115
+text = "$ 10"
+vertical_alignment = 2
+
+[node name="Tooltip" parent="HUDLayer" instance=ExtResource("10_l2miu")]
+visible = false
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("11_idtl2")
+
+[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("12_jrg0l")
+
+[node name="Background" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_aij8b")
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("12_jrg0l")
+metadata/_edit_lock_ = true
+
+[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+material = SubResource("ShaderMaterial_qtair")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BGRect" type="ColorRect" parent="BackgroundLayer"]
+material = SubResource("ShaderMaterial_as3p2")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

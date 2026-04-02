@@ -1,0 +1,303 @@
+extends Control
+
+const SHOP_ITEM_SCENE = preload("res://scenes/ShopItem.tscn")
+const SHOP_BUFF_SCENE = preload("res://scenes/ShopBuffButton.tscn")
+
+
+@onready var item_grid = $HBoxContainer/ItemSection/GridContainer
+@onready var buff_section = $HBoxContainer/BuffSection
+@onready var health_button = $HBoxContainer/BuffSection/HealthButton
+@onready var chaos_button = $HBoxContainer/BuffSection/ChaosButton
+@onready var reroll_button = $HBoxContainer/ItemSection/RerollButton
+@onready var leave_button = $LeaveButton
+@onready var reroll_label = $HBoxContainer/ItemSection/RerollButton/Label
+@onready var iris_wipe = $IrisWipe
+@onready var background_layer = $BackgroundLayer
+@onready var tooltip = $HUDLayer/Tooltip
+@onready var items_hud = $HUDLayer/HUDRoot/ItemsHUD
+@onready var modifiers_hud = $HUDLayer/HUDRoot/ModifiersHUD
+@onready var health_text = $HUDLayer/HUDRoot/HealthText
+@onready var money_label = $HUDLayer/HUDRoot/MoneyLabel
+
+var item_slots: Array = []
+var font: Font
+
+
+func _ready():
+	font = preload("res://assets/gomarice_goma_block.ttf")
+
+	if not ShopManager.is_initialized:
+		ShopManager.refresh_shop(MapManager.run_seed + 700000)
+
+	iris_wipe.instant_close()
+	background_layer.change_background(randi())
+	_build_shop()
+	_build_buffs()
+	_update_reroll_button()
+	_setup_layout()
+	populate_hud()
+
+	leave_button.pressed.connect(_on_leave_pressed)
+	reroll_button.pressed.connect(_on_reroll_pressed)
+
+	RunProgressionManager.connect("dollars_changed", _on_dollars_changed)
+
+	await get_tree().process_frame
+	iris_wipe.iris_open(MapManager.last_panel_world_pos)
+
+
+# =========================
+# LAYOUT
+# =========================
+
+func _setup_layout():
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+	var hbox = $HBoxContainer
+	hbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	hbox.add_theme_constant_override("separation", 80)
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+
+	buff_section.custom_minimum_size = Vector2(200, 0)
+	buff_section.alignment = BoxContainer.ALIGNMENT_CENTER
+	buff_section.add_theme_constant_override("separation", 32)
+
+	item_grid.columns = 3
+	item_grid.add_theme_constant_override("h_separation", 40)
+	item_grid.add_theme_constant_override("v_separation", 40)
+
+	var item_section = $HBoxContainer/ItemSection
+	item_section.alignment = BoxContainer.ALIGNMENT_CENTER
+	item_section.add_theme_constant_override("separation", 32)
+
+	reroll_button.custom_minimum_size = Vector2(320, 70)
+
+	leave_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	leave_button.offset_top = -90
+	leave_button.offset_bottom = -24
+	leave_button.offset_left = 760
+	leave_button.offset_right = -760
+	leave_button.custom_minimum_size = Vector2(320, 70)
+
+	_style_leave_button()
+	_style_reroll_button()
+
+
+func _style_leave_button():
+	var label = leave_button.get_node_or_null("Label")
+	if not label:
+		label = Label.new()
+		label.name = "Label"
+		leave_button.add_child(label)
+		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.text = "LEAVE"
+	label.add_theme_font_override("font", font)
+	label.add_theme_font_size_override("font_size", 32)
+	label.add_theme_color_override("font_color", Color("#FFFFFF"))
+
+
+func _style_reroll_button():
+	reroll_label.add_theme_font_override("font", font)
+	reroll_label.add_theme_font_size_override("font_size", 24)
+
+
+# =========================
+# HUD
+# =========================
+
+func populate_hud():
+	for child in items_hud.get_children():
+		child.queue_free()
+	for child in modifiers_hud.get_children():
+		child.queue_free()
+
+	for item in ItemManager.player_items:
+		if item.is_active:
+			continue
+		var icon = preload("res://scenes/DisplayIcon.tscn").instantiate()
+		items_hud.add_child(icon)
+		icon.setup(item)
+		icon.connect("hovered", _on_hud_hovered)
+		icon.connect("hovered_off", _on_hud_hovered_off)
+
+	for mod in BoardModifierEngine.active_modifiers:
+		var icon = preload("res://scenes/DisplayIcon.tscn").instantiate()
+		modifiers_hud.add_child(icon)
+		icon.setup(mod)
+		icon.connect("hovered", _on_hud_hovered)
+		icon.connect("hovered_off", _on_hud_hovered_off)
+
+	health_text.initialize()
+	health_text.change_health(RunProgressionManager.player_health)
+
+	money_label.text = "$ %d" % RunProgressionManager.dollars
+	money_label.add_theme_color_override("font_color", Color("#FFD700"))
+	money_label.add_theme_font_override("font", font)
+	money_label.add_theme_font_size_override("font_size", 115)
+
+
+func _on_hud_hovered(resource_data):
+	tooltip.visible = true
+	if resource_data is ItemData:
+		tooltip.display_item(resource_data)
+	elif resource_data is ModifierData:
+		tooltip.display_modifier(resource_data)
+
+
+func _on_hud_hovered_off(_data = null):
+	tooltip.visible = false
+
+
+# =========================
+# SHOP BUILDING
+# =========================
+
+func _build_shop():
+	for child in item_grid.get_children():
+		child.queue_free()
+	item_slots.clear()
+
+	for i in range(ShopManager.SHOP_SIZE):
+		var slot = SHOP_ITEM_SCENE.instantiate()
+		item_grid.add_child(slot)
+		item_slots.append(slot)
+
+		var item = ShopManager.shop_items[i] if i < ShopManager.shop_items.size() else null
+		slot.setup(item, i)
+		slot.connect("item_purchased", _on_item_purchased)
+		slot.connect("hovered", _on_item_hovered)
+		slot.connect("hovered_off", _on_item_hovered_off)
+
+
+func _build_buffs():
+	health_button.setup(ShopBuffButton.BuffType.HEALTH)
+	chaos_button.setup(ShopBuffButton.BuffType.CHAOS)
+	health_button.connect("buff_purchased", _on_buff_purchased)
+	chaos_button.connect("buff_purchased", _on_buff_purchased)
+	health_button.connect("hovered", _on_buff_hovered)
+	chaos_button.connect("hovered", _on_buff_hovered)
+	health_button.connect("hovered_off", _on_buff_hovered_off)
+	chaos_button.connect("hovered_off", _on_buff_hovered_off)
+
+
+func _update_reroll_button():
+	var cost = ShopManager.reroll_cost
+	var can_afford = ShopManager.can_afford(cost)
+
+	reroll_label.text = "REROLL  $ %d" % cost
+	reroll_label.add_theme_color_override(
+		"font_color",
+		Color("#FFD700") if can_afford else Color("#FF4444")
+	)
+	reroll_button.disabled = not can_afford
+
+
+# =========================
+# PURCHASES
+# =========================
+
+func _on_item_purchased(index: int):
+	var item = ShopManager.shop_items[index]
+	if item == null:
+		return
+	if not ShopManager.can_afford(item.price):
+		AudioLoader.play_sound("damage")
+		return
+	if ShopManager.buy_item(index):
+		AudioLoader.play_sound("win")
+		await item_slots[index].play_death_animation()
+		_refresh_affordability()
+	else:
+		AudioLoader.play_sound("damage")
+
+
+func _on_buff_purchased(buff_type: int):
+	var success := false
+	if buff_type == ShopBuffButton.BuffType.HEALTH:
+		success = ShopManager.buy_health()
+	else:
+		success = ShopManager.buy_chaos_relief()
+
+	if success:
+		AudioLoader.play_sound("select")
+		health_button.refresh()
+		chaos_button.refresh()
+		_refresh_affordability()
+	else:
+		AudioLoader.play_sound("damage")
+
+
+func _on_reroll_pressed():
+	if ShopManager.reroll():
+		AudioLoader.play_sound("select")
+		_build_shop()
+		_update_reroll_button()
+	else:
+		AudioLoader.play_sound("damage")
+
+
+func _refresh_affordability():
+	for slot in item_slots:
+		slot.refresh_affordability()
+	health_button.refresh()
+	chaos_button.refresh()
+	_update_reroll_button()
+
+
+func _on_dollars_changed(_new_amount: int):
+	_refresh_affordability()
+	money_label.text = "$ %d" % RunProgressionManager.dollars
+
+
+# =========================
+# TOOLTIPS
+# =========================
+
+func _on_item_hovered(item: ItemData):
+	tooltip.visible = true
+	if item.is_active:
+		tooltip.display_active_item(item)
+	else:
+		tooltip.display_item(item)
+
+
+func _on_item_hovered_off():
+	tooltip.visible = false
+
+
+func _on_buff_hovered(buff_type: int):
+	tooltip.visible = true
+	if buff_type == ShopBuffButton.BuffType.HEALTH:
+		tooltip.name_label.text = "Health Up"
+		tooltip.description_label.text = "+%d Health\n$%d each\n%d remaining this map" % [
+			ShopManager.HEALTH_PER_PURCHASE,
+			ShopManager.HEALTH_PRICE,
+			ShopManager.health_remaining()
+		]
+	else:
+		tooltip.name_label.text = "Chaos Relief"
+		tooltip.description_label.text = "-%d Chaos\n$%d each\n%d remaining this map" % [
+			ShopManager.CHAOS_RELIEF_PER_PURCHASE,
+			ShopManager.CHAOS_PRICE,
+			ShopManager.chaos_remaining()
+		]
+	tooltip.effect_label.text = ""
+	tooltip.update_minimum_size()
+
+
+func _on_buff_hovered_off():
+	tooltip.visible = false
+
+
+# =========================
+# NAVIGATION
+# =========================
+
+func _on_leave_pressed():
+	AudioLoader.play_sound("select")
+	iris_wipe.iris_close(MapManager.last_panel_world_pos)
+	await iris_wipe.closed
+	await get_tree().create_timer(0.5).timeout
+	get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")

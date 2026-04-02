@@ -27,6 +27,7 @@ func _ready():
 		RunProgressionManager.start_new_run()
 	if RunProgressionManager.first_time_on_map:
 		RunProgressionManager.map_offset = randi()
+		ShopManager.refresh_shop(MapManager.run_seed + 700000 + RunProgressionManager.boards_cleared * 999983)
 		RunProgressionManager.first_time_on_map = false
 	$BackgroundLayer.change_background(RunProgressionManager.map_offset)
 	_build_grid()

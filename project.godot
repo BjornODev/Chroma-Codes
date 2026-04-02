@@ -38,6 +38,7 @@ ChaosManager="*res://scripts/basics/ChaosManager.gd"
 MapManager="*res://scripts/map_screen/MapManager.gd"
 BackgroundGenerator="*res://scripts/ui/BackgroundGenerator.gd"
 ActiveItemManager="*res://scripts/items/ActiveItemManager.gd"
+ShopManager="*res://scripts/shop/ShopManager.gd"
 
 [display]
 
@@ -153,8 +154,8 @@ project/editorState=[{
 "path": "res://scripts/reward_screen/RunSummary.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 121,
+"column": 35,
+"line": 62,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
@@ -173,7 +174,7 @@ project/editorState=[{
 "path": "res://scripts/basics/pattern_engine.gd",
 "type": "file"
 }, {
-"column": 8,
+"column": 0,
 "line": 26,
 "path": "res://scripts/ui/tooltip_panel.gd",
 "type": "file"
@@ -184,13 +185,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"current": true,
 "line": 0,
 "path": "res://scripts/ui/BackgroundLayer.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 29,
+"line": 0,
 "path": "res://scripts/map_screen/MapScreen.gd",
 "type": "file"
 }, {
@@ -214,9 +214,30 @@ project/editorState=[{
 "path": "res://scripts/items/ActiveItemPanel.gd",
 "type": "file"
 }, {
-"column": 74,
+"column": 0,
 "line": 35,
 "path": "res://scripts/items/ActiveItemSlot.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/shop/ShopSetup.gd",
+"type": "file"
+}, {
+"column": 0,
+"current": true,
+"line": 71,
+"path": "res://scripts/shop/ShopBuffButton.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 125,
+"path": "res://scripts/shop/ShopItem.gd",
+"type": "file"
+}, {
+"column": 13,
+"line": 44,
+"path": "res://scripts/shop/ShopScreen.gd",
 "type": "file"
 }]
 project/breakpoints={
