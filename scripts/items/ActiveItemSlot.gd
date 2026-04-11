@@ -37,35 +37,41 @@ var is_empty: bool = true
 @onready var charge_icons = $VBoxContainer/ChargeIcons
 @onready var border_panel = $BorderPanel
 @onready var ready_glow = $ReadyGlow
+@onready var hover_outline = $HoverOutline
 
 
 func _ready():
 	set_empty()
 	ActiveItemManager.connect("charge_updated", _on_charge_updated)
 	ActiveItemManager.connect("active_items_changed", _refresh)
+	
+	if hover_outline and hover_outline.material:
+		hover_outline.material = hover_outline.material.duplicate()
 
 
 func setup(p_item: ItemData):
 	item = p_item
 	is_empty = false
 
-	# Rarity border
 	if border_panel and border_panel.material:
 		border_panel.material = border_panel.material.duplicate()
 		border_panel.material.set_shader_parameter("color", item.get_rarity_color())
 
-	# Icon
 	if icon_rect and item.icon:
 		icon_rect.texture = item.icon
 		icon_rect.visible = true
 
-	# Charge condition icons
 	_build_charge_icons()
+	modulate = Color.WHITE
+	
+	call_deferred("_sync_fill")
 
-	# Initial fill
+
+func _sync_fill():
+	if item == null:
+		return
 	_update_fill(ActiveItemManager.get_charge_fraction(item))
 
-	modulate = Color.WHITE
 
 
 func set_empty():
@@ -156,3 +162,62 @@ func _gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if not is_empty and item:
 			emit_signal("slot_clicked", item)
+
+
+func set_selected(enabled: bool):
+	if hover_outline and hover_outline.material:
+		if enabled:
+			hover_outline.material.set_shader_parameter("color", Color(1, 1, 1, 1))
+		else:
+			hover_outline.material.set_shader_parameter("color", Color(1, 1, 1, 0))
+
+
+func _on_mouse_entered():
+	if hover_outline and hover_outline.material and not is_empty:
+		hover_outline.material.set_shader_parameter("color", Color(1, 1, 1, 1))
+
+
+func _on_mouse_exited():
+	if hover_outline and hover_outline.material:
+		hover_outline.material.set_shader_parameter("color", Color(1, 1, 1, 0))
+
+
+func play_blink_animation(new_item: ItemData):
+	var slot_size = size
+	
+	var top_bar = ColorRect.new()
+	top_bar.color = Color(0, 0, 0, 1)
+	top_bar.size = Vector2(slot_size.x, 0)
+	top_bar.position = Vector2(0, 0)
+	top_bar.z_index = 10
+	add_child(top_bar)
+
+	var bottom_bar = ColorRect.new()
+	bottom_bar.color = Color(0, 0, 0, 1)
+	bottom_bar.size = Vector2(slot_size.x, 0)
+	bottom_bar.position = Vector2(0, slot_size.y)
+	bottom_bar.z_index = 10
+	add_child(bottom_bar)
+
+	var close_tween = create_tween().set_parallel(true)
+	close_tween.set_trans(Tween.TRANS_CUBIC)
+	close_tween.set_ease(Tween.EASE_IN)
+	close_tween.tween_property(top_bar, "size:y", slot_size.y / 2.0, 0.3)
+	close_tween.tween_property(bottom_bar, "size:y", slot_size.y / 2.0, 0.3)
+	close_tween.tween_property(bottom_bar, "position:y", slot_size.y / 2.0, 0.3)
+	await close_tween.finished
+
+	if new_item:
+		setup(new_item)
+	AudioLoader.play_sound("select")
+
+	var open_tween = create_tween().set_parallel(true)
+	open_tween.set_trans(Tween.TRANS_CUBIC)
+	open_tween.set_ease(Tween.EASE_OUT)
+	open_tween.tween_property(top_bar, "size:y", 0.0, 0.3)
+	open_tween.tween_property(bottom_bar, "size:y", 0.0, 0.3)
+	open_tween.tween_property(bottom_bar, "position:y", slot_size.y, 0.3)
+	await open_tween.finished
+
+	top_bar.queue_free()
+	bottom_bar.queue_free()

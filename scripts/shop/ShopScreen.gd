@@ -13,7 +13,7 @@ const SHOP_BUFF_SCENE = preload("res://scenes/ShopBuffButton.tscn")
 @onready var reroll_label = $HBoxContainer/ItemSection/RerollButton/Label
 @onready var iris_wipe = $IrisWipe
 @onready var background_layer = $BackgroundLayer
-@onready var tooltip = $HUDLayer/Tooltip
+@onready var tooltip = $TooltipLayer/Tooltip
 @onready var items_hud = $HUDLayer/HUDRoot/ItemsHUD
 @onready var modifiers_hud = $HUDLayer/HUDRoot/ModifiersHUD
 @onready var health_text = $HUDLayer/HUDRoot/HealthText
@@ -25,6 +25,10 @@ var font: Font
 
 func _ready():
 	font = preload("res://assets/gomarice_goma_block.ttf")
+
+	$HUDLayer/ActiveItemPanel.connect("request_tooltip_show", _on_active_tooltip_show)
+	$HUDLayer/ActiveItemPanel.connect("request_tooltip_hide", _on_active_tooltip_hide)
+	$HUDLayer/ActiveItemPanel.can_click = false
 
 	if not ShopManager.is_initialized:
 		ShopManager.refresh_shop(MapManager.run_seed + 700000)
@@ -41,6 +45,7 @@ func _ready():
 	reroll_button.pressed.connect(_on_reroll_pressed)
 
 	RunProgressionManager.connect("dollars_changed", _on_dollars_changed)
+	ItemManager.connect("active_item_cap_reached", _on_active_cap_reached)
 
 	await get_tree().process_frame
 	iris_wipe.iris_open(MapManager.last_panel_world_pos)
@@ -79,23 +84,23 @@ func _setup_layout():
 	leave_button.offset_right = -760
 	leave_button.custom_minimum_size = Vector2(320, 70)
 
-	_style_leave_button()
+#	_style_leave_button()
 	_style_reroll_button()
 
 
-func _style_leave_button():
-	var label = leave_button.get_node_or_null("Label")
-	if not label:
-		label = Label.new()
-		label.name = "Label"
-		leave_button.add_child(label)
-		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.text = "LEAVE"
-	label.add_theme_font_override("font", font)
-	label.add_theme_font_size_override("font_size", 32)
-	label.add_theme_color_override("font_color", Color("#FFFFFF"))
+#func _style_leave_button():
+#	var label = leave_button.get_node_or_null("Label")
+#	if not label:
+#		label = Label.new()
+#		label.name = "Label"
+#		leave_button.add_child(label)
+#		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+#		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+#		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+#	label.text = "LEAVE"
+#	label.add_theme_font_override("font", font)
+#	label.add_theme_font_size_override("font_size", 32)
+#	label.add_theme_color_override("font_color", Color("#FFFFFF"))
 
 
 func _style_reroll_button():
@@ -211,6 +216,7 @@ func _on_item_purchased(index: int):
 		_refresh_affordability()
 	else:
 		AudioLoader.play_sound("damage")
+	populate_hud()
 
 
 func _on_buff_purchased(buff_type: int):
@@ -301,3 +307,42 @@ func _on_leave_pressed():
 	await iris_wipe.closed
 	await get_tree().create_timer(0.5).timeout
 	get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
+
+
+func _on_active_cap_reached(new_item: ItemData):
+	var overlay = preload("res://scenes/ActiveItemReplaceOverlay.tscn").instantiate()
+	add_child(overlay)
+	overlay.show_overlay(new_item)
+	overlay.connect("replacement_confirmed", _on_replacement_confirmed)
+	overlay.connect("replacement_cancelled", _on_replacement_cancelled)
+	overlay.connect("request_tooltip_show", _on_active_tooltip_show)
+	overlay.connect("request_tooltip_hide", _on_active_tooltip_hide)
+
+
+func _on_replacement_confirmed(old_item: ItemData, new_item: ItemData):
+	# Remove old item first
+	ItemManager.player_items.erase(old_item)
+	ActiveItemManager.remove_item(old_item)
+	
+	# Now add new item — count is back to 4 so no overflow
+	ItemManager.player_items.append(new_item)
+	ActiveItemManager.add_item(new_item)
+	RunProgressionManager.reward_pool_items.erase(new_item)
+	
+	# Only emit after everything is in correct state
+	ItemManager.emit_signal("items_changed")
+	
+	_refresh_affordability()
+
+
+func _on_replacement_cancelled(_new_item: ItemData):
+	_refresh_affordability()
+
+
+func _on_active_tooltip_show(item: ItemData):
+	tooltip.visible = true
+	tooltip.display_active_item(item)
+
+
+func _on_active_tooltip_hide():
+	tooltip.visible = false

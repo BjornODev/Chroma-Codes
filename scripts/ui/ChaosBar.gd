@@ -45,7 +45,11 @@ func _ready():
 
 func _on_dollars_reset():
 	for entry in dollar_labels:
-		entry.label.add_theme_color_override("font_color", DOLLAR_ACTIVE_COLOR)
+		var threshold_index = entry.index
+		if ChaosManager.dollars_active[threshold_index]:
+			entry.label.add_theme_color_override("font_color", DOLLAR_ACTIVE_COLOR)
+		else:
+			entry.label.add_theme_color_override("font_color", DOLLAR_LOST_COLOR)
 
 
 func _build_bar():
@@ -82,12 +86,13 @@ func _sync_to_current_chaos():
 			segments[i].modulate = _get_segment_color(i)
 		else:
 			segments[i].modulate = Color(1.0, 1.0, 1.0, SEGMENT_OFF_OPACITY)
-
+	
 	for entry in dollar_labels:
 		var threshold_index = entry.index
 		if not ChaosManager.dollars_active[threshold_index]:
 			entry.label.add_theme_color_override("font_color", DOLLAR_LOST_COLOR)
-
+		else:
+			entry.label.add_theme_color_override("font_color", DOLLAR_ACTIVE_COLOR)
 
 
 func _overlay_dollar_labels(segment_column: VBoxContainer):

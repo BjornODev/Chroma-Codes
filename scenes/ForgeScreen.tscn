@@ -1,0 +1,302 @@
+[gd_scene load_steps=20 format=3 uid="uid://duk3ywkomwq2y"]
+
+[ext_resource type="Script" uid="uid://bmmjne4r07v64" path="res://scripts/items/ForgeScreen.gd" id="1_kiand"]
+[ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/map_screen/IrisWipe.gd" id="1_rvadx"]
+[ext_resource type="Shader" uid="uid://dhnljtdx7tjn8" path="res://shaders/IrisWipe.gdshader" id="2_05kka"]
+[ext_resource type="Script" uid="uid://dyjuerpu4qupn" path="res://scripts/ui/BackgroundLayer.gd" id="3_71boj"]
+[ext_resource type="Texture2D" uid="uid://c8u5amc2052kk" path="res://assets/backgrounds/background_image_0.jpg" id="4_xi6ol"]
+[ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="5_uwy4i"]
+[ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="6_iaxt5"]
+[ext_resource type="Script" uid="uid://dwy8ihxgnsr8v" path="res://scripts/ui/hud_layer.gd" id="8_jy8ad"]
+[ext_resource type="PackedScene" uid="uid://dv7xb81iu655c" path="res://scenes/ActiveItemPanel.tscn" id="9_y8q21"]
+[ext_resource type="Script" uid="uid://dxt827h5admkd" path="res://scripts/ui/ChaosBar.gd" id="10_ktgjs"]
+[ext_resource type="PackedScene" uid="uid://oc11oeqiu24y" path="res://scenes/HealthText.tscn" id="11_l7jgr"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="12_6sfc2"]
+[ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="13_nnksp"]
+[ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="14_jy8ad"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v2sqe"]
+shader = ExtResource("2_05kka")
+shader_parameter/radius = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/screen_size = Vector2(1920, 1080)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mgrro"]
+shader = ExtResource("5_uwy4i")
+shader_parameter/screen_height = 2160.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 1.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 1.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ntvt7"]
+shader = ExtResource("5_uwy4i")
+shader_parameter/screen_height = 1080.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 2.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 2.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ot6f4"]
+shader = ExtResource("6_iaxt5")
+shader_parameter/amplitude = 0.15
+shader_parameter/frequency = 8.0
+shader_parameter/speed = 2.0
+shader_parameter/scroll_direction = Vector2(0.5, 0.5)
+shader_parameter/scrolling_speed = 0.0
+shader_parameter/blob_scale = 1.0
+shader_parameter/blob_count = 15
+shader_parameter/color_a = Vector4(0.2, 0.4, 0.9, 1)
+shader_parameter/color_b = Vector4(0.6, 0.2, 0.8, 1)
+shader_parameter/color_c = Vector4(0.9, 0.3, 0.5, 1)
+shader_parameter/color_d = Vector4(0.2, 0.8, 0.7, 1)
+shader_parameter/color_e = Vector4(0.9, 0.7, 0.2, 1)
+shader_parameter/seed = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y8q21"]
+shader = ExtResource("14_jy8ad")
+shader_parameter/overlay = false
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.1
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(320, 180)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 0.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.075
+shader_parameter/noise_speed = 50.0
+shader_parameter/static_noise_intensity = 0.0
+shader_parameter/aberration = 0.0
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.150000007125
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.400000019
+shader_parameter/vignette_opacity = 0.5
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kiand")
+
+[node name="IrisWipe" type="CanvasLayer" parent="."]
+layer = 15
+visible = false
+script = ExtResource("1_rvadx")
+
+[node name="ShaderRect" type="ColorRect" parent="IrisWipe"]
+material = SubResource("ShaderMaterial_v2sqe")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("3_71boj")
+
+[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("4_xi6ol")
+
+[node name="Background" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_mgrro")
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("4_xi6ol")
+metadata/_edit_lock_ = true
+
+[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer"]
+visible = false
+material = SubResource("ShaderMaterial_ntvt7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BGRect" type="ColorRect" parent="BackgroundLayer"]
+material = SubResource("ShaderMaterial_ot6f4")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("8_jy8ad")
+
+[node name="ActiveItemPanel" parent="HUDLayer" instance=ExtResource("9_y8q21")]
+visible = false
+offset_left = 141.0
+offset_right = 261.0
+
+[node name="ChaosMeter" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1895.0
+offset_top = 100.0
+offset_right = -1855.0
+offset_bottom = 140.0
+grow_horizontal = 0
+script = ExtResource("10_ktgjs")
+
+[node name="HUDRoot" type="Control" parent="HUDLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemsHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+visible = false
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+theme_override_constants/separation = 20
+
+[node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1820.0
+offset_top = 20.0
+offset_right = 1860.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="HealthText" parent="HUDLayer/HUDRoot" instance=ExtResource("11_l7jgr")]
+
+[node name="MoneyLabel" type="Label" parent="HUDLayer/HUDRoot"]
+layout_mode = 0
+offset_left = 407.0
+offset_top = 911.0
+offset_right = 720.0
+offset_bottom = 1063.0
+theme_override_colors/font_color = Color(0.99606323, 0.9842987, 0.25489807, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 10
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 30
+theme_override_constants/shadow_outline_size = 20
+theme_override_fonts/font = ExtResource("12_6sfc2")
+theme_override_font_sizes/font_size = 115
+text = "$ 10"
+vertical_alignment = 2
+
+[node name="TooltipLayer" type="CanvasLayer" parent="."]
+layer = 50
+
+[node name="Tooltip" parent="TooltipLayer" instance=ExtResource("13_nnksp")]
+visible = false
+z_index = 50
+offset_right = 600.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="ActiveSection" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="ActiveGrid" type="VBoxContainer" parent="HBoxContainer/ActiveSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PassiveSection" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="PassiveGrid" type="GridContainer" parent="HBoxContainer/PassiveSection"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 4
+
+[node name="ConfirmButton" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_fonts/font = ExtResource("12_6sfc2")
+theme_override_font_sizes/font_size = 35
+text = "Confirm"
+
+[node name="Label" type="Label" parent="ConfirmButton"]
+layout_mode = 0
+offset_top = -23.0
+offset_right = 159.0
+text = "Label"
+
+[node name="LeaveButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -57.0
+offset_top = -44.0
+offset_right = 57.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("12_6sfc2")
+theme_override_font_sizes/font_size = 35
+text = "Leave"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="CRTFilter" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_y8q21")
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2

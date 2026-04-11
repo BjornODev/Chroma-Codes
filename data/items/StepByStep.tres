@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://b1sb74sutefrs"]
+
+[ext_resource type="Texture2D" uid="uid://bwxrfoiyjv034" path="res://assets/item_icons/obelisk.svg" id="1_mw7po"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_g8ftp"]
+
+[resource]
+script = ExtResource("2_g8ftp")
+item_name = "Step by Step"
+description = "Walking diagonally still makes forward progress"
+icon = ExtResource("1_mw7po")
+rarity = 2
+price = 3
+is_active = true
+charge_conditions = [{
+"amount": 1,
+"stat": "pegs_placed_purple"
+}, {
+"amount": 1,
+"stat": "white_pegs"
+}]
+active_keywords = {
+"Clear": 3,
+"Heal": 2
+}
+metadata/_custom_type_script = "uid://byr4oyeful2c4"

@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=3 uid="uid://dd7rdca0thvti"]
+
+[ext_resource type="Script" uid="uid://cy8akqkkx5giy" path="res://scripts/items/ActiveItemReplaceOverlay.gd" id="1_215p4"]
+[ext_resource type="FontFile" uid="uid://bvtkjpiaust5w" path="res://assets/gomarice_goma_block.ttf" id="2_g40ja"]
+
+[node name="ActiveItemReplaceOverlay" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_215p4")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.0023498535, 0.12638855, 0.8712711)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_g40ja")
+theme_override_font_sizes/font_size = 75
+text = "Replace One Active Item"
+horizontal_alignment = 1
+
+[node name="NewItemContainer" type="HBoxContainer" parent="Background/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="NewItemSlot" type="Control" parent="Background/VBoxContainer/NewItemContainer"]
+custom_minimum_size = Vector2(276, 138)
+layout_mode = 2
+
+[node name="SlotContainer" type="HBoxContainer" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="Background/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ConfirmButton" type="Button" parent="Background/VBoxContainer/ButtonRow"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_g40ja")
+theme_override_font_sizes/font_size = 25
+text = "Confirm"
+
+[node name="CancelButton" type="Button" parent="Background/VBoxContainer/ButtonRow"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_g40ja")
+theme_override_font_sizes/font_size = 25
+text = "Cancel"
+
+[connection signal="pressed" from="Background/VBoxContainer/ButtonRow/ConfirmButton" to="." method="_on_confirm_pressed"]
+[connection signal="pressed" from="Background/VBoxContainer/ButtonRow/CancelButton" to="." method="_on_cancel_pressed"]

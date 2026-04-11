@@ -43,15 +43,17 @@ func _ready():
 	black_frame.visible = true
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
+	peg_manager_reference = $"../PegManager"
 	RunProgressionManager.reset_board_stats()
 	ActiveItemManager.set_context(self, peg_manager_reference, popup_manager)
+	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
 	iris_wipe.instant_close()
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
-	peg_manager_reference = $"../PegManager"
-	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
 	PopUpText.toggle_mult(true)
+	RunProgressionManager.apply_board_modifiers()
 	BoardModifierEngine.pre_board_build(self)
+	get_parent().call_deferred("populate_hud")
 	$"../BackgroundLayer".change_background(randi())
 	KeywordEngine.multiplier = 1
 	KeywordEngine.set_context(self, peg_manager_reference, popup_manager)
@@ -826,11 +828,13 @@ func start_next_board():
 
 
 func _on_reward_confirmed(_choice):
+	RunProgressionManager.board_cleared()  # ← increment before next board loads
 	iris_wipe.iris_close(get_viewport().get_visible_rect().size / 2.0)
 	ChaosManager.cleanse_on_board_clear()
 	ChaosManager.reset_dollars()
 	await iris_wipe.closed
 	get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
+
 
 
 func fade_out():

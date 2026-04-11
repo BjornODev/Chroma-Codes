@@ -10,8 +10,8 @@ extends Node
 # EASY TWEAK ZONE
 # -----------------------------------------------
 const SHOP_SIZE := 6
-const HEALTH_PRICE := 3
-const CHAOS_PRICE := 3
+const HEALTH_PRICE := 2
+const CHAOS_PRICE := 2
 const HEALTH_PER_PURCHASE := 1
 const CHAOS_RELIEF_PER_PURCHASE := 5
 const HEALTH_LIMIT_PER_MAP := 5
@@ -26,6 +26,9 @@ var reroll_cost := BASE_REROLL_COST
 var health_bought_this_map := 0
 var chaos_bought_this_map := 0
 var is_initialized := false
+
+var purchased_item_names: Array = []
+var purchased_slots: Array = []
 
 var _rng := RandomNumberGenerator.new()
 
@@ -49,43 +52,69 @@ func refresh_shop(seed_value: int):
 
 func _populate_shop():
 	var pool = _build_weighted_pool()
-	pool.shuffle()
+	RunProgressionManager._seeded_shuffle(pool)
 
-	# Separate active and passive items
 	var active_pool = pool.filter(func(i): return i.is_active)
 	var passive_pool = pool.filter(func(i): return not i.is_active)
 
-	shop_items.clear()
+	var seen_names := []
+	var unique_active := []
+	for item in active_pool:
+		if item.item_name not in seen_names:
+			seen_names.append(item.item_name)
+			unique_active.append(item)
 
-	# Place one guaranteed active item
+	var unique_passive := []
+	for item in passive_pool:
+		if item.item_name not in seen_names:
+			seen_names.append(item.item_name)
+			unique_passive.append(item)
+
 	var guaranteed_active: ItemData = null
-	if not active_pool.is_empty():
-		guaranteed_active = active_pool.pop_front()
+	if not unique_active.is_empty():
+		guaranteed_active = unique_active.pop_front()
 
-	# Fill remaining 5 slots from passive pool (and remaining actives)
-	var remaining = passive_pool
-	remaining.append_array(active_pool)
+	var remaining = unique_passive
+	remaining.append_array(unique_active)
 	remaining.shuffle()
 
-	var selected: Array = []
-	for i in range(min(SHOP_SIZE - 1, remaining.size())):
-		selected.append(remaining[i])
+	# Build new items only for non-purchased slots
+	var available_slots := []
+	for i in range(SHOP_SIZE):
+		if i not in purchased_slots:
+			available_slots.append(i)
 
-	# Add guaranteed active at random position
+	# Start with all nulls
+	shop_items.resize(SHOP_SIZE)
+	for i in range(SHOP_SIZE):
+		shop_items[i] = null
+
+	# Place guaranteed active in a non-purchased slot
 	if guaranteed_active:
-		var insert_pos = _rng.randi() % (selected.size() + 1)
-		selected.insert(insert_pos, guaranteed_active)
+		var valid_positions = available_slots.duplicate()
+		var insert_pos = valid_positions[_rng.randi() % valid_positions.size()]
+		shop_items[insert_pos] = guaranteed_active
+		available_slots.erase(insert_pos)
 
-	# Pad to SHOP_SIZE with nulls if needed
-	while selected.size() < SHOP_SIZE:
-		selected.append(null)
+	# Fill remaining available slots
+	var item_index := 0
+	for slot in available_slots:
+		if item_index >= remaining.size():
+			break
+		shop_items[slot] = remaining[item_index]
+		item_index += 1
 
-	shop_items = selected
+
 
 
 func _build_weighted_pool() -> Array:
 	var pool := []
+	var reward_pool_names = RunProgressionManager.reward_pool_items.map(func(i): return i.item_name)
 	for item in ItemManager.all_items:
+		if item.item_name in purchased_item_names:
+			continue
+		if item.item_name not in reward_pool_names:
+			continue
 		var weight = _rarity_weight(item.rarity)
 		for i in range(weight):
 			pool.append(item)
@@ -105,18 +134,18 @@ func _rarity_weight(rarity: int) -> int:
 # BUYING
 # =========================
 
+
 func buy_item(index: int) -> bool:
 	if index < 0 or index >= shop_items.size():
 		return false
-
 	var item = shop_items[index]
 	if item == null:
 		return false
-
 	if not RunProgressionManager.spend_dollars(item.price):
 		return false
-
 	ItemManager.give_item_by_name(item.item_name)
+	purchased_item_names.append(item.item_name)
+	purchased_slots.append(index)
 	shop_items[index] = null
 	return true
 
@@ -142,6 +171,8 @@ func buy_chaos_relief() -> bool:
 
 
 func reroll() -> bool:
+	if purchased_slots.size() >= 6:
+		return false
 	if not RunProgressionManager.spend_dollars(reroll_cost):
 		return false
 	reroll_cost += 1

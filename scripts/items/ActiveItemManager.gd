@@ -128,6 +128,20 @@ func reset_on_new_run():
 	emit_signal("active_items_changed")
 
 
+func add_charge_direct(item: ItemData, amount: float):
+	if not charge_state.has(item.item_name):
+		charge_state[item.item_name] = 0.0
+	charge_state[item.item_name] = min(
+		charge_state[item.item_name] + amount,
+		item.charge_max
+	)
+	emit_signal("charge_updated",
+		item.item_name,
+		charge_state[item.item_name],
+		item.charge_max
+	)
+
+
 # =========================
 # STAT HOOKS
 # These are called from BoardManager and KeywordEngine

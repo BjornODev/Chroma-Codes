@@ -16,6 +16,3 @@ theme_override_constants/separation = 25
 
 [node name="ItemIcon" parent="VBoxContainer" instance=ExtResource("2_1k1lo")]
 layout_mode = 2
-
-[node name="ModifierIcon" parent="VBoxContainer" instance=ExtResource("2_1k1lo")]
-layout_mode = 2

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ck3xm24la78ur"]
+[gd_scene load_steps=4 format=3 uid="uid://ck3xm24la78ur"]
 
 [ext_resource type="Script" uid="uid://doiylxmkk3eui" path="res://scripts/map_screen/MapPanel.gd" id="1_eartb"]
 [ext_resource type="Texture2D" uid="uid://ij07wnp2ae0w" path="res://assets/ui/Board.svg" id="2_8nn3m"]
+[ext_resource type="Texture2D" uid="uid://dloe08m1usmlu" path="res://assets/ui/plain-padlock.png" id="3_t0qur"]
 
 [node name="ColorRect" type="ColorRect"]
 custom_minimum_size = Vector2(110, 110)
@@ -52,17 +53,20 @@ texture = ExtResource("2_8nn3m")
 expand_mode = 1
 
 [node name="LockOverlay" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.19998169, 0.19998169, 0.19998169, 0.69804054)
+color = Color(0.19999695, 0.19999695, 0.19999695, 0.82787544)
+
+[node name="LockIcon" type="TextureRect" parent="LockOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_t0qur")
+expand_mode = 1

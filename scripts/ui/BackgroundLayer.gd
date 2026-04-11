@@ -34,15 +34,13 @@ func change_background(seed_offset: float):
 	mat.set_shader_parameter("amplitude", _rand_range(rng, AMPLITUDE_RANGE))
 	mat.set_shader_parameter("frequency", _rand_range(rng, FREQUENCY_RANGE))
 	mat.set_shader_parameter("speed", _rand_range(rng, SPEED_RANGE))
-	mat.set_shader_parameter("scrolling_speed", _rand_range(rng, SCROLL_SPEED_RANGE))
 	mat.set_shader_parameter("blob_scale", _rand_range(rng, BLOB_SCALE_RANGE))
 	mat.set_shader_parameter("blob_count", rng.randi_range(BLOB_COUNT_RANGE.x, BLOB_COUNT_RANGE.y))
-	mat.set_shader_parameter("Scroll Direction", Vector2(scroll_dir, scroll_dir))
 
 	# Scroll direction — random angle
 	var angle = rng.randf() * TAU
 	var scroll_mag = _rand_range(rng, Vector2(0.05, 0.2))
-	mat.set_shader_parameter("scroll_direction", Vector2(cos(angle), sin(angle)) * scroll_mag)
+#	mat.set_shader_parameter("scroll_direction", Vector2(cos(angle), sin(angle)) * scroll_mag)
 
 	_apply_palette(mat, rng)
 

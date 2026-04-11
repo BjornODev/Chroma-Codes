@@ -3,20 +3,18 @@ extends Node2D
 
 @onready var items_hud = $HUDLayer/HUDRoot/ItemsHUD
 @onready var modifiers_hud = $HUDLayer/HUDRoot/ModifiersHUD
-@onready var tooltip = $HUDLayer/Tooltip
+@onready var tooltip = $TooltipLayer/Tooltip
 @onready var crt_filter = $CanvasLayer/CRTFilter
 
+
+
 func _ready():
-	populate_hud()
+	print("Tooltip node:", tooltip)
+	$HUDLayer/ActiveItemPanel.connect("request_tooltip_show", _on_active_tooltip_show)
+	$HUDLayer/ActiveItemPanel.connect("request_tooltip_hide", _on_active_tooltip_hide)
 
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("f"):
-		if crt_filter.visible == false:
-			crt_filter.visible = true
-		else:
-			crt_filter.visible = false
-	
 	if Input.is_action_just_pressed("ui_select"):
 		get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
 
@@ -66,6 +64,7 @@ func hide_modifier_icon(modifier_data):
 
 
 func _on_hovered(resource_data):
+	print("_on_hovered called:", resource_data)
 	tooltip.visible = true
 
 	if resource_data is ItemData:
@@ -75,4 +74,13 @@ func _on_hovered(resource_data):
 
 
 func _on_hovered_off(resource_data):
+	tooltip.visible = false
+
+
+func _on_active_tooltip_show(item: ItemData):
+	tooltip.visible = true
+	tooltip.display_active_item(item)
+
+
+func _on_active_tooltip_hide():
 	tooltip.visible = false

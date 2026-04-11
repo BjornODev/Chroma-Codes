@@ -17,16 +17,20 @@ const DOLLAR_THRESHOLDS := [5, 10, 15, 20, 25]
 const EVENT_TRIGGER_CHANCE := 0.4  # 40% chance an event fires each turn
 
 const CHAOS_EVENTS := {
-	"low": [        # chaos 6-10
+	"low": [        # chaos 11-15
+		"flip_feedback",
+#		"hide_pegs",
+	],
+	"low_mid": [        # chaos 16-20
 		"flip_feedback",
 		"hide_pegs",
 	],
-	"mid": [        # chaos 11-20
+	"high_mid": [        # chaos 21-25
 		"flip_feedback",
 		"hide_pegs",
 	],
-	"high": [       # chaos 21-30
-		"hide_pegs",
+	"high": [       # chaos 26-30
+#		"hide_pegs",
 #		"shift_code",
 		"deal_damage",
 	]
@@ -73,11 +77,22 @@ func cleanse_chaos(amount: int):
 	chaos = max(chaos - amount, 0)
 	
 	if chaos != old_chaos:
+		# Reactivate any dollars that are now below threshold
+		for i in range(DOLLAR_THRESHOLDS.size()):
+			if chaos <= DOLLAR_THRESHOLDS[i] and not dollars_active[i]:
+				dollars_active[i] = true
 		emit_signal("chaos_changed", chaos)
+		emit_signal("dollars_reset")
 
 
 func cleanse_on_board_clear():
 	cleanse_chaos(CHAOS_CLEAR_ON_BOARD)
+	# Reset dollars but immediately re-check against remaining chaos
+	dollars_active = [true, true, true, true, true]
+	for i in range(DOLLAR_THRESHOLDS.size()):
+		if chaos > DOLLAR_THRESHOLDS[i]:
+			dollars_active[i] = false
+	emit_signal("dollars_reset")
 
 
 # =========================
@@ -103,6 +118,10 @@ func get_earned_dollars() -> int:
 
 func reset_dollars():
 	dollars_active = [true, true, true, true, true]
+	# Re-check current chaos against all thresholds
+	for i in range(DOLLAR_THRESHOLDS.size()):
+		if chaos > DOLLAR_THRESHOLDS[i]:
+			dollars_active[i] = false
 	emit_signal("dollars_reset")
 
 
@@ -111,21 +130,26 @@ func reset_dollars():
 # =========================
 
 func fire_chaos_event():
-	if chaos <= 5:
+	print("CHAOS EVENT FIRED: " + str(chaos))
+	if chaos <= 10:
 		return
 	
 	if randf() > EVENT_TRIGGER_CHANCE:
 		return
 	
 	var pool: Array
-	if chaos <= 10:
+	if chaos <= 11:
 		pool = CHAOS_EVENTS["low"]
-	elif chaos <= 20:
-		pool = CHAOS_EVENTS["mid"]
+	elif chaos <= 16:
+		pool = CHAOS_EVENTS["low_mid"]
+	elif  chaos <= 21:
+		pool = CHAOS_EVENTS["high_mid"]
 	else:
 		pool = CHAOS_EVENTS["high"]
 	
 	var chosen = pool[randi() % pool.size()]
+	
+	print("Pool selected:", pool, "chosen:", chosen)
 	
 	match chosen:
 		"flip_feedback":
@@ -150,15 +174,27 @@ func _event_flip_feedback():
 	
 	for child in board_reference.get_children():
 		if child is Feedback_Grid and child.row == target_row:
-			for node in child.get_children():
-				if node is Feedback_Peg:
-					node.set_color(1 - node.color_id)
+			var pegs = _get_all_feedback_pegs(child)
+			for peg in pegs:
+				peg.set_color(1 - peg.color_id)
 			break
 	
 	if popup_reference:
 		popup_reference.show_popup(
 			"[center][b][color=#FF6B00]CHAOS: FEEDBACK FLIPPED[/color][/b][/center]"
 		)
+
+
+func _get_all_feedback_pegs(node) -> Array:
+	var pegs = []
+	for child in node.get_children():
+		if child is Feedback_Peg:
+			pegs.append(child)
+		else:
+			pegs.append_array(_get_all_feedback_pegs(child))
+	return pegs
+
+
 
 
 

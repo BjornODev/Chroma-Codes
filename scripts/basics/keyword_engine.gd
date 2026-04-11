@@ -64,8 +64,36 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 				heal_peg.setup_visuals()
 				
 				peg_manager_reference.player_hand_reference.add_special_peg(heal_peg)
+		
+		"Disable":
+			popup_reference.show_popup(
+				"[center][b][color=#00FF44]DISABLE %d[/color][/b][/center]" % final_value
+			)
+			BoardModifierEngine.start_disable_mode(final_value)
+		
 		"Cleanse":
 			popup_reference.show_popup(
 				"[center][b][color=#00FF44]CLEANSE %d[/color][/b][/center]" % final_value
 			)
 			ChaosManager.cleanse_chaos(final_value)
+		
+		"Heal":
+			popup_reference.show_popup(
+				"[center][b][color=#B0FC38]HEAL %d[/color][/b][/center]" % final_value
+			)
+			RunProgressionManager.add_health(final_value)
+		
+		"Unlock Any":
+			popup_reference.show_popup(
+				"[center][b][color=#FFD700]UNLOCK ANY PANEL[/color][/b][/center]"
+			)
+			MapManager.activate_unlock_any()
+		
+		"Charge Active":
+			popup_reference.show_popup(
+				"[center][b][color=#FFD700]CHARGE ACTIVE +%d[/color][/b][/center]" % final_value
+			)
+			for item in ItemManager.player_items:
+				if item.is_active:
+					ActiveItemManager.add_charge_direct(item, float(final_value))
+		

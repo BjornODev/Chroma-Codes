@@ -46,17 +46,12 @@ func disable_modifier(modifier):
 
 func _ready() -> void:
 	initialize()
-#	activate_modifier_by_name("Green Spike")
-#	activate_modifier_by_name("Wide Board")
+
 
 func initialize():
 	if all_modifiers.size() == 0:
 		load_modifiers()
 	
-	# Example: auto-activate first modifier for testing
-#	if all_modifiers.size() > 0:
-##		activate_modifier_by_name("Very Wide Board")
-#		activate_modifier_by_name("Goop Board")
 
 
 # =========================
@@ -77,8 +72,6 @@ func load_modifiers():
 	
 	for file_name in files:
 		if file_name.ends_with(".tres"):
-			#if file_name.ends_with(".remap"):
-				#file_name = file_name.replace(".remap", "")
 			var path = "res://data/modifiers/" + file_name
 			var modifier : ModifierData =ResourceLoader.load(path)
 			if modifier:
@@ -215,14 +208,13 @@ func update_feedback_counters(result):
 	var black = result[0]
 	var white = result[1]
 	
-	if not feedback_counters.has("black"):
-		feedback_counters["black"] = 0
+	if not feedback_counters.has("feedback_black"):
+		feedback_counters["feedback_black"] = 0
+	if not feedback_counters.has("feedback_white"):
+		feedback_counters["feedback_white"] = 0
 	
-	if not feedback_counters.has("white"):
-		feedback_counters["white"] = 0
-	
-	feedback_counters["black"] += black
-	feedback_counters["white"] += white
+	feedback_counters["feedback_black"] += black
+	feedback_counters["feedback_white"] += white
 	
 	emit_signal("feedback_counters_updated", feedback_counters.duplicate())
 
