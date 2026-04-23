@@ -62,7 +62,7 @@ func apply_board_modifiers():
 	BoardModifierEngine.active_modifiers.clear()
 	
 	var board_index = boards_cleared
-	var modifier_count = int((board_index + 1) / 2.0)
+	var modifier_count = board_index
 	print("Cleared modifiers, modifier_count:", modifier_count)
 
 	if modifier_count <= 0:
@@ -146,6 +146,8 @@ func get_reward_choices() -> Array:
 func _get_weighted_item_pool(pool: Array) -> Array:
 	var weighted := []
 	for item in pool:
+		if item.is_gamble_only:
+			continue  # ← add this
 		var weight = _rarity_weight(item.rarity)
 		for i in range(weight):
 			weighted.append(item)
@@ -196,6 +198,9 @@ func spend_dollars(amount: int) -> bool:
 	emit_signal("dollars_changed", dollars)
 	return true
 
+
+func can_afford(amount: int) -> bool:
+	return dollars >= amount
 
 # =========================
 # BOARD STATS

@@ -16,33 +16,33 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 	match keyword:
 
 		"Replace":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#39FF14]REPLACE %d[/color][/b][/center]" % final_value
 			)
 			peg_manager_reference.start_replace_mode(final_value)
 			ActiveItemManager.on_replace_used(final_value)
 
 		"Clear":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#ffff33]CLEAR %d[/color][/b][/center]" % final_value
 			)
 			peg_manager_reference.start_clear(final_value)
 
 		"Reveal":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#FBFFFF]REVEAL %d[/color][/b][/center]" % final_value
 			)
 			peg_manager_reference.start_reveal(final_value)
 
 		"Multiply":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#BC13FE]MULTIPLY %d[/color][/b][/center]" % base_value
 			)
 			multiplier += base_value
 			popup_reference.mult_increase(multiplier)
 
 		"Bleed":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#FF073A]BLEED %d[/color][/b][/center]" % final_value
 			)
 			var cost = base_value
@@ -50,7 +50,7 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 			board_reference.apply_damage(cost)
 
 		"Create Healing":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#ED7117]+%d HEAL PEGS[/color][/b][/center]" % final_value
 			)
 		
@@ -66,19 +66,19 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 				peg_manager_reference.player_hand_reference.add_special_peg(heal_peg)
 		
 		"Disable":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#00FF44]DISABLE %d[/color][/b][/center]" % final_value
 			)
 			BoardModifierEngine.start_disable_mode(final_value)
 		
 		"Cleanse":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#00FF44]CLEANSE %d[/color][/b][/center]" % final_value
 			)
 			ChaosManager.cleanse_chaos(final_value)
 		
 		"Heal":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#B0FC38]HEAL %d[/color][/b][/center]" % final_value
 			)
 			RunProgressionManager.add_health(final_value)

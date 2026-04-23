@@ -25,7 +25,7 @@ func display_item(item : ItemData):
 	if item.is_active:
 		display_active_item(item)
 		return
-	name_label.text = item.item_name
+	name_label.text = item.get_display_name()
 	name_label.add_theme_color_override("font_color", item.get_rarity_color())
 	description_label.text = item.description
 	var trigger_text = ""
@@ -79,7 +79,7 @@ func display_modifier(modifier):
 
 
 func display_active_item(item: ItemData):
-	name_label.text = item.item_name + " [" + item.get_rarity_name() + "]"
+	name_label.text = item.get_display_name()
 	name_label.add_theme_color_override("font_color", item.get_rarity_color())
 
 	clear_preview()

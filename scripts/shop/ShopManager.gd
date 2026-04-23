@@ -111,6 +111,8 @@ func _build_weighted_pool() -> Array:
 	var pool := []
 	var reward_pool_names = RunProgressionManager.reward_pool_items.map(func(i): return i.item_name)
 	for item in ItemManager.all_items:
+		if item.is_gamble_only:
+			continue  # ← add this
 		if item.item_name in purchased_item_names:
 			continue
 		if item.item_name not in reward_pool_names:

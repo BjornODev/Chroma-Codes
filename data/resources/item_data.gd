@@ -9,6 +9,7 @@ extends Resource
 @export var icon: Texture2D
 @export_enum("Common", "Uncommon", "Rare", "Legendary") var rarity: int = 0
 @export var price: int = 1
+@export var is_gamble_only: bool = false
 
 # =========================
 # PASSIVE FIELDS
@@ -21,36 +22,38 @@ extends Resource
 # =========================
 @export var is_active: bool = false
 @export var charge_max: float = 10.0
-
-# charge_conditions: Array of Dictionaries
-# Each dict: { "stat": "damage_taken", "amount": 1.0, "icon_color": Color }
-# Supported stats:
-#   "damage_taken"       — increments by damage amount each hit
-#   "health_healed"      — increments by heal amount
-#   "pegs_placed_red"    — increments when red peg placed
-#   "pegs_placed_yellow"
-#   "pegs_placed_green"
-#   "pegs_placed_white"
-#   "pegs_placed_purple"
-#   "pegs_placed_orange"
-#   "pegs_placed_any"    — any color peg placed
-#   "rows_submitted"     — increments each row submit
-#   "active_activated"   — increments when any active item is activated
-#   "replace_used"       — increments when replace keyword fires
-#   "black_pegs"         — increments by black feedback pegs per row
-#   "white_pegs"         — increments by white feedback pegs per row
 @export var charge_conditions: Array[Dictionary]
-
-# active_keywords: fires when activated (same format as passive keywords)
 @export var active_keywords: Dictionary
+
+# =========================
+# UPGRADE FIELDS
+# =========================
+# Tier 1
+@export var upgrade_tier_1_effect: Dictionary
+@export var upgrade_tier_1_trigger: Dictionary  
+@export var upgrade_tier_1_charge_delta: float = 0.0
+
+# Tier 2
+@export var upgrade_tier_2_effect: Dictionary
+@export var upgrade_tier_2_trigger: Dictionary
+@export var upgrade_tier_2_charge_delta: float = 0.0
+
+# Tier 3
+@export var upgrade_tier_3_effect: Dictionary
+@export var upgrade_tier_3_trigger: Dictionary
+@export var upgrade_tier_3_charge_delta: float = 0.0
+
+
+# Current upgrade level — 0 = base, 1 = +, 2 = ++, 3 = +++
+var upgrade_level: int = 0
 
 
 func get_rarity_color() -> Color:
 	match rarity:
-		0: return Color("#888888")  # Common
-		1: return Color("#00CC44")  # Uncommon
-		2: return Color("#4488FF")  # Rare
-		3: return Color("#FFD700")  # Legendary
+		0: return Color("#888888")
+		1: return Color("#00CC44")
+		2: return Color("#4488FF")
+		3: return Color("#FFD700")
 	return Color("#888888")
 
 
@@ -61,3 +64,111 @@ func get_rarity_name() -> String:
 		2: return "Rare"
 		3: return "Legendary"
 	return "Common"
+
+
+func get_upgrade_label() -> String:
+	match upgrade_level:
+		0: return ""
+		1: return "+"
+		2: return "++"
+		3: return "+++"
+	return ""
+
+
+func get_display_name() -> String:
+	var label = get_upgrade_label()
+	if label == "":
+		return item_name
+	return item_name + " " + label
+
+
+func get_next_tier() -> Dictionary:
+	match upgrade_level:
+		0: return {
+			"effect": upgrade_tier_1_effect,
+			"trigger": upgrade_tier_1_trigger,
+			"charge_max_delta": upgrade_tier_1_charge_delta
+		}
+		1: return {
+			"effect": upgrade_tier_2_effect,
+			"trigger": upgrade_tier_2_trigger,
+			"charge_max_delta": upgrade_tier_2_charge_delta
+		}
+		2: return {
+			"effect": upgrade_tier_3_effect,
+			"trigger": upgrade_tier_3_trigger,
+			"charge_max_delta": upgrade_tier_3_charge_delta
+		}
+	return {}
+
+
+func can_upgrade() -> bool:
+	if upgrade_level >= 3:
+		return false
+	match upgrade_level:
+		0: return not (upgrade_tier_1_effect.is_empty() and upgrade_tier_1_trigger.is_empty() and upgrade_tier_1_charge_delta == 0.0)
+		1: return not (upgrade_tier_2_effect.is_empty() and upgrade_tier_2_trigger.is_empty() and upgrade_tier_2_charge_delta == 0.0)
+		2: return not (upgrade_tier_3_effect.is_empty() and upgrade_tier_3_trigger.is_empty() and upgrade_tier_3_charge_delta == 0.0)
+	return false
+
+
+
+func get_base_cost(cost_type: String) -> int:
+	match cost_type:
+		"chaos":
+			match rarity:
+				0: return 2
+				1: return 3
+				2: return 4
+				3: return 5
+		"health":
+			match rarity:
+				0: return 1
+				1: return 2
+				2: return 3
+				3: return 4
+		"dollars":
+			match rarity:
+				0: return 2
+				1: return 3
+				2: return 4
+				3: return 5
+	return 2
+
+
+func get_upgrade_cost(cost_type: String) -> int:
+	var base = get_base_cost(cost_type)
+	var next_level = upgrade_level + 1
+	return base * next_level
+
+
+func apply_upgrade():
+	if not can_upgrade():
+		return
+
+	var tier = get_next_tier()
+	if tier.is_empty():
+		return
+
+	# Apply effect deltas
+	var effect_deltas = tier.get("effect", {})
+	for key in effect_deltas:
+		if is_active:
+			active_keywords[key] = active_keywords.get(key, 0) + effect_deltas[key]
+		else:
+			keywords[key] = keywords.get(key, 0) + effect_deltas[key]
+
+	# Apply trigger deltas
+	var trigger_deltas = tier.get("trigger", {})
+	for key in trigger_deltas:
+		if triggers.size() > 0:
+			var t = triggers[0]
+			if t.has(key):
+				t[key] = t[key] + trigger_deltas[key]
+
+	# Apply charge_max delta
+	var charge_delta = tier.get("charge_max_delta", 0.0)
+	if charge_delta != 0.0:
+		charge_max = max(1.0, charge_max + charge_delta)
+
+	upgrade_level += 1

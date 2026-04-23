@@ -120,7 +120,8 @@ func _update_confirm_button():
 
 
 func _calculate_payout(item: ItemData) -> int:
-	return ceili(item.price * 0.5)
+	var base = ceili(item.price * 0.5)
+	return base + ceili(item.upgrade_level * 1.5)
 
 
 func _setup_confirm_button():

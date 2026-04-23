@@ -17,11 +17,6 @@ signal active_item_cap_reached(new_item: ItemData)
 
 func _ready():
 	load_items()
-	# TEMP: give player first item
-#	if all_items.size() > 0:
-#		player_items.append(all_items[0])
-#		player_items.append(all_items[2])
-#		give_item_by_name("Replace 2")
 
 
 var board_reference
@@ -109,7 +104,8 @@ func process_item_event(item, event_name, payload):
 			if curr_multiple <= prev_multiple:
 				continue
 			_set_prev_color_count(item.item_name, required_color, current)
-
+		
+		apply_item_effects(item, payload)
 func _get_prev_color_count(item_name: String, color: String) -> int:
 	return _prev_panel_color_counts.get(item_name + "_" + color, 0)
 
@@ -117,13 +113,12 @@ func _set_prev_color_count(item_name: String, color: String, value: int):
 	_prev_panel_color_counts[item_name + "_" + color] = value
 
 
-func apply_item_effects(item, payload):
+func apply_item_effects(item: ItemData, event_data: Dictionary):
+	print("Applying effects for:", item.item_name, "keywords:", item.keywords)
 	for keyword in item.keywords.keys():
-		KeywordEngine.apply_keyword(
-			keyword,
-			item.keywords[keyword],
-			payload
-		)
+		print("Applying keyword:", keyword, "value:", item.keywords[keyword])
+		KeywordEngine.apply_keyword(keyword, item.keywords[keyword], event_data)
+
 
 
 func has_item_trigger_for_pattern(pattern_name):

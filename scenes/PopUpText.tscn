@@ -12,6 +12,7 @@ default_font = ExtResource("2_oddxa")
 default_font_size = 50
 
 [node name="PopUpText" type="CanvasLayer"]
+layer = 12
 script = ExtResource("1_tyklc")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]

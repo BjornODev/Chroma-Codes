@@ -198,7 +198,7 @@ func _generate_unlock_condition():
 	match condition_type:
 		UnlockType.COLOR_COUNT:
 			# Pick 1-2 colors and counts
-			var num_colors = 1 + rng.randi() % 2
+			var num_colors = 1 + rng.randi() % 3
 			var chosen_colors = COLORS.duplicate()
 			_seeded_shuffle(chosen_colors)
 			var requirements = {}
@@ -215,7 +215,7 @@ func _generate_unlock_condition():
 		UnlockType.PANEL_TYPE:
 			var types = ["Board", "Shop", "Event", "Forge", "Gamble"]
 			var chosen_type = types[rng.randi() % types.size()]
-			var count = 1 + rng.randi() % 2
+			var count = 2 + rng.randi() % 3
 			unlock_condition = {
 				"type": UnlockType.PANEL_TYPE,
 				"panel_type": chosen_type,
@@ -224,7 +224,7 @@ func _generate_unlock_condition():
 			unlock_condition_progress["count"] = 0
 
 		UnlockType.TOTAL_PANELS:
-			var count = 2 + rng.randi() % 4
+			var count = 4 + rng.randi() % 4
 			unlock_condition = {
 				"type": UnlockType.TOTAL_PANELS,
 				"count": count
@@ -232,7 +232,7 @@ func _generate_unlock_condition():
 			unlock_condition_progress["count"] = 0
 
 		UnlockType.CHAOS_LEVEL:
-			var level = 5 + (rng.randi() % 5) * 5
+			var level = (1 + (rng.randi() % 3)) * 5
 			unlock_condition = {
 				"type": UnlockType.CHAOS_LEVEL,
 				"level": level
@@ -403,7 +403,8 @@ func _check_unlock_condition(activated_color: String, activated_type: String):
 			met = ChaosManager.chaos >= unlock_condition["level"]
 
 	if met:
-		_trigger_unlock()
+		unlock_used = true
+		KeywordEngine.apply_keyword("Heal", 1)
 
 
 func check_chaos_unlock():
@@ -412,7 +413,8 @@ func check_chaos_unlock():
 	if unlock_condition.get("type") != UnlockType.CHAOS_LEVEL:
 		return
 	if ChaosManager.chaos >= unlock_condition["level"]:
-		_trigger_unlock()
+		unlock_used = true
+		KeywordEngine.apply_keyword("Heal", 1)
 
 
 func _trigger_unlock():

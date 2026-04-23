@@ -163,7 +163,7 @@ func _load_panel_scene(panel_type: String):
 		"Shop":
 			get_tree().change_scene_to_file("res://scenes/ShopScreen.tscn")
 		"Event":
-			get_tree().change_scene_to_file("res://scenes/EventScreen.tscn")
+			get_tree().change_scene_to_file("res://scenes/UpgradeScreen.tscn")
 		"Forge":
 			get_tree().change_scene_to_file("res://scenes/ForgeScreen.tscn")
 		"Gamble":

@@ -16,3 +16,12 @@ triggers = Array[Dictionary]([{
 keywords = {
 "Multiply": 1
 }
+upgrade_tier_1_effect = {
+"Multiply": 1
+}
+upgrade_tier_2_effect = {
+"Multiply": 0
+}
+upgrade_tier_3_effect = {
+"Multiply": 1
+}

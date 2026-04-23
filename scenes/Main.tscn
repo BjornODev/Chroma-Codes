@@ -237,9 +237,6 @@ texture_pressed = ExtResource("18_nfivy")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="PopUpText" parent="." instance=ExtResource("10_mwfav")]
-layer = 11
-
 [node name="Health Text" parent="." instance=ExtResource("12_cvmbd")]
 layer = 11
 visible = false
@@ -349,10 +346,11 @@ theme_override_constants/v_separation = 10
 columns = 15
 
 [node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
+layout_direction = 3
 layout_mode = 0
-offset_left = 1860.0
+offset_left = -1860.0
 offset_top = 20.0
-offset_right = 1900.0
+offset_right = -1820.0
 offset_bottom = 60.0
 alignment = 2
 
@@ -363,6 +361,8 @@ layer = 50
 visible = false
 z_index = 50
 offset_right = 600.0
+
+[node name="PopUpText" parent="." instance=ExtResource("10_mwfav")]
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]
