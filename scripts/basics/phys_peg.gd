@@ -39,9 +39,15 @@ func _ready():
 		counter.visible = true
 	else:
 		counter.visible = false
-	BoardModifierEngine.connect("color_counters_updated", _on_counters_updated)
+
 	setup_visuals()
 	
+	PegInventoryManager.connect("peg_count_changed", _on_count_changed)
+	_update_counter_display()
+
+	if is_copy or is_special:
+		modulate = Color.WHITE
+
 	peg_sprite2D.material = peg_sprite2D.material.duplicate()
 	last_position = position
 	shader_material = peg_sprite2D.material as ShaderMaterial
@@ -53,6 +59,9 @@ func _process(delta: float) -> void:
 		rotation = lerpf(rotation, target_rotation, 10.0 * delta)
 	else:
 		rotation = lerpf(rotation, 0.0, 10.0 * delta)
+		if is_copy or is_special:
+			if modulate != Color.WHITE:
+				modulate = Color.WHITE
 
 
 func setup_visuals():
@@ -84,7 +93,7 @@ func take_from_stack() -> bool:
 		return false
 	
 	stack_count -= 1
-	update_stack_counter()
+	counter.text = PegInventoryManager.get_count(peg_id)
 	
 	if stack_count <= 0:
 		# stack disappears
@@ -96,14 +105,53 @@ func take_from_stack() -> bool:
 	return true
 
 
-func add_to_stack(amount := 1):
-	stack_count += amount
-	update_stack_counter()
+func _on_count_changed(color_id: int, new_count: int, old_count: int):
+	if is_copy or is_special:
+		return
+	if color_id != peg_id:
+		return
+	_animate_counter(old_count, new_count)
 
 
-func update_stack_counter():
-	counter.text = str(stack_count)
-	counter.visible = stack_count > 1
+func _animate_counter(from_val: int, to_val: int):
+	if is_copy or is_special:
+		return
+	var step = 1 if to_val > from_val else -1
+	var current = from_val
+	var total_steps = abs(to_val - from_val)
+	if total_steps == 0:
+		counter.text = str(to_val)
+		return
+
+	# Ramp speed — faster as it progresses
+	var base_interval := 0.08
+	var min_interval := 0.015
+
+	while current != to_val:
+		current += step
+		counter.text = str(current)
+		var progress = 1.0 - (float(abs(to_val - current)) / float(total_steps))
+		var interval = lerp(base_interval, min_interval, progress)
+		await get_tree().create_timer(interval).timeout
+
+	_update_greyed_state(to_val)
+
+
+func _update_counter_display():
+	if is_copy or is_special:
+		return
+	var count = PegInventoryManager.get_count(peg_id)
+	counter.text = str(count)
+	_update_greyed_state(count)
+
+
+func _update_greyed_state(count: int):
+	if is_copy or is_special:
+		modulate = Color.WHITE
+	if count <= 0:
+		modulate = Color(0.4, 0.4, 0.4, 1.0)
+	else:
+		modulate = Color.WHITE
 
 
 func _on_mouse_entered() -> void:

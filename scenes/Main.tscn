@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://c1s4ssyjqj50o"]
+[gd_scene load_steps=29 format=3 uid="uid://c1s4ssyjqj50o"]
 
 [ext_resource type="Script" uid="uid://c26612tapnu2n" path="res://scripts/basics/main.gd" id="1_rvslj"]
 [ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="2_1iba3"]
@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://b1xh26tp0jfos" path="res://scripts/basics/player_hand.gd" id="4_nxtc6"]
 [ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="5_ebg2g"]
 [ext_resource type="Script" uid="uid://duaojaojbvdrq" path="res://scripts/basics/board_manager.gd" id="6_q8u5g"]
-[ext_resource type="PackedScene" uid="uid://bjcxyo7gyqgoc" path="res://scenes/PopUpText.tscn" id="10_mwfav"]
 [ext_resource type="PackedScene" uid="uid://oc11oeqiu24y" path="res://scenes/HealthText.tscn" id="12_cvmbd"]
 [ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="13_cvmbd"]
 [ext_resource type="Texture2D" uid="uid://delxlc11h4gkr" path="res://assets/button_unpressed.svg" id="17_bb450"]
@@ -361,8 +360,6 @@ layer = 50
 visible = false
 z_index = 50
 offset_right = 600.0
-
-[node name="PopUpText" parent="." instance=ExtResource("10_mwfav")]
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]

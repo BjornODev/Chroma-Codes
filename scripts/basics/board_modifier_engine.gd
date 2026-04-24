@@ -249,8 +249,17 @@ func apply_effect(board, effect):
 			
 			"Obscure":
 				spawn_obscure(board, effect[key])
+			
 			"Short":
 				apply_short(board, effect[key])
+			
+			"Remove Color":
+				remove_color_pegs(effect[key])
+			
+			"Remove All":
+				remove_all_pegs(effect[key])
+
+
 # =========================
 # WIDE (Pre-Build Effect)
 # =========================
@@ -380,6 +389,23 @@ func spawn_obscure(board, amount):
 		placed += 1
 		if placed >= amount:
 			break
+
+
+func remove_color_pegs(payload):
+	# payload can be an int (applies to random color) or Dictionary {"color_id": X, "amount": Y}
+	if payload is Dictionary:
+		var color_id = payload.get("color_id", 1)
+		var amount = payload.get("amount", 1)
+		PegInventoryManager.remove_pegs_from_color(color_id, amount)
+	else:
+		# Just an int — pick random color
+		var color_ids = [1, 2, 3, 4, 5, 6]
+		var random_id = color_ids[randi() % color_ids.size()]
+		PegInventoryManager.remove_pegs_from_color(random_id, int(payload))
+
+
+func remove_all_pegs(amount):
+	PegInventoryManager.remove_pegs_from_all(int(amount))
 
 
 # =========================

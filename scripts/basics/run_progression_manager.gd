@@ -39,6 +39,7 @@ func start_new_run():
 
 	var seed = randi()
 	MapManager.start_run(seed)
+	PegInventoryManager.reset_for_new_run()
 
 	reward_pool_items = ItemManager.all_items.duplicate()
 	_rng.seed = MapManager.run_seed

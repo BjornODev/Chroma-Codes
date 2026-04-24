@@ -21,7 +21,6 @@ var feedback_scene
 var radar_blip_scene = preload("res://scenes/RadarBlip.tscn")
 
 var peg_manager_reference
-@onready var popup_manager = $"../PopUpText"
 
 var secret_code = []
 var board_state = []
@@ -45,8 +44,8 @@ func _ready():
 		RunProgressionManager.start_new_run()
 	peg_manager_reference = $"../PegManager"
 	RunProgressionManager.reset_board_stats()
-	ActiveItemManager.set_context(self, peg_manager_reference, popup_manager)
-	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
+	ActiveItemManager.set_context(self, peg_manager_reference, null)
+	ChaosManager.set_context(self, peg_manager_reference, null)
 	iris_wipe.instant_close()
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
@@ -56,7 +55,7 @@ func _ready():
 	get_parent().call_deferred("populate_hud")
 	$"../BackgroundLayer".change_background(randi())
 	KeywordEngine.multiplier = 1
-	KeywordEngine.set_context(self, peg_manager_reference, popup_manager)
+	KeywordEngine.set_context(self, peg_manager_reference, null)
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)
 	for i in range(soft_row_limit):
@@ -455,7 +454,7 @@ func submit_guess():
 		in_game = false
 		await handle_goop_explosion()
 		if RunProgressionManager.player_health > 0:
-			popup_manager.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 			)
 		AudioLoader.play_sound("win")
@@ -537,7 +536,7 @@ func apply_damage(damage):
 	if RunProgressionManager.player_health <= 0:
 		print("Game Over")
 		in_game = false
-		popup_manager.show_popup(
+		PopUpText.show_popup(
 			"[center][b][color=#FF073A] YOU LOSE [/color][/b][/center]"
 		)
 		AudioLoader.play_sound("lose")
@@ -644,7 +643,7 @@ func re_evaluate_row(row_index):
 		in_game = false
 		await handle_goop_explosion()
 		if RunProgressionManager.player_health > 0:
-			popup_manager.show_popup(
+			PopUpText.show_popup(
 						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 					)
 		AudioLoader.play_sound("win")
@@ -756,7 +755,7 @@ func apply_heal(amount):
 	RunProgressionManager.add_health(amount)
 	ActiveItemManager.on_health_healed(amount)
 	
-	popup_manager.show_popup(
+	PopUpText.show_popup(
 		"[center][b][color=#ED7117]+%d HEALTH[/color][/b][/center]" % amount
 	)
 
@@ -781,7 +780,7 @@ func apply_obscure_logic(obscurities, result):
 func start_next_board():
 	in_game = true
 	
-	ChaosManager.set_context(self, peg_manager_reference, popup_manager)
+	ChaosManager.set_context(self, peg_manager_reference, null)
 	
 	# Reset board state cleanly
 	board_state.clear()
@@ -811,9 +810,9 @@ func start_next_board():
 	KeywordEngine.set_context(
 		self,
 		peg_manager_reference,
-		popup_manager
+		null
 	)
-	popup_manager.mult_reset()
+	PopUpText.mult_reset()
 	BoardModifierEngine.color_counters.clear()
 	BoardModifierEngine.feedback_counters.clear()
 	generate_code()

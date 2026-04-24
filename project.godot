@@ -39,6 +39,7 @@ MapManager="*res://scripts/map_screen/MapManager.gd"
 BackgroundGenerator="*res://scripts/ui/BackgroundGenerator.gd"
 ActiveItemManager="*res://scripts/items/ActiveItemManager.gd"
 ShopManager="*res://scripts/shop/ShopManager.gd"
+PegInventoryManager="*res://scripts/basics/PegInventoryManager.gd"
 
 [display]
 
@@ -105,7 +106,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 219,
+"line": 408,
 "path": "res://scripts/basics/board_modifier_engine.gd",
 "type": "file"
 }, {
@@ -139,9 +140,8 @@ project/editorState=[{
 "path": "res://scripts/reward_screen/RunSummary.gd",
 "type": "file"
 }, {
-"column": 24,
-"current": true,
-"line": 67,
+"column": 40,
+"line": 41,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
@@ -150,8 +150,8 @@ project/editorState=[{
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 20,
+"line": 107,
 "path": "res://scripts/basics/keyword_engine.gd",
 "type": "file"
 }, {
@@ -240,8 +240,9 @@ project/editorState=[{
 "path": "res://scripts/basics/main.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 10,
+"current": true,
+"line": 42,
 "path": "res://scripts/basics/phys_peg.gd",
 "type": "file"
 }, {
@@ -313,6 +314,21 @@ project/editorState=[{
 "column": 0,
 "line": 7,
 "path": "res://scripts/ui/pop_up_text.gd",
+"type": "file"
+}, {
+"column": 2,
+"line": 92,
+"path": "res://scripts/basics/PegInventoryIntegration.gd",
+"type": "file"
+}, {
+"column": 24,
+"line": 153,
+"path": "res://scripts/basics/player_hand.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 395,
+"path": "res://scripts/basics/peg_manager.gd",
 "type": "file"
 }]
 project/breakpoints={

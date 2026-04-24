@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://cegknnem65plb"]
+
+[ext_resource type="Texture2D" uid="uid://b8tp86w35k8fh" path="res://assets/item_icons/sacrificial-dagger.svg" id="1_mvy8q"]
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_e22wt"]
+
+[resource]
+script = ExtResource("2_e22wt")
+item_name = "Bleed"
+description = "Blood for the Blood God"
+icon = ExtResource("1_mvy8q")
+rarity = 1
+price = 2
+is_active = true
+charge_max = 1.0
+charge_conditions = [{
+"amount": 1,
+"stat": "damage_taken"
+}]
+active_keywords = {
+"Bleed": 1,
+"Replace": 1
+}
+metadata/_custom_type_script = "uid://byr4oyeful2c4"

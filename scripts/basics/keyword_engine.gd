@@ -97,3 +97,17 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 				if item.is_active:
 					ActiveItemManager.add_charge_direct(item, float(final_value))
 		
+		"AddPegsColor":
+			# payload must include "color_id"
+			var color_id = payload.get("color_id", 1)
+			PegInventoryManager.add_pegs_to_color(color_id, final_value)
+		
+		"AddPegsAll":
+			PegInventoryManager.add_pegs_to_all(final_value)
+		
+		"RemovePegsColor":
+			var color_id = payload.get("color_id", 1)
+			PegInventoryManager.remove_pegs_from_color(color_id, base_value)
+		
+		"RemovePegsAll":
+			PegInventoryManager.remove_pegs_from_all(base_value)
