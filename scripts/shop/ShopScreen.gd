@@ -7,7 +7,7 @@ const SHOP_BUFF_SCENE = preload("res://scenes/ShopBuffButton.tscn")
 @onready var item_grid = $HBoxContainer/ItemSection/GridContainer
 @onready var buff_section = $HBoxContainer/BuffSection
 @onready var health_button = $HBoxContainer/BuffSection/HealthButton
-@onready var chaos_button = $HBoxContainer/BuffSection/ChaosButton
+@onready var refill_button = $HBoxContainer/BuffSection/ChaosButton
 @onready var reroll_button = $HBoxContainer/ItemSection/RerollButton
 @onready var leave_button = $LeaveButton
 @onready var reroll_label = $HBoxContainer/ItemSection/RerollButton/Label
@@ -78,29 +78,13 @@ func _setup_layout():
 	reroll_button.custom_minimum_size = Vector2(320, 70)
 
 	leave_button.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	leave_button.offset_top = -90
-	leave_button.offset_bottom = -24
+	leave_button.offset_top = -250
+	leave_button.offset_bottom = -196
 	leave_button.offset_left = 760
 	leave_button.offset_right = -760
 	leave_button.custom_minimum_size = Vector2(320, 70)
 
-#	_style_leave_button()
 	_style_reroll_button()
-
-
-#func _style_leave_button():
-#	var label = leave_button.get_node_or_null("Label")
-#	if not label:
-#		label = Label.new()
-#		label.name = "Label"
-#		leave_button.add_child(label)
-#		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-#		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-#		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-#	label.text = "LEAVE"
-#	label.add_theme_font_override("font", font)
-#	label.add_theme_font_size_override("font_size", 32)
-#	label.add_theme_color_override("font_color", Color("#FFFFFF"))
 
 
 func _style_reroll_button():
@@ -178,13 +162,13 @@ func _build_shop():
 
 func _build_buffs():
 	health_button.setup(ShopBuffButton.BuffType.HEALTH)
-	chaos_button.setup(ShopBuffButton.BuffType.CHAOS)
+	refill_button.setup(ShopBuffButton.BuffType.REFILL)
 	health_button.connect("buff_purchased", _on_buff_purchased)
-	chaos_button.connect("buff_purchased", _on_buff_purchased)
+	refill_button.connect("buff_purchased", _on_buff_purchased)
 	health_button.connect("hovered", _on_buff_hovered)
-	chaos_button.connect("hovered", _on_buff_hovered)
+	refill_button.connect("hovered", _on_buff_hovered)
 	health_button.connect("hovered_off", _on_buff_hovered_off)
-	chaos_button.connect("hovered_off", _on_buff_hovered_off)
+	refill_button.connect("hovered_off", _on_buff_hovered_off)
 
 
 func _update_reroll_button():
@@ -224,12 +208,12 @@ func _on_buff_purchased(buff_type: int):
 	if buff_type == ShopBuffButton.BuffType.HEALTH:
 		success = ShopManager.buy_health()
 	else:
-		success = ShopManager.buy_chaos_relief()
+		success = ShopManager.buy_peg_refill()
 
 	if success:
 		AudioLoader.play_sound("select")
 		health_button.refresh()
-		chaos_button.refresh()
+		refill_button.refresh()
 		_refresh_affordability()
 	else:
 		AudioLoader.play_sound("damage")
@@ -248,7 +232,7 @@ func _refresh_affordability():
 	for slot in item_slots:
 		slot.refresh_affordability()
 	health_button.refresh()
-	chaos_button.refresh()
+	refill_button.refresh()
 	_update_reroll_button()
 
 
@@ -275,19 +259,22 @@ func _on_item_hovered_off():
 
 func _on_buff_hovered(buff_type: int):
 	tooltip.visible = true
+	tooltip.clear_preview()
 	if buff_type == ShopBuffButton.BuffType.HEALTH:
 		tooltip.name_label.text = "Health Up"
+		tooltip.name_label.add_theme_color_override("font_color", Color("#DE0A26"))
 		tooltip.description_label.text = "+%d Health\n$%d each\n%d remaining this map" % [
 			ShopManager.HEALTH_PER_PURCHASE,
 			ShopManager.HEALTH_PRICE,
 			ShopManager.health_remaining()
 		]
 	else:
-		tooltip.name_label.text = "Chaos Relief"
-		tooltip.description_label.text = "-%d Chaos\n$%d each\n%d remaining this map" % [
-			ShopManager.CHAOS_RELIEF_PER_PURCHASE,
-			ShopManager.CHAOS_PRICE,
-			ShopManager.chaos_remaining()
+		tooltip.name_label.text = "Peg Refill"
+		tooltip.name_label.add_theme_color_override("font_color", Color("#AF69EE"))
+		tooltip.description_label.text = "+%d Pegs (all colors)\n$%d each\n%d remaining this map" % [
+			ShopManager.PEG_REFILL_AMOUNT,
+			ShopManager.REFILL_PRICE,
+			ShopManager.refill_remaining()
 		]
 	tooltip.effect_label.text = ""
 	tooltip.update_minimum_size()
@@ -320,18 +307,15 @@ func _on_active_cap_reached(new_item: ItemData):
 
 
 func _on_replacement_confirmed(old_item: ItemData, new_item: ItemData):
-	# Remove old item first
 	ItemManager.player_items.erase(old_item)
 	ActiveItemManager.remove_item(old_item)
-	
-	# Now add new item — count is back to 4 so no overflow
+
 	ItemManager.player_items.append(new_item)
 	ActiveItemManager.add_item(new_item)
 	RunProgressionManager.reward_pool_items.erase(new_item)
-	
-	# Only emit after everything is in correct state
+
 	ItemManager.emit_signal("items_changed")
-	
+
 	_refresh_affordability()
 
 

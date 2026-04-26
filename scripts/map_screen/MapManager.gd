@@ -7,6 +7,9 @@ extends Node
 const GRID_SIZE := 6
 const COLORS := ["red", "yellow", "green", "white", "purple", "orange"]
 
+const ACTIVATED_PANEL_REFILL := 4
+const ADJACENT_PANEL_REFILL := 2
+
 const COLOR_VALUES := {
 	"red": Color("#E05555"),
 	"yellow": Color("#E0C055"),
@@ -14,6 +17,15 @@ const COLOR_VALUES := {
 	"white": Color("#DDDDDD"),
 	"purple": Color("#8855CC"),
 	"orange": Color("#E08040"),
+}
+
+const COLOR_TO_PEG_ID := {
+	"red": 1,
+	"yellow": 2,
+	"green": 3,
+	"white": 4,
+	"purple": 5,
+	"orange": 6,
 }
 
 # Severity thresholds
@@ -32,7 +44,6 @@ enum UnlockType {
 	COLOR_COUNT,     # activate N of certain colored panels
 	PANEL_TYPE,      # activate a specific panel type
 	TOTAL_PANELS,    # activate N panels total
-	CHAOS_LEVEL,     # reach certain chaos level
 }
 
 # =========================
@@ -231,13 +242,6 @@ func _generate_unlock_condition():
 			}
 			unlock_condition_progress["count"] = 0
 
-		UnlockType.CHAOS_LEVEL:
-			var level = (1 + (rng.randi() % 3)) * 5
-			unlock_condition = {
-				"type": UnlockType.CHAOS_LEVEL,
-				"level": level
-			}
-
 
 func get_unlock_condition_text() -> String:
 	if unlock_condition.is_empty():
@@ -259,9 +263,6 @@ func get_unlock_condition_text() -> String:
 		UnlockType.TOTAL_PANELS:
 			var progress = unlock_condition_progress.get("count", 0)
 			return "Unlock: %d/%d panels total" % [progress, unlock_condition["count"]]
-
-		UnlockType.CHAOS_LEVEL:
-			return "Unlock: Reach %d chaos" % unlock_condition["level"]
 
 	return ""
 
@@ -314,6 +315,8 @@ func activate_panel(row: int, col: int) -> bool:
 	color_activation_counts[color] += 1
 	type_activation_counts[panel_type] += 1
 	total_activated += 1
+
+	_refill_pegs_from_panel(row, col)
 
 	# Reset unlock any after use
 	if unlock_any_active and total_activated > 1:
@@ -399,22 +402,10 @@ func _check_unlock_condition(activated_color: String, activated_type: String):
 			unlock_condition_progress["count"] = total_activated
 			met = total_activated >= unlock_condition["count"]
 
-		UnlockType.CHAOS_LEVEL:
-			met = ChaosManager.chaos >= unlock_condition["level"]
-
 	if met:
 		unlock_used = true
 		KeywordEngine.apply_keyword("Heal", 1)
 
-
-func check_chaos_unlock():
-	if unlock_used or unlock_condition.is_empty():
-		return
-	if unlock_condition.get("type") != UnlockType.CHAOS_LEVEL:
-		return
-	if ChaosManager.chaos >= unlock_condition["level"]:
-		unlock_used = true
-		KeywordEngine.apply_keyword("Heal", 1)
 
 
 func _trigger_unlock():
@@ -554,3 +545,28 @@ func reset_map():
 		grid_activated.append(row)
 		grid_adjacency_unlocked.append(adj_row)
 	_generate_unlock_condition()
+
+
+func _refill_pegs_from_panel(row: int, col: int):
+	var activated_color = grid_colors[row][col]
+	var activated_peg_id = COLOR_TO_PEG_ID.get(activated_color, 0)
+	if activated_peg_id > 0:
+		PegInventoryManager.add_pegs_to_color(activated_peg_id, ACTIVATED_PANEL_REFILL)
+
+	# Adjacent panels — all 4 orthogonal neighbors regardless of activation state
+	var neighbors = [
+		Vector2(row - 1, col),
+		Vector2(row + 1, col),
+		Vector2(row, col - 1),
+		Vector2(row, col + 1),
+	]
+
+	for n in neighbors:
+		var nr = int(n.x)
+		var nc = int(n.y)
+		if nr < 0 or nr >= GRID_SIZE or nc < 0 or nc >= GRID_SIZE:
+			continue
+		var adj_color = grid_colors[nr][nc]
+		var adj_peg_id = COLOR_TO_PEG_ID.get(adj_color, 0)
+		if adj_peg_id > 0:
+			PegInventoryManager.add_pegs_to_color(adj_peg_id, ADJACENT_PANEL_REFILL)

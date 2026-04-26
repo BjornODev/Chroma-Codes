@@ -21,7 +21,7 @@ var is_spinning := false
 
 const REEL_SYMBOLS := [
 	"dollar", "dollar", "dollar", "dollar",
-	"chaos", "chaos", "chaos", "chaos",
+	"refill", "refill", "refill", "refill",
 	"health", "health", "health",
 	"common", "common", "common",
 	"uncommon", "uncommon",
@@ -31,7 +31,7 @@ const REEL_SYMBOLS := [
 
 const PRIORITY := {
 	"dollar": 0,
-	"chaos": 1,
+	"refill": 1,
 	"health": 2,
 	"common": 3,
 	"uncommon": 4,
@@ -159,7 +159,7 @@ func _evaluate_results(results: Array) -> Dictionary:
 	# Fallback — if nothing qualified (e.g. no doubles for rare/legendary)
 	# find best non-item symbol
 	if best_symbol == "":
-		for symbol in ["health", "chaos", "dollar"]:
+		for symbol in ["health", "refill", "dollar"]:
 			if counts.has(symbol):
 				var p = PRIORITY.get(symbol, 0)
 				if p > best_priority:
@@ -186,10 +186,10 @@ func _apply_outcome(outcome: Dictionary):
 			result_text = "+$%d!" % amount
 			AudioLoader.play_sound("select")
 
-		"chaos":
+		"refill":
 			var amount = 5 * multiplier
-			ChaosManager.cleanse_chaos(amount)
-			result_text = "-%d CHAOS!" % amount
+			PegInventoryManager.add_pegs_to_all(amount)
+			result_text = "+%d PEGS!" % amount
 			AudioLoader.play_sound("select")
 
 		"health":

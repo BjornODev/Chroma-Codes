@@ -34,12 +34,12 @@ KeywordEngine="*res://scripts/basics/keyword_engine.gd"
 AudioSystem="*res://scenes/music_player.tscn"
 AudioLoader="*res://scripts/music_player.gd"
 RunProgressionManager="*res://scripts/basics/run_progression_manager.gd"
-ChaosManager="*res://scripts/basics/ChaosManager.gd"
 MapManager="*res://scripts/map_screen/MapManager.gd"
 BackgroundGenerator="*res://scripts/ui/BackgroundGenerator.gd"
 ActiveItemManager="*res://scripts/items/ActiveItemManager.gd"
 ShopManager="*res://scripts/shop/ShopManager.gd"
 PegInventoryManager="*res://scripts/basics/PegInventoryManager.gd"
+DollarManager="*res://scripts/basics/DollarManager.gd"
 
 [display]
 
@@ -51,7 +51,7 @@ window/stretch/mode="canvas_items"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/segmented_bar/plugin.cfg")
+enabled=PackedStringArray()
 
 [input]
 
@@ -106,7 +106,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 408,
+"line": 63,
 "path": "res://scripts/basics/board_modifier_engine.gd",
 "type": "file"
 }, {
@@ -115,23 +115,19 @@ project/editorState=[{
 "path": "res://scripts/basics/slot.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 415,
+"column": 32,
+"current": true,
+"line": 10,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
-"path": "res://scripts/reward_screen/RewardScreenIntegration.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 7,
+"column": 47,
+"line": 42,
 "path": "res://scripts/reward_screen/rewards_selection_ui.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 0,
+"column": 17,
+"line": 51,
 "path": "res://scripts/ui/DollarDisplay.gd",
 "type": "file"
 }, {
@@ -140,18 +136,18 @@ project/editorState=[{
 "path": "res://scripts/reward_screen/RunSummary.gd",
 "type": "file"
 }, {
-"column": 40,
-"line": 41,
+"column": 0,
+"line": 11,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
+"line": 46,
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
-"column": 20,
-"line": 107,
+"column": 0,
+"line": 77,
 "path": "res://scripts/basics/keyword_engine.gd",
 "type": "file"
 }, {
@@ -161,12 +157,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 81,
+"line": 28,
 "path": "res://scripts/ui/tooltip_panel.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 85,
+"line": 89,
 "path": "res://scripts/basics/ChaosManager.gd",
 "type": "file"
 }, {
@@ -201,7 +197,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 71,
+"line": 0,
 "path": "res://scripts/shop/ShopBuffButton.gd",
 "type": "file"
 }, {
@@ -210,8 +206,8 @@ project/editorState=[{
 "path": "res://scripts/shop/ShopItem.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 31,
+"column": 34,
+"line": 81,
 "path": "res://scripts/shop/ShopScreen.gd",
 "type": "file"
 }, {
@@ -221,7 +217,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 52,
+"line": 0,
 "path": "res://scripts/ui/ChaosBar.gd",
 "type": "file"
 }, {
@@ -231,7 +227,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 109,
+"line": 0,
 "path": "res://scripts/shop/ShopManager.gd",
 "type": "file"
 }, {
@@ -240,9 +236,8 @@ project/editorState=[{
 "path": "res://scripts/basics/main.gd",
 "type": "file"
 }, {
-"column": 10,
-"current": true,
-"line": 42,
+"column": 26,
+"line": 132,
 "path": "res://scripts/basics/phys_peg.gd",
 "type": "file"
 }, {
@@ -316,19 +311,44 @@ project/editorState=[{
 "path": "res://scripts/ui/pop_up_text.gd",
 "type": "file"
 }, {
-"column": 2,
+"column": 0,
 "line": 92,
 "path": "res://scripts/basics/PegInventoryIntegration.gd",
 "type": "file"
 }, {
-"column": 24,
-"line": 153,
+"column": 0,
+"line": 0,
 "path": "res://scripts/basics/player_hand.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 395,
+"line": 0,
 "path": "res://scripts/basics/peg_manager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/DollarBarSetup.gd",
+"type": "file"
+}, {
+"column": 14,
+"line": 8,
+"path": "res://scripts/basics/DollarBar.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/DollarManager.gd",
+"type": "file"
+}, {
+"column": 77,
+"line": 59,
+"path": "res://scripts/ui/PegStackDisplay.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/PegInventoryManager.gd",
 "type": "file"
 }]
 project/breakpoints={
@@ -347,5 +367,6 @@ project/breakpoints={
 "res://scripts/phys_peg.gd": PackedInt32Array(),
 "res://scripts/reward_column.gd": PackedInt32Array(),
 "res://scripts/reward_screen/rewards_selection_ui.gd": PackedInt32Array(),
-"res://scripts/run_progression_manager.gd": PackedInt32Array()
+"res://scripts/run_progression_manager.gd": PackedInt32Array(),
+"res://scripts/ui/PegStackDisplay.gd": PackedInt32Array()
 }

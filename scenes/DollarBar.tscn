@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://bn5ejspfx8dfe"]
+
+[ext_resource type="Script" uid="uid://i4gs2vjnns7r" path="res://scripts/basics/DollarBar.gd" id="1_0c5vq"]
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 20.0
+script = ExtResource("1_0c5vq")
+
+[node name="DollarRow" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 0
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 20.0
+theme_override_constants/separation = 12
+alignment = 1

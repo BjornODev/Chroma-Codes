@@ -44,8 +44,8 @@ func _ready():
 		RunProgressionManager.start_new_run()
 	peg_manager_reference = $"../PegManager"
 	RunProgressionManager.reset_board_stats()
+	DollarManager.reset_for_new_board()
 	ActiveItemManager.set_context(self, peg_manager_reference, null)
-	ChaosManager.set_context(self, peg_manager_reference, null)
 	iris_wipe.instant_close()
 	slot_scene = preload("res://scenes/SnapZone.tscn")
 	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
@@ -500,8 +500,6 @@ func submit_guess():
 	
 	peg_manager_reference.cur_row += 1
 	
-	ChaosManager.fire_chaos_event()
-	ChaosManager.add_chaos(1)
 	for child in get_children():
 		if child is SnapZone:
 			if child.row == peg_manager_reference.cur_row:
@@ -522,7 +520,7 @@ func submit_guess():
 func apply_damage(damage):
 	ActiveItemManager.on_damage_taken(damage)
 	RunProgressionManager.record_damage_taken(damage)
-	ChaosManager.add_chaos_from_damage()
+	DollarManager.lose_dollar_from_damage()
 	print("Health:", RunProgressionManager.player_health)
 	
 	flash_damage()
@@ -780,7 +778,6 @@ func apply_obscure_logic(obscurities, result):
 func start_next_board():
 	in_game = true
 	
-	ChaosManager.set_context(self, peg_manager_reference, null)
 	
 	# Reset board state cleanly
 	board_state.clear()
@@ -829,8 +826,6 @@ func start_next_board():
 func _on_reward_confirmed(_choice):
 	RunProgressionManager.board_cleared()  # ← increment before next board loads
 	iris_wipe.iris_close(get_viewport().get_visible_rect().size / 2.0)
-	ChaosManager.cleanse_on_board_clear()
-	ChaosManager.reset_dollars()
 	await iris_wipe.closed
 	get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
 

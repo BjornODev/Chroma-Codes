@@ -11,11 +11,11 @@ extends Node
 # -----------------------------------------------
 const SHOP_SIZE := 6
 const HEALTH_PRICE := 2
-const CHAOS_PRICE := 2
+const REFILL_PRICE := 2
 const HEALTH_PER_PURCHASE := 1
-const CHAOS_RELIEF_PER_PURCHASE := 5
+const PEG_REFILL_AMOUNT := 5
 const HEALTH_LIMIT_PER_MAP := 5
-const CHAOS_LIMIT_PER_MAP := 5
+const REFILL_LIMIT_PER_MAP := 5
 const BASE_REROLL_COST := 1
 # Reset reroll cost on shop refresh — set false to carry over across maps
 const RESET_REROLL_ON_REFRESH := true
@@ -24,7 +24,7 @@ const RESET_REROLL_ON_REFRESH := true
 var shop_items: Array = []        # Array of ItemData or null (null = sold)
 var reroll_cost := BASE_REROLL_COST
 var health_bought_this_map := 0
-var chaos_bought_this_map := 0
+var refill_bought_this_map := 0
 var is_initialized := false
 
 var purchased_item_names: Array = []
@@ -42,7 +42,7 @@ func refresh_shop(seed_value: int):
 	shop_items.clear()
 	is_initialized = true
 	health_bought_this_map = 0
-	chaos_bought_this_map = 0
+	refill_bought_this_map = 0
 
 	if RESET_REROLL_ON_REFRESH:
 		reroll_cost = BASE_REROLL_COST
@@ -90,7 +90,7 @@ func _populate_shop():
 		shop_items[i] = null
 
 	# Place guaranteed active in a non-purchased slot
-	if guaranteed_active:
+	if guaranteed_active and not available_slots.is_empty():
 		var valid_positions = available_slots.duplicate()
 		var insert_pos = valid_positions[_rng.randi() % valid_positions.size()]
 		shop_items[insert_pos] = guaranteed_active
@@ -105,14 +105,12 @@ func _populate_shop():
 		item_index += 1
 
 
-
-
 func _build_weighted_pool() -> Array:
 	var pool := []
 	var reward_pool_names = RunProgressionManager.reward_pool_items.map(func(i): return i.item_name)
 	for item in ItemManager.all_items:
 		if item.is_gamble_only:
-			continue  # ← add this
+			continue
 		if item.item_name in purchased_item_names:
 			continue
 		if item.item_name not in reward_pool_names:
@@ -135,7 +133,6 @@ func _rarity_weight(rarity: int) -> int:
 # =========================
 # BUYING
 # =========================
-
 
 func buy_item(index: int) -> bool:
 	if index < 0 or index >= shop_items.size():
@@ -162,13 +159,13 @@ func buy_health() -> bool:
 	return true
 
 
-func buy_chaos_relief() -> bool:
-	if chaos_bought_this_map >= CHAOS_LIMIT_PER_MAP:
+func buy_peg_refill() -> bool:
+	if refill_bought_this_map >= REFILL_LIMIT_PER_MAP:
 		return false
-	if not RunProgressionManager.spend_dollars(CHAOS_PRICE):
+	if not RunProgressionManager.spend_dollars(REFILL_PRICE):
 		return false
-	chaos_bought_this_map += 1
-	ChaosManager.cleanse_chaos(CHAOS_RELIEF_PER_PURCHASE)
+	refill_bought_this_map += 1
+	PegInventoryManager.add_pegs_to_all(PEG_REFILL_AMOUNT)
 	return true
 
 
@@ -190,5 +187,5 @@ func health_remaining() -> int:
 	return HEALTH_LIMIT_PER_MAP - health_bought_this_map
 
 
-func chaos_remaining() -> int:
-	return CHAOS_LIMIT_PER_MAP - chaos_bought_this_map
+func refill_remaining() -> int:
+	return REFILL_LIMIT_PER_MAP - refill_bought_this_map

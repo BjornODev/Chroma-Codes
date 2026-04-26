@@ -39,7 +39,7 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 				"[center][b][color=#BC13FE]MULTIPLY %d[/color][/b][/center]" % base_value
 			)
 			multiplier += base_value
-			popup_reference.mult_increase(multiplier)
+			PopUpText.mult_increase(multiplier)
 
 		"Bleed":
 			PopUpText.show_popup(
@@ -75,7 +75,7 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 			PopUpText.show_popup(
 				"[center][b][color=#00FF44]CLEANSE %d[/color][/b][/center]" % final_value
 			)
-			ChaosManager.cleanse_chaos(final_value)
+			DollarManager.relight_multiple(final_value)
 		
 		"Heal":
 			PopUpText.show_popup(
@@ -84,13 +84,13 @@ func apply_keyword(keyword : String, base_value : int, payload = {}):
 			RunProgressionManager.add_health(final_value)
 		
 		"Unlock Any":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#FFD700]UNLOCK ANY PANEL[/color][/b][/center]"
 			)
 			MapManager.activate_unlock_any()
 		
 		"Charge Active":
-			popup_reference.show_popup(
+			PopUpText.show_popup(
 				"[center][b][color=#FFD700]CHARGE ACTIVE +%d[/color][/b][/center]" % final_value
 			)
 			for item in ItemManager.player_items:

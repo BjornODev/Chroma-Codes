@@ -93,16 +93,22 @@ func take_from_stack() -> bool:
 		return false
 	
 	stack_count -= 1
-	counter.text = PegInventoryManager.get_count(peg_id)
+	counter.text = str(stack_count)
 	
 	if stack_count <= 0:
-		# stack disappears
 		var hand = get_node("../../PlayerHand")
 		hand.player_hand.erase(self)
 		hand.update_hand_positions()
 		queue_free()
 	
 	return true
+
+
+
+func add_to_stack(amount: int):
+	stack_count += amount
+	counter.text = str(stack_count)
+	counter.visible = true
 
 
 func _on_count_changed(color_id: int, new_count: int, old_count: int):
@@ -124,7 +130,7 @@ func _animate_counter(from_val: int, to_val: int):
 		return
 
 	# Ramp speed — faster as it progresses
-	var base_interval := 0.08
+	var base_interval := 0.15
 	var min_interval := 0.015
 
 	while current != to_val:

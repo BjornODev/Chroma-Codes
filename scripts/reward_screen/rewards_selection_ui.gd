@@ -48,8 +48,8 @@ func show_rewards(choices):
 
 func _get_earned_dollar_indices() -> Array:
 	var indices = []
-	for i in range(ChaosManager.DOLLAR_THRESHOLDS.size() - 1, -1, -1):
-		if ChaosManager.dollars_active[i]:
+	for i in range(DollarManager.DOLLAR_COUNT):
+		if DollarManager.dollars_active[i]:
 			indices.append(i)
 	return indices
 

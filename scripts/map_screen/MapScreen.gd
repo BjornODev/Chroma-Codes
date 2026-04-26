@@ -31,6 +31,7 @@ func _ready():
 	
 	if RunProgressionManager.first_time_on_map:
 		RunProgressionManager.map_offset = randi()
+		RunProgressionManager.first_time_on_map = false
 	
 	background_layer.change_background(RunProgressionManager.map_offset)
 	
@@ -46,6 +47,7 @@ func _ready():
 
 	if MapManager.boss_ready:
 		MapManager.boss_ready = false
+		RunProgressionManager.first_time_on_map = true
 		iris_wipe.instant_close()
 		_show_caution()
 		await get_tree().create_timer(0.5).timeout
@@ -60,8 +62,6 @@ func _ready():
 		await get_tree().create_timer(0.5).timeout
 		iris_wipe.iris_open(MapManager.last_panel_world_pos)
 
-	# Check chaos unlock on map load
-	MapManager.check_chaos_unlock()
 
 
 func _build_grid():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dmpklyo2tmuv6"]
+[gd_scene load_steps=22 format=3 uid="uid://dmpklyo2tmuv6"]
 
 [ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/map_screen/IrisWipe.gd" id="1_e0ph6"]
 [ext_resource type="Script" uid="uid://txb2pir8wxjd" path="res://scripts/map_screen/MapScreen.gd" id="1_k1etw"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://dyjuerpu4qupn" path="res://scripts/ui/BackgroundLayer.gd" id="11_jd80c"]
 [ext_resource type="PackedScene" uid="uid://dv7xb81iu655c" path="res://scenes/ActiveItemPanel.tscn" id="12_0q6xy"]
 [ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="14_0q6xy"]
+[ext_resource type="PackedScene" uid="uid://qbs5mpvfuahd" path="res://scenes/PegStackDisplay.tscn" id="16_8t4ed"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d1huf"]
 shader = ExtResource("2_lb6md")
@@ -253,8 +254,8 @@ layer = 10
 script = ExtResource("7_0q6xy")
 
 [node name="ActiveItemPanel" parent="HUDLayer" instance=ExtResource("12_0q6xy")]
-offset_left = 141.0
-offset_right = 261.0
+offset_left = 40.0
+offset_right = 160.0
 
 [node name="ChaosMeter" type="Control" parent="HUDLayer"]
 layout_mode = 3
@@ -278,9 +279,9 @@ offset_bottom = 40.0
 
 [node name="MoneyLabel" type="Label" parent="HUDLayer/HUDRoot"]
 layout_mode = 0
-offset_left = 407.0
+offset_left = 280.0
 offset_top = 911.0
-offset_right = 720.0
+offset_right = 593.0
 offset_bottom = 1063.0
 theme_override_colors/font_color = Color(0.99606323, 0.9842987, 0.25489807, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -339,3 +340,6 @@ grow_vertical = 0
 text = "Label"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="PegStackDisplay" parent="." instance=ExtResource("16_8t4ed")]
+position = Vector2(20, 20)

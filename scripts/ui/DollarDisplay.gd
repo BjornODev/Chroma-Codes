@@ -49,7 +49,7 @@ func _build_display():
 
 	dots_container.add_theme_constant_override("separation", DOLLAR_SPACING)
 
-	for i in range(4, -1, -1):
+	for i in range(5):
 		var wrapper = Control.new()
 		wrapper.custom_minimum_size = Vector2(DOLLAR_SIZE, DOLLAR_SIZE)
 		dots_container.add_child(wrapper)
