@@ -104,7 +104,6 @@ func take_from_stack() -> bool:
 	return true
 
 
-
 func add_to_stack(amount: int):
 	stack_count += amount
 	counter.text = str(stack_count)
@@ -131,7 +130,7 @@ func _animate_counter(from_val: int, to_val: int):
 
 	# Ramp speed — faster as it progresses
 	var base_interval := 0.15
-	var min_interval := 0.015
+	var min_interval := 0.03
 
 	while current != to_val:
 		current += step

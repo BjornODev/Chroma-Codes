@@ -35,7 +35,7 @@ func start_new_run():
 	run_active = true
 	boards_cleared = 0
 	player_health = 5
-	dollars = 0
+	dollars = 20
 
 	var seed = randi()
 	MapManager.start_run(seed)

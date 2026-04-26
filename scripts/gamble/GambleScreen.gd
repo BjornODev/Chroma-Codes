@@ -187,7 +187,7 @@ func _apply_outcome(outcome: Dictionary):
 			AudioLoader.play_sound("select")
 
 		"refill":
-			var amount = 5 * multiplier
+			var amount = 2 * multiplier
 			PegInventoryManager.add_pegs_to_all(amount)
 			result_text = "+%d PEGS!" % amount
 			AudioLoader.play_sound("select")

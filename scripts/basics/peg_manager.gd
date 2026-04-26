@@ -52,7 +52,7 @@ func start_drag(peg_stack):
 		if PegInventoryManager.is_empty(peg_stack.peg_id):
 			# Empty stack clicked — damage and refill
 			board_reference.apply_damage(PegInventoryManager.refill_damage)
-			PegInventoryManager.refill_all_stacks()
+			PegInventoryManager.add_pegs_to_color(peg_stack.peg_id, 10)
 			AudioLoader.play_sound("damage")
 			return
 

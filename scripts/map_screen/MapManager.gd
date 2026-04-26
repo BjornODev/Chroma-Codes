@@ -7,8 +7,8 @@ extends Node
 const GRID_SIZE := 6
 const COLORS := ["red", "yellow", "green", "white", "purple", "orange"]
 
-const ACTIVATED_PANEL_REFILL := 4
-const ADJACENT_PANEL_REFILL := 2
+const ACTIVATED_PANEL_REFILL := 5
+const ADJACENT_PANEL_REFILL := 0
 
 const COLOR_VALUES := {
 	"red": Color("#E05555"),
