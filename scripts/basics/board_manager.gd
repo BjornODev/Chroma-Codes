@@ -433,10 +433,13 @@ func submit_guess():
 		result = apply_obscure_logic(obscurities, result)
 		obscurities = 0
 
-	for peg in guess:
-		if peg == 7:
-			apply_heal(1)
-
+	for child in get_children():
+		if child is SnapZone and child.row == row_index:
+			var occupant = child.peg_in_slot
+			if "peg_id" in occupant:
+				if occupant and occupant.peg_id == 7 and not occupant.has_healed:
+					apply_heal(1)
+					occupant.has_healed = true
 
 		# Apply soft limit damage
 	if row_index >= soft_row_limit:

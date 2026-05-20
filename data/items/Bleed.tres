@@ -1,23 +1,34 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://cegknnem65plb"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
 
-[ext_resource type="Texture2D" uid="uid://b8tp86w35k8fh" path="res://assets/item_icons/sacrificial-dagger.svg" id="1_mvy8q"]
-[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_e22wt"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="2_e22wt"]
 
 [resource]
 script = ExtResource("2_e22wt")
 item_name = "Bleed"
 description = "Blood for the Blood God"
-icon = ExtResource("1_mvy8q")
 rarity = 1
 price = 2
 is_active = true
 charge_max = 1.0
-charge_conditions = [{
+charge_conditions = Array[Dictionary]([{
 "amount": 1,
-"stat": "damage_taken"
-}]
+"type": "row_submitted"
+}])
 active_keywords = {
 "Bleed": 1,
 "Replace": 1
 }
-metadata/_custom_type_script = "uid://byr4oyeful2c4"
+upgrade_tier_1_effect = {
+"AddPegsColor": {
+"amount": 5,
+"color": "red"
+},
+"Bleed": 1
+}
+upgrade_tier_2_effect = {
+"Bleed": 1,
+"Cleanse": 5
+}
+upgrade_tier_3_effect = {
+"Reveal": 1
+}

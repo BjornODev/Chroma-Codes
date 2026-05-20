@@ -61,6 +61,7 @@ var grid_adjacency_unlocked: Array = []  # tracks which panels are reachable
 var color_activation_counts := {}
 var type_activation_counts := {}
 var total_activated := 0
+var consecutive_non_board := 0
 
 var boss_triggered := false
 var boss_ready := false
@@ -97,6 +98,7 @@ func start_run(seed_value: int):
 	boss_ready = false
 	unlock_used = false
 	unlock_any_active = false
+	consecutive_non_board = 0
 
 	for color in COLORS:
 		color_activation_counts[color] = 0
@@ -529,6 +531,7 @@ func reset_map():
 	boss_ready = false
 	unlock_used = false
 	unlock_any_active = false
+	consecutive_non_board = 0
 	for color in COLORS:
 		color_activation_counts[color] = 0
 	for type in type_activation_counts.keys():
@@ -548,12 +551,17 @@ func reset_map():
 
 
 func _refill_pegs_from_panel(row: int, col: int):
+	var panel_type = grid_types[row][col]
+
+	# Calculate refill amounts with reduction
+	var activated_amount = max(1, ACTIVATED_PANEL_REFILL - consecutive_non_board)
+	var adjacent_amount = 0
+
 	var activated_color = grid_colors[row][col]
 	var activated_peg_id = COLOR_TO_PEG_ID.get(activated_color, 0)
 	if activated_peg_id > 0:
-		PegInventoryManager.add_pegs_to_color(activated_peg_id, ACTIVATED_PANEL_REFILL)
+		PegInventoryManager.add_pegs_to_color(activated_peg_id, activated_amount)
 
-	# Adjacent panels — all 4 orthogonal neighbors regardless of activation state
 	var neighbors = [
 		Vector2(row - 1, col),
 		Vector2(row + 1, col),
@@ -569,4 +577,10 @@ func _refill_pegs_from_panel(row: int, col: int):
 		var adj_color = grid_colors[nr][nc]
 		var adj_peg_id = COLOR_TO_PEG_ID.get(adj_color, 0)
 		if adj_peg_id > 0:
-			PegInventoryManager.add_pegs_to_color(adj_peg_id, ADJACENT_PANEL_REFILL)
+			PegInventoryManager.add_pegs_to_color(adj_peg_id, adjacent_amount)
+
+	# Update counter based on panel type
+	if panel_type == "Board":
+		consecutive_non_board = 0
+	else:
+		consecutive_non_board += 1

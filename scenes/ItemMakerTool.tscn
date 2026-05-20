@@ -1,0 +1,332 @@
+[gd_scene load_steps=3 format=3 uid="uid://c86vyd6vc4c5f"]
+
+[ext_resource type="Script" uid="uid://kjgk8b4lp8f8" path="res://scripts/items/ItemMakerTool.gd" id="1_gh6c8"]
+[ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="2_7h6j3"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gh6c8")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="NewButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "New"
+
+[node name="LoadDropdown" type="OptionButton" parent="TopBar"]
+layout_mode = 2
+
+[node name="DuplicateButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Duplicate"
+
+[node name="SaveButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Save"
+
+[node name="PreviewButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Preview Tooltip"
+
+[node name="MainHBox" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 61.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SharedColumn" type="VBoxContainer" parent="MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainHBox/SharedColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SharedSection" type="VBoxContainer" parent="MainHBox/SharedColumn/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+text = "SHARED FIELDS"
+
+[node name="NameEdit" type="LineEdit" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+text = "LineEdit"
+placeholder_text = "Item name"
+
+[node name="DescriptionEdit" type="TextEdit" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+text = "TextEdit"
+placeholder_text = "Write Item Description Here"
+
+[node name="IconDropdown" type="OptionButton" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+
+[node name="RarityDropdown" type="OptionButton" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+
+[node name="PriceEdit" type="LineEdit" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+text = "LineEdit"
+placeholder_text = "Price"
+
+[node name="GambleOnlyCheck" type="CheckBox" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+text = "Gamble Only"
+
+[node name="IsActiveCheck" type="CheckBox" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+text = "Is Active Item"
+
+[node name="PassiveColumn" type="VBoxContainer" parent="MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainHBox/PassiveColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PassiveSection" type="VBoxContainer" parent="MainHBox/PassiveColumn/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection"]
+layout_mode = 2
+text = "PASSIVE FIELDS"
+
+[node name="Label2" type="Label" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection"]
+layout_mode = 2
+text = "Triggers"
+
+[node name="TriggersList" type="VBoxContainer" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList"]
+layout_mode = 2
+text = "+ Add Trigger"
+
+[node name="Label3" type="Label" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection"]
+layout_mode = 2
+text = "Keywords"
+
+[node name="KeywordsList" type="VBoxContainer" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/KeywordsList"]
+layout_mode = 2
+text = "+ Add Keyword"
+
+[node name="ActiveColumn" type="VBoxContainer" parent="MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainHBox/ActiveColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ActiveSection" type="VBoxContainer" parent="MainHBox/ActiveColumn/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection"]
+layout_mode = 2
+text = "ACTIVE FIELDS"
+
+[node name="Label2" type="Label" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection"]
+layout_mode = 2
+text = "Charge Max"
+
+[node name="ChargeMaxEdit" type="LineEdit" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection"]
+layout_mode = 2
+text = "LineEdit"
+
+[node name="Label3" type="Label" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection"]
+layout_mode = 2
+text = "Charge Conditions"
+
+[node name="ChargeConditionsList" type="VBoxContainer" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection/ChargeConditionsList"]
+layout_mode = 2
+text = "+ Add Charge Conditions"
+
+[node name="Label4" type="Label" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection"]
+layout_mode = 2
+text = "Active Keywords"
+
+[node name="ActiveKeywordsList" type="VBoxContainer" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/ActiveColumn/ScrollContainer/ActiveSection/ActiveKeywordsList"]
+layout_mode = 2
+text = "+ Add Active Keyword"
+
+[node name="UpgradeColumn" type="VBoxContainer" parent="MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainHBox/UpgradeColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="UpgradeSection" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection"]
+layout_mode = 2
+text = "UPGRADE TIERS"
+
+[node name="Tier1" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1"]
+layout_mode = 2
+text = "Tier 1 (+)"
+
+[node name="Label2" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1"]
+layout_mode = 2
+text = "Effect Deltas"
+
+[node name="EffectList" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1/EffectList"]
+layout_mode = 2
+text = "+ Add Effect Delta"
+
+[node name="Label3" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1"]
+layout_mode = 2
+text = "Trigger Deltas"
+
+[node name="TriggerList" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1/TriggerList"]
+layout_mode = 2
+text = "+ Add Trigger Delta"
+
+[node name="Label4" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1"]
+layout_mode = 2
+text = "Charge Max Delta"
+
+[node name="ChargeDeltaEdit" type="LineEdit" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier1"]
+layout_mode = 2
+text = "LineEdit"
+
+[node name="Tier2" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2"]
+layout_mode = 2
+text = "Tier 2 (+)"
+
+[node name="Label2" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2"]
+layout_mode = 2
+text = "Effect Deltas"
+
+[node name="EffectList" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2/EffectList"]
+layout_mode = 2
+text = "+ Add Effect Delta"
+
+[node name="Label3" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2"]
+layout_mode = 2
+text = "Trigger Deltas"
+
+[node name="TriggerList" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2/TriggerList"]
+layout_mode = 2
+text = "+ Add Trigger Delta"
+
+[node name="Label4" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2"]
+layout_mode = 2
+text = "Charge Max Delta"
+
+[node name="ChargeDeltaEdit" type="LineEdit" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier2"]
+layout_mode = 2
+text = "LineEdit"
+
+[node name="Tier3" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3"]
+layout_mode = 2
+text = "Tier 3 (+)"
+
+[node name="Label2" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3"]
+layout_mode = 2
+text = "Effect Deltas"
+
+[node name="EffectList" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3/EffectList"]
+layout_mode = 2
+text = "+ Add Effect Delta"
+
+[node name="Label3" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3"]
+layout_mode = 2
+text = "Trigger Deltas"
+
+[node name="TriggerList" type="VBoxContainer" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3/TriggerList"]
+layout_mode = 2
+text = "+ Add Trigger Delta"
+
+[node name="Label4" type="Label" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3"]
+layout_mode = 2
+text = "Charge Max Delta"
+
+[node name="ChargeDeltaEdit" type="LineEdit" parent="MainHBox/UpgradeColumn/ScrollContainer/UpgradeSection/Tier3"]
+layout_mode = 2
+text = "LineEdit"
+
+[node name="TooltipPreview" parent="." instance=ExtResource("2_7h6j3")]
+visible = false
+layout_mode = 0
+
+[connection signal="pressed" from="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList/AddButton" to="." method="_on_add_trigger"]
+[connection signal="pressed" from="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/KeywordsList/AddButton" to="." method="_on_add_keyword"]
+[connection signal="pressed" from="MainHBox/ActiveColumn/ScrollContainer/ActiveSection/ChargeConditionsList/AddButton" to="." method="_on_add_charge_condition"]
+[connection signal="pressed" from="MainHBox/ActiveColumn/ScrollContainer/ActiveSection/ActiveKeywordsList/AddButton" to="." method="_on_add_active_keyword"]

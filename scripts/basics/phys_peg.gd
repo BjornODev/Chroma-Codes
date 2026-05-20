@@ -24,6 +24,7 @@ var max_tilt = 0.75
 var is_special := false
 var special_type := ""
 var stack_count := 0
+var has_healed := false
 
 var shader_material: ShaderMaterial
 

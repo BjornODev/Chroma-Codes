@@ -9,18 +9,18 @@ signal peg_count_changed(color_id: int, new_count: int, old_count: int)
 signal stack_refilled
 
 # Tunable values — can be modified by items/difficulty
-var starting_peg_count := 5
+var starting_peg_count := 15
 var refill_amount := 3
 var refill_damage := 1
 
 # peg_counts: { color_id: int }
 var peg_counts: Dictionary = {
-	1: 20,  # red
-	2: 20,  # yellow
-	3: 20,  # green
-	4: 20,  # white
-	5: 20,  # purple
-	6: 20,  # orange
+	1: 15,  # red
+	2: 15,  # yellow
+	3: 15,  # green
+	4: 15,  # white
+	5: 15,  # purple
+	6: 15,  # orange
 }
 
 

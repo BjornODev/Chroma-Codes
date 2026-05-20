@@ -116,7 +116,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 10,
+"line": 557,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
@@ -141,7 +141,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 46,
+"line": 436,
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
@@ -235,8 +235,8 @@ project/editorState=[{
 "path": "res://scripts/basics/main.gd",
 "type": "file"
 }, {
-"column": 12,
-"line": 103,
+"column": 0,
+"line": 26,
 "path": "res://scripts/basics/phys_peg.gd",
 "type": "file"
 }, {
@@ -315,8 +315,7 @@ project/editorState=[{
 "path": "res://scripts/basics/player_hand.gd",
 "type": "file"
 }, {
-"column": 61,
-"current": true,
+"column": 0,
 "line": 54,
 "path": "res://scripts/basics/peg_manager.gd",
 "type": "file"
@@ -341,9 +340,30 @@ project/editorState=[{
 "path": "res://scripts/ui/PegStackDisplay.gd",
 "type": "file"
 }, {
-"column": 27,
-"line": 11,
+"column": 0,
+"line": 22,
 "path": "res://scripts/basics/PegInventoryManager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/map_screen/IrisWipe.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/radar_blip.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/items/ToolSetup.gd",
+"type": "file"
+}, {
+"column": 0,
+"current": true,
+"line": 419,
+"path": "res://scripts/items/ItemMakerTool.gd",
 "type": "file"
 }]
 project/breakpoints={
@@ -365,3 +385,4 @@ project/breakpoints={
 "res://scripts/run_progression_manager.gd": PackedInt32Array(),
 "res://scripts/ui/PegStackDisplay.gd": PackedInt32Array()
 }
+project/disabled_breakpoints={}
