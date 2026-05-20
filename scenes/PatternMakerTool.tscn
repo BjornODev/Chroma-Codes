@@ -1,0 +1,93 @@
+[gd_scene load_steps=2 format=3 uid="uid://dt8wv06nctxjl"]
+
+[ext_resource type="Script" uid="uid://5xqfo1h3bdhm" path="res://scripts/items/PatternMakerTool.gd" id="1_llpi4"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_llpi4")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="NewButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "New"
+
+[node name="LoadDropdown" type="OptionButton" parent="TopBar"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="PatternNameEdit" type="LineEdit" parent="TopBar"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "LineEdit"
+
+[node name="SaveButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Save"
+
+[node name="LeftPanel" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 60.0
+offset_right = 240.0
+grow_vertical = 2
+
+[node name="ColorPalette" type="VBoxContainer" parent="LeftPanel"]
+layout_mode = 2
+
+[node name="ClearButton" type="Button" parent="LeftPanel"]
+layout_mode = 2
+text = "Clear Grid"
+
+[node name="AllowedRows" type="Label" parent="LeftPanel"]
+layout_mode = 2
+text = "Allowed Rows (comma-sep)"
+
+[node name="AllowedRowsEdit" type="LineEdit" parent="LeftPanel"]
+layout_mode = 2
+text = "LineEdit"
+
+[node name="Label" type="Label" parent="LeftPanel"]
+layout_mode = 2
+text = "Duplicate Type"
+
+[node name="DuplicateTypeDropdown" type="OptionButton" parent="LeftPanel"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="LeftPanel"]
+layout_mode = 2
+text = "Duplicate Rows (comma-sep)"
+
+[node name="DuplicateRowsEdit" type="LineEdit" parent="LeftPanel"]
+layout_mode = 2
+text = "LineEdit"
+
+[node name="GridArea" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 779.0
+offset_top = 214.0
+offset_right = 1406.0
+offset_bottom = 885.0
+
+[node name="GridContainer" type="GridContainer" parent="GridArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

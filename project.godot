@@ -361,9 +361,14 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"current": true,
 "line": 419,
 "path": "res://scripts/items/ItemMakerTool.gd",
+"type": "file"
+}, {
+"column": 22,
+"current": true,
+"line": 230,
+"path": "res://scripts/items/PatternMakerTool.gd",
 "type": "file"
 }]
 project/breakpoints={
