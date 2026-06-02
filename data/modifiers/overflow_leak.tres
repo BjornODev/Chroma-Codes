@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/mod_icons/leak.svg" id="1_8eu3n"]
+[ext_resource type="Script" path="res://data/resources/modifiers_data.gd" id="1_81gxw"]
+
+[resource]
+script = ExtResource("1_81gxw")
+modifier_name = "Overflow Leak"
+icon = ExtResource("1_8eu3n")
+modifier_description = "Peg counts are overflowing. Pegs will keep leaking until all counts are below 10."
+trigger = Array[Dictionary]([{
+"event": "row_submitted"
+}, {
+"color": "red",
+"comparison": ">",
+"condition": "peg_count",
+"mode": "or",
+"value": 10
+}, {
+"color": "yellow",
+"comparison": ">",
+"condition": "peg_count",
+"mode": "or",
+"value": 10
+}, {
+"color": "green",
+"comparison": ">",
+"condition": "peg_count",
+"mode": "or",
+"value": 10
+}, {
+"color": "white",
+"comparison": ">",
+"condition": "peg_count",
+"mode": "or",
+"value": 10
+}, {
+"color": "purple",
+"comparison": ">",
+"condition": "peg_count",
+"mode": "or",
+"value": 10
+}, {
+"color": "orange",
+"comparison": ">",
+"condition": "peg_count",
+"mode": "or",
+"value": 10
+}])
+base_effect = {
+"Remove All": 1
+}

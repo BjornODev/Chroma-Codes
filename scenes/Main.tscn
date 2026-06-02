@@ -118,6 +118,7 @@ offset_left = -227.55566
 offset_top = -232.0
 offset_right = 2218.6665
 offset_bottom = 1248.0
+mouse_filter = 2
 texture = ExtResource("3_yxlcp")
 
 [node name="Background" type="TextureRect" parent="BackgroundLayer"]
@@ -130,6 +131,7 @@ offset_left = -227.55566
 offset_top = -232.0
 offset_right = 2218.6665
 offset_bottom = 1248.0
+mouse_filter = 2
 texture = ExtResource("3_yxlcp")
 metadata/_edit_lock_ = true
 
@@ -141,6 +143,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="BGRect" type="ColorRect" parent="BackgroundLayer"]
 material = SubResource("ShaderMaterial_yxlcp")
@@ -149,6 +152,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -267,6 +271,7 @@ text = "Confirm"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="IrisWipe" type="CanvasLayer" parent="."]
 layer = 15
@@ -356,7 +361,7 @@ offset_right = 55.0
 offset_bottom = 56.0
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
-columns = 15
+columns = 10
 
 [node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
 layout_direction = 3

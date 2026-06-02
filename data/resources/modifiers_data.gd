@@ -3,8 +3,9 @@ extends Resource
 
 @export var modifier_name : String
 @export var icon : Texture2D
+@export var modifier_description : String
 @export var phase : String
-@export var trigger : Dictionary
+@export var trigger : Array[Dictionary]
 @export var base_effect : Dictionary
 var level := 1
 

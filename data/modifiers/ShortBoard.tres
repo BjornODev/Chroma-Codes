@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://d13ox526evbvh"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3]
 
-[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_tp420"]
-[ext_resource type="Texture2D" uid="uid://bc0y1wqu6j4rw" path="res://assets/mod_icons/contract.svg" id="1_xyogv"]
+[ext_resource type="Script" path="res://data/resources/modifiers_data.gd" id="1_tp420"]
+[ext_resource type="Texture2D" path="res://assets/mod_icons/contract 2.svg" id="1_xyogv"]
 
 [resource]
 script = ExtResource("1_tp420")
 modifier_name = "Short Board"
 icon = ExtResource("1_xyogv")
+modifier_description = "The safe rows on this board have been limited."
 phase = "pre_build"
 base_effect = {
 "Short": 1

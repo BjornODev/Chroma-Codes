@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bsggivpm7nuhh"]
+[gd_scene load_steps=6 format=3 uid="uid://bsggivpm7nuhh"]
 
 [ext_resource type="Script" uid="uid://dcb2nhusbm1ue" path="res://scripts/obscure_obstacle.gd" id="1_txa7b"]
 [ext_resource type="Shader" uid="uid://cvih1xjh0ydgu" path="res://shaders/pulse_glow.gdshader" id="2_kb3fh"]
@@ -11,6 +11,9 @@ shader_parameter/intensity = 1.0
 shader_parameter/spread = 1.9
 shader_parameter/pulse_speed = 1.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_txa7b"]
+radius = 21.095022
+
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_txa7b")
 
@@ -18,3 +21,11 @@ script = ExtResource("1_txa7b")
 material = SubResource("ShaderMaterial_7ybh5")
 scale = Vector2(0.113229826, 0.113229826)
 texture = ExtResource("3_m4tkx")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_txa7b")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_mouse_exited"]

@@ -1,15 +1,16 @@
-[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://dfyyju28nflqu"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://cumnuvsk8dblp" path="res://assets/mod_icons/goo-spurt.svg" id="1_d5mb0"]
-[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_k2djh"]
+[ext_resource type="Texture2D" path="res://assets/mod_icons/goo-spurt.svg" id="1_d5mb0"]
+[ext_resource type="Script" path="res://data/resources/modifiers_data.gd" id="1_k2djh"]
 
 [resource]
 script = ExtResource("1_k2djh")
-modifier_name = "Goop Board"
+modifier_name = "Black Mold"
 icon = ExtResource("1_d5mb0")
-trigger = {
-"black": 1
-}
+modifier_description = "Black feedback is corrupted here. Better not leave it out in the open."
+trigger = Array[Dictionary]([{
+"feedback_black": 1
+}])
 base_effect = {
 "Goop": 1
 }

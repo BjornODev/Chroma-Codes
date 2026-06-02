@@ -37,6 +37,14 @@ text = "LineEdit"
 layout_mode = 2
 text = "Save"
 
+[node name="SwapToItemsButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Go to item maker tool"
+
+[node name="SwapToModifiersButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Go to modifier maker tool"
+
 [node name="LeftPanel" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 1
@@ -91,3 +99,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[connection signal="pressed" from="TopBar/SwapToItemsButton" to="." method="_on_go_to_items"]
+[connection signal="pressed" from="TopBar/SwapToModifiersButton" to="." method="_on_go_to_modifiers"]

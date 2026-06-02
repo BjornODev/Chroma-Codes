@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_ibxv4"]
+
+[resource]
+script = ExtResource("1_ibxv4")
+item_name = "Test"
+triggers = Array[Dictionary]([{
+"color": "red",
+"count": 1,
+"event": "panel_activated"
+}])
+keywords = {
+"Unlock Any": 1
+}

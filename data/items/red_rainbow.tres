@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/item_icons/rainbow-star 2.svg" id="1_26uih"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_w6v4n"]
+
+[resource]
+script = ExtResource("1_w6v4n")
+item_name = "Red Rainbow"
+description = "Triggers on every fourth red peg placed"
+icon = ExtResource("1_26uih")
+price = 2
+triggers = Array[Dictionary]([{
+"red": 4
+}])
+keywords = {
+"Create Wild": 1
+}
+upgrade_tier_1_effect = {
+"Create Wild": 1
+}
+upgrade_tier_2_effect = {
+"Create Wild": 1
+}
+upgrade_tier_3_effect = {
+"Add All Colors": 1
+}

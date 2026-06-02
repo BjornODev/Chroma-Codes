@@ -1,17 +1,23 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://bsih3j1mn6kuc"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://b8tp86w35k8fh" path="res://assets/item_icons/sacrificial-dagger.svg" id="1_yjwed"]
-[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_85e7b"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/vertical-flip.svg" id="1_yjwed"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="2_85e7b"]
 
 [resource]
 script = ExtResource("2_85e7b")
 item_name = "Ups and Downs"
-description = "If you're kicked while you're down, replace your legs with better ones."
+description = "Triggers upon taking damage"
 icon = ExtResource("1_yjwed")
-triggers = [{
-"amount": 1,
+rarity = 1
+triggers = Array[Dictionary]([{
 "event": "Damage Taken"
-}]
+}])
 keywords = {
 "Replace": 2
+}
+upgrade_tier_1_effect = {
+"Replace": 1
+}
+upgrade_tier_2_effect = {
+"Add All Colors": 1
 }

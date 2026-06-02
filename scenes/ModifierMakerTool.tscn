@@ -1,0 +1,124 @@
+[gd_scene load_steps=3 format=3 uid="uid://brlah5yfjlvvo"]
+
+[ext_resource type="Script" uid="uid://b3h44tvhaw00m" path="res://scripts/basics/ModifierMakerTool.gd" id="1_fw1cc"]
+[ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="2_qklhw"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fw1cc")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="NewButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "New"
+
+[node name="LoadDropdown" type="OptionButton" parent="TopBar"]
+layout_mode = 2
+
+[node name="DuplicateButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Duplicate"
+
+[node name="SaveButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Save"
+
+[node name="PreviewButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Preview Tooltip"
+
+[node name="SwapToPatternButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Go to pattern maker tool"
+
+[node name="SwapToItemsButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Go to item maker tool"
+
+[node name="MainHBox" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SharedColumn" type="VBoxContainer" parent="MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainHBox/SharedColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SharedSection" type="VBoxContainer" parent="MainHBox/SharedColumn/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NameEdit" type="LineEdit" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+text = "LineEdit"
+placeholder_text = "Name"
+
+[node name="DescriptionEdit" type="TextEdit" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+text = "TextEdit"
+placeholder_text = "Type Description Here"
+
+[node name="IconDropdown" type="OptionButton" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+
+[node name="PhaseDropdown" type="OptionButton" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+
+[node name="TriggersLabel" type="Label" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+text = "Triggers"
+
+[node name="TriggersList" type="VBoxContainer" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AddEventTriggerButton" type="Button" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection/TriggersList"]
+layout_mode = 2
+text = "+ Add Event Trigger"
+
+[node name="AddThresholdTriggerButton" type="Button" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection/TriggersList"]
+layout_mode = 2
+text = "+ Add Threshold Trigger"
+
+[node name="AddConditionButton" type="Button" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection/TriggersList"]
+layout_mode = 2
+text = "+ Add Condition"
+
+[node name="EffectsList" type="VBoxContainer" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AddButton" type="Button" parent="MainHBox/SharedColumn/ScrollContainer/SharedSection/EffectsList"]
+layout_mode = 2
+text = "+ Add Effect"
+
+[node name="TooltipPreview" parent="." instance=ExtResource("2_qklhw")]
+visible = false
+layout_mode = 0
+
+[connection signal="pressed" from="TopBar/SwapToPatternButton" to="." method="_on_go_to_patterns"]
+[connection signal="pressed" from="TopBar/SwapToItemsButton" to="." method="_on_go_to_items"]

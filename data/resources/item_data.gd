@@ -153,10 +153,21 @@ func apply_upgrade():
 	# Apply effect deltas
 	var effect_deltas = tier.get("effect", {})
 	for key in effect_deltas:
-		if is_active:
-			active_keywords[key] = active_keywords.get(key, 0) + effect_deltas[key]
+		var target = active_keywords if is_active else keywords
+		var current = target.get(key, 0)
+		var delta = effect_deltas[key]
+
+		if current is Dictionary or delta is Dictionary:
+			var current_dict = current if current is Dictionary else {"color": "", "amount": int(current)}
+			var delta_dict = delta if delta is Dictionary else {"color": "", "amount": int(delta)}
+			var new_amount = current_dict.get("amount", 0) + delta_dict.get("amount", 0)
+			# Prefer the non-empty color
+			var new_color = current_dict.get("color", "")
+			if new_color == "":
+				new_color = delta_dict.get("color", "")
+			target[key] = {"color": new_color, "amount": new_amount}
 		else:
-			keywords[key] = keywords.get(key, 0) + effect_deltas[key]
+			target[key] = int(current) + int(delta)
 
 	# Apply trigger deltas
 	var trigger_deltas = tier.get("trigger", {})

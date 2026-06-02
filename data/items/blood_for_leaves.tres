@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_ayhlf"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/falling-leaf.svg" id="1_jnydj"]
+
+[resource]
+script = ExtResource("1_ayhlf")
+item_name = "Blood for Leaves"
+description = "This item triggers when you take damage."
+icon = ExtResource("1_jnydj")
+price = 3
+triggers = Array[Dictionary]([{
+"event": "Damage Taken"
+}])
+keywords = {
+"Add Color": {
+"amount": 2,
+"color": "green"
+}
+}
+upgrade_tier_1_effect = {
+"Add Color": {
+"amount": 1,
+"color": "green"
+}
+}
+upgrade_tier_2_effect = {
+"Add Color": {
+"amount": 1,
+"color": "green"
+}
+}
+upgrade_tier_3_effect = {
+"Add Color": {
+"amount": 1,
+"color": "green"
+}
+}

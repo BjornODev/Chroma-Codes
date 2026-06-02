@@ -92,15 +92,13 @@ func _build_charge_icons():
 	if not item:
 		return
 
-	for condition in item.charge_conditions:
-		var stat = condition.get("stat", "")
-		var color = STAT_COLORS.get(stat, Color("#AAAAAA"))
-
 		# Placeholder colored square — swap with real icon TextureRect later
-		var icon = ColorRect.new()
-		icon.custom_minimum_size = Vector2(36, 36)
-		icon.color = color
-		charge_icons.add_child(icon)
+	var icon = TextureRect.new()
+	icon.custom_minimum_size = Vector2(138, 138)
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.texture = item.icon
+	charge_icons.add_child(icon)
 
 
 func _clear_charge_icons():

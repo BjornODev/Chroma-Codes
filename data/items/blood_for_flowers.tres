@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/item_icons/lotus.svg" id="1_8mc1b"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_cx4mm"]
+
+[resource]
+script = ExtResource("1_cx4mm")
+item_name = "Blood for Flowers"
+description = "This item triggers when you take damage."
+icon = ExtResource("1_8mc1b")
+price = 3
+triggers = Array[Dictionary]([{
+"event": "Damage Taken"
+}])
+keywords = {
+"Add Color": {
+"amount": 2,
+"color": "purple"
+}
+}
+upgrade_tier_1_effect = {
+"Add Color": {
+"amount": 1,
+"color": "purple"
+}
+}
+upgrade_tier_2_effect = {
+"Add Color": {
+"amount": 1,
+"color": "purple"
+}
+}
+upgrade_tier_3_effect = {
+"Add Color": {
+"amount": 1,
+"color": "purple"
+}
+}

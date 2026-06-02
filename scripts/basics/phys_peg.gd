@@ -26,10 +26,16 @@ var special_type := ""
 var stack_count := 0
 var has_healed := false
 
+# Wild peg tooltip tracking — populated by BoardManager._apply_wild_peg_drain
+# Keys are color_id (1-6), values are amounts drained this submission
+var drained_counts: Dictionary = {}
+var has_submitted_this_round: bool = false
+
 var shader_material: ShaderMaterial
 
 @onready var modifier = ""
 @onready var counter = $Counter
+
 
 func _ready():
 	get_parent().connect_peg_signals(self)
@@ -42,7 +48,7 @@ func _ready():
 		counter.visible = false
 
 	setup_visuals()
-	
+
 	PegInventoryManager.connect("peg_count_changed", _on_count_changed)
 	_update_counter_display()
 
@@ -69,10 +75,10 @@ func setup_visuals():
 	modifier = ""
 	if is_special:
 		modifier = "_" + special_type
-	
+
 	peg_down_reference = load("res://assets/pegs/peg_down" + modifier + ".svg")
 	peg_out_reference = load("res://assets/pegs/peg_out" + modifier + ".svg")
-	
+
 	if peg_sprite2D:
 		peg_sprite2D.texture = peg_out_reference
 
@@ -89,19 +95,19 @@ func is_stack() -> bool:
 func take_from_stack() -> bool:
 	if not is_stack():
 		return false
-	
 	if stack_count <= 0:
 		return false
-	
 	stack_count -= 1
 	counter.text = str(stack_count)
-	
+
+	if special_type == "wild":
+		PegInventoryManager.consume_wild_peg()
+
 	if stack_count <= 0:
 		var hand = get_node("../../PlayerHand")
 		hand.player_hand.erase(self)
 		hand.update_hand_positions()
 		queue_free()
-	
 	return true
 
 
@@ -129,7 +135,6 @@ func _animate_counter(from_val: int, to_val: int):
 		counter.text = str(to_val)
 		return
 
-	# Ramp speed — faster as it progresses
 	var base_interval := 0.15
 	var min_interval := 0.03
 
@@ -162,10 +167,18 @@ func _update_greyed_state(count: int):
 
 func _on_mouse_entered() -> void:
 	emit_signal("hovered", self)
+	# Hover tooltip for special pegs
+	print("Hover tooltip activated")
+	if is_special and (special_type == "wild" or special_type == "goop"):
+		HoverTooltip.show_for(self)
 
 
 func _on_mouse_exited() -> void:
 	emit_signal("hovered_off", self)
+	print("Hover tooltip deactivated")
+	if is_special and (special_type == "wild" or special_type == "goop"):
+		HoverTooltip.hide_tooltip()
+
 
 func _on_counters_updated(counters):
 	for key in counters.keys():
@@ -173,11 +186,14 @@ func _on_counters_updated(counters):
 		if peg_id == color:
 			counter.text = str(counters[key])
 
+
 func get_submission_value():
 	if is_special:
 		match special_type:
 			"goop":
-				return 0  # Special non-color ID
+				return -1
+			"wild":
+				return -2
 	return peg_id
 
 
@@ -190,3 +206,24 @@ func get_id_from_color_name(color):
 		"purple": return 5
 		"orange": return 6
 		"unknown": return 0
+
+
+# =========================
+# TOOLTIP CONTENT
+# =========================
+
+func get_tooltip_content() -> Dictionary:
+	if not is_special:
+		return {}
+	match special_type:
+		"wild":
+			return {
+				"type": "wild_peg",
+				"data": {
+					"drained_counts": drained_counts,
+					"has_submitted": has_submitted_this_round,
+				}
+			}
+		"goop":
+			return {"type": "goop_peg", "data": {}}
+	return {}

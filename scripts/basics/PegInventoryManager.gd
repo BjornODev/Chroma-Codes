@@ -8,25 +8,25 @@ extends Node
 signal peg_count_changed(color_id: int, new_count: int, old_count: int)
 signal stack_refilled
 
-# Tunable values — can be modified by items/difficulty
 var starting_peg_count := 15
 var refill_amount := 3
 var refill_damage := 1
+var wild_pegs_owned: int = 0
 
-# peg_counts: { color_id: int }
 var peg_counts: Dictionary = {
-	1: 15,  # red
-	2: 15,  # yellow
-	3: 15,  # green
-	4: 15,  # white
-	5: 15,  # purple
-	6: 15,  # orange
+	1: 15,
+	2: 15,
+	3: 15,
+	4: 15,
+	5: 15,
+	6: 15,
 }
 
 
 func reset_for_new_run():
 	for color_id in peg_counts.keys():
 		peg_counts[color_id] = starting_peg_count
+	wild_pegs_owned = 0
 
 
 func get_count(color_id: int) -> int:
@@ -100,6 +100,15 @@ func set_count(color_id: int, new_count: int):
 	peg_counts[color_id] = new_count
 	emit_signal("peg_count_changed", color_id, new_count, old_count)
 
+	# Emit threshold trigger on any change (up or down)
+	# ItemManager filters by direction
+	if new_count != old_count:
+		ItemManager.emit_game_event("peg_threshold", {
+			"color_id": color_id,
+			"new_count": new_count,
+			"old_count": old_count,
+		})
+
 
 # =========================
 # REFILL
@@ -110,3 +119,18 @@ func refill_all_stacks():
 		var old_count = peg_counts[color_id]
 		set_count(color_id, old_count + refill_amount)
 	emit_signal("stack_refilled")
+
+
+func add_wild_pegs(amount: int):
+	wild_pegs_owned += amount
+
+
+func consume_wild_peg() -> bool:
+	if wild_pegs_owned <= 0:
+		return false
+	wild_pegs_owned -= 1
+	return true
+
+
+func return_wild_peg():
+	wild_pegs_owned += 1

@@ -359,3 +359,11 @@ func _on_clear_pressed():
 	for r in range(MAX_GRID_HEIGHT):
 		for c in range(MAX_GRID_WIDTH):
 			_refresh_cell(r, c)
+
+
+func _on_go_to_items() -> void:
+	get_tree().change_scene_to_file("res://scenes/ItemMakerTool.tscn")
+
+
+func _on_go_to_modifiers() -> void:
+	get_tree().change_scene_to_file("res://scenes/ModifierMakerTool.tscn")

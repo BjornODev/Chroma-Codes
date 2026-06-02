@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://yykhxn3dlyk4"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://1fuqrm6au1lh" path="res://assets/mod_icons/nails.svg" id="1_48c16"]
-[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_v282c"]
+[ext_resource type="Texture2D" path="res://assets/mod_icons/nails 2.svg" id="1_48c16"]
+[ext_resource type="Script" path="res://data/resources/modifiers_data.gd" id="1_v282c"]
 
 [resource]
 script = ExtResource("1_v282c")
 modifier_name = "Trapped Board"
 icon = ExtResource("1_48c16")
+modifier_description = "This board is trapped. Spikes litter the board. But don't worry, they can be avoided."
 phase = "post_build"
 base_effect = {
 "Trapped": 2

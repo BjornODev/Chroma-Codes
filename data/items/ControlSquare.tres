@@ -1,21 +1,26 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://7333f2rlvxmu"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dhpduo1iff8t"]
 
-[ext_resource type="Texture2D" uid="uid://ktqp1ils71r3" path="res://assets/item_icons/joystick.svg" id="1_qyo8f"]
+[ext_resource type="Texture2D" uid="uid://ktqp1ils71r3" path="res://assets/item_icons/joystick.svg" id="1_qh5ee"]
 [ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_7x0f5"]
 
 [resource]
 script = ExtResource("2_7x0f5")
 item_name = "Control Square"
-description = "Like simon but all green"
-icon = ExtResource("1_qyo8f")
-rarity = 3
+icon = ExtResource("1_qh5ee")
+rarity = 1
 triggers = Array[Dictionary]([{
 "event": "pattern_triggered",
-"pattern": "2x2 Green Square"
+"pattern": "2x2GreenSquare"
 }])
 keywords = {
 "Replace": 2
 }
-upgrade_tier_1 = {
-"effect": 0
+upgrade_tier_1_effect = {
+"Add Color": {
+"amount": 3,
+"color": "purple"
+}
+}
+upgrade_tier_2_effect = {
+"Replace": 1
 }

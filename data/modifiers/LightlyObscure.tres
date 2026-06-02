@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://mcdqb47bnmd7"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://bowijvkkflwwf" path="res://assets/mod_icons/misdirection.svg" id="1_vkcmy"]
-[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="2_ccw71"]
+[ext_resource type="Texture2D" path="res://assets/mod_icons/misdirection 3.svg" id="1_vkcmy"]
+[ext_resource type="Script" path="res://data/resources/modifiers_data.gd" id="2_ccw71"]
 
 [resource]
 script = ExtResource("2_ccw71")
 modifier_name = "Obscure"
 icon = ExtResource("1_vkcmy")
+modifier_description = "Some slots on this board obscured by purple light. Information could be limited. But don't worry, these spots can be avoided."
 phase = "post_build"
 base_effect = {
 "Obscure": 3

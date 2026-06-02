@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://byn40gv4rqqrq"]
+
+[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="1_0ao6l"]
+[ext_resource type="Texture2D" uid="uid://l6g8w5bajt6t" path="res://assets/item_icons/fluffy-trefoil.svg" id="1_arvrr"]
+
+[resource]
+script = ExtResource("1_0ao6l")
+item_name = "Blood for Clouds"
+description = "This item triggers when you take damage."
+icon = ExtResource("1_arvrr")
+price = 3
+triggers = Array[Dictionary]([{
+"event": "Damage Taken"
+}])
+keywords = {
+"Add Color": {
+"amount": 2,
+"color": "white"
+}
+}
+upgrade_tier_1_effect = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}
+upgrade_tier_2_effect = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}
+upgrade_tier_3_effect = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}

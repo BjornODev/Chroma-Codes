@@ -7,6 +7,7 @@ extends Node
 const GRID_SIZE := 6
 const COLORS := ["red", "yellow", "green", "white", "purple", "orange"]
 
+const BOARDS_PER_COLOR := 3
 const ACTIVATED_PANEL_REFILL := 5
 const ADJACENT_PANEL_REFILL := 0
 
@@ -28,7 +29,6 @@ const COLOR_TO_PEG_ID := {
 	"orange": 6,
 }
 
-# Severity thresholds
 const SLIGHT_THRESHOLD := 1.3
 const MODERATE_THRESHOLD := 1.7
 const SEVERE_THRESHOLD := 2.2
@@ -37,13 +37,10 @@ const WEIGHT_SLIGHT_BASE := [70, 25, 5]
 const WEIGHT_MODERATE_BASE := [30, 50, 20]
 const WEIGHT_SEVERE_BASE := [10, 30, 60]
 
-# =========================
-# UNLOCK CONDITION TYPES
-# =========================
 enum UnlockType {
-	COLOR_COUNT,     # activate N of certain colored panels
-	PANEL_TYPE,      # activate a specific panel type
-	TOTAL_PANELS,    # activate N panels total
+	COLOR_COUNT,
+	PANEL_TYPE,
+	TOTAL_PANELS,
 }
 
 # =========================
@@ -56,9 +53,10 @@ var rng: RandomNumberGenerator
 var grid_colors: Array = []
 var grid_types: Array = []
 var grid_activated: Array = []
-var grid_adjacency_unlocked: Array = []  # tracks which panels are reachable
+var grid_adjacency_unlocked: Array = []
 
 var color_activation_counts := {}
+var board_color_activation_counts := {}  # Tracks board panel activations per color (for boss trigger)
 var type_activation_counts := {}
 var total_activated := 0
 var consecutive_non_board := 0
@@ -68,12 +66,10 @@ var boss_ready := false
 
 var last_panel_world_pos: Vector2 = Vector2.ZERO
 
-# Unlock condition for this map
 var unlock_condition: Dictionary = {}
 var unlock_condition_progress: Dictionary = {}
-var unlock_used := false  # has the seeded unlock fired this map
+var unlock_used := false
 
-# "Unlock Any" item keyword state
 var unlock_any_active := false
 
 
@@ -102,6 +98,7 @@ func start_run(seed_value: int):
 
 	for color in COLORS:
 		color_activation_counts[color] = 0
+		board_color_activation_counts[color] = 0
 
 	for type in ["Board", "Shop", "Event", "Forge", "Gamble"]:
 		type_activation_counts[type] = 0
@@ -114,6 +111,8 @@ func start_run(seed_value: int):
 
 # =========================
 # GRID GENERATION
+# Boards placed first — 3 per color, on random tiles of matching color.
+# Remaining 18 tiles get randomly typed (Shop/Event/Forge/Gamble).
 # =========================
 
 func _generate_grid():
@@ -124,28 +123,50 @@ func _generate_grid():
 
 	grid_colors = _generate_latin_square()
 
-	var type_pool = []
-	for i in range(18): type_pool.append("Board")
-	for i in range(5): type_pool.append("Shop")
-	for i in range(5): type_pool.append("Event")
-	for i in range(4): type_pool.append("Forge")
-	for i in range(4): type_pool.append("Gamble")
-
-	_seeded_shuffle(type_pool)
-
-	var idx := 0
+	# Initialize grids
 	for r in range(GRID_SIZE):
 		var type_row = []
 		var activated_row = []
 		var adjacency_row = []
 		for c in range(GRID_SIZE):
-			type_row.append(type_pool[idx])
+			type_row.append("")
 			activated_row.append(false)
 			adjacency_row.append(false)
-			idx += 1
 		grid_types.append(type_row)
 		grid_activated.append(activated_row)
 		grid_adjacency_unlocked.append(adjacency_row)
+
+	# Place 3 boards on tiles of each color
+	for color in COLORS:
+		var candidates = []
+		for r in range(GRID_SIZE):
+			for c in range(GRID_SIZE):
+				if grid_colors[r][c] == color:
+					candidates.append(Vector2(r, c))
+		_seeded_shuffle(candidates)
+		for i in range(BOARDS_PER_COLOR):
+			if i >= candidates.size():
+				break
+			var pos = candidates[i]
+			grid_types[int(pos.x)][int(pos.y)] = "Board"
+
+	# Fill remaining empty tiles with random non-Board types
+	var remaining_types = []
+	for i in range(5): remaining_types.append("Shop")
+	for i in range(5): remaining_types.append("Event")
+	for i in range(4): remaining_types.append("Forge")
+	for i in range(4): remaining_types.append("Gamble")
+	_seeded_shuffle(remaining_types)
+
+	var fill_idx := 0
+	for r in range(GRID_SIZE):
+		for c in range(GRID_SIZE):
+			if grid_types[r][c] == "":
+				if fill_idx < remaining_types.size():
+					grid_types[r][c] = remaining_types[fill_idx]
+					fill_idx += 1
+				else:
+					grid_types[r][c] = "Board"
 
 
 func _generate_latin_square() -> Array:
@@ -210,7 +231,6 @@ func _generate_unlock_condition():
 
 	match condition_type:
 		UnlockType.COLOR_COUNT:
-			# Pick 1-2 colors and counts
 			var num_colors = 1 + rng.randi() % 3
 			var chosen_colors = COLORS.duplicate()
 			_seeded_shuffle(chosen_colors)
@@ -277,15 +297,12 @@ func is_panel_accessible(row: int, col: int) -> bool:
 	if grid_activated[row][col]:
 		return false
 
-	# First panel — anything goes
 	if total_activated == 0:
 		return true
 
-	# Unlock Any active — anything goes for one activation
 	if unlock_any_active:
 		return true
 
-	# Must be orthogonally adjacent to an activated panel
 	return _is_adjacent_to_activated(row, col)
 
 
@@ -318,16 +335,18 @@ func activate_panel(row: int, col: int) -> bool:
 	type_activation_counts[panel_type] += 1
 	total_activated += 1
 
+	# Track board-color activations separately for boss trigger
+	if panel_type == "Board":
+		board_color_activation_counts[color] += 1
+
 	_refill_pegs_from_panel(row, col)
 
-	# Reset unlock any after use
 	if unlock_any_active and total_activated > 1:
 		unlock_any_active = false
 
 	_check_boss_trigger()
 	_check_unlock_condition(color, panel_type)
 
-	# Emit map event for items
 	ItemManager.emit_game_event("panel_activated", {
 		"row": row,
 		"col": col,
@@ -344,40 +363,28 @@ func activate_panel(row: int, col: int) -> bool:
 	return true
 
 
+# =========================
+# BOSS TRIGGER
+# Boss spawns when at least one Board panel of each color has been activated
+# =========================
+
 func _check_boss_trigger():
 	if boss_triggered:
 		return
 
-	# Check all horizontal rows
-	for r in range(GRID_SIZE):
-		var row_complete = true
-		for c in range(GRID_SIZE):
-			if not grid_activated[r][c]:
-				row_complete = false
-				break
-		if row_complete:
-			boss_triggered = true
-			boss_ready = true
+	for color in COLORS:
+		if board_color_activation_counts.get(color, 0) < 1:
 			return
 
-	# Check all vertical columns
-	for c in range(GRID_SIZE):
-		var col_complete = true
-		for r in range(GRID_SIZE):
-			if not grid_activated[r][c]:
-				col_complete = false
-				break
-		if col_complete:
-			boss_triggered = true
-			boss_ready = true
-			return
+	boss_triggered = true
+	boss_ready = true
 
 
 # =========================
 # UNLOCK CONDITION CHECKING
 # =========================
 
-func _check_unlock_condition(activated_color: String, activated_type: String):
+func _check_unlock_condition(_activated_color: String, _activated_type: String):
 	if unlock_used or unlock_condition.is_empty():
 		return
 
@@ -409,11 +416,9 @@ func _check_unlock_condition(activated_color: String, activated_type: String):
 		KeywordEngine.apply_keyword("Heal", 1)
 
 
-
 func _trigger_unlock():
 	unlock_used = true
 
-	# Find all locked non-adjacent panels
 	var locked_panels = []
 	for r in range(GRID_SIZE):
 		for c in range(GRID_SIZE):
@@ -423,7 +428,6 @@ func _trigger_unlock():
 	if locked_panels.is_empty():
 		return
 
-	# Pick one randomly using the run seed
 	var chosen = locked_panels[rng.randi() % locked_panels.size()]
 	grid_adjacency_unlocked[int(chosen.x)][int(chosen.y)] = true
 
@@ -534,6 +538,7 @@ func reset_map():
 	consecutive_non_board = 0
 	for color in COLORS:
 		color_activation_counts[color] = 0
+		board_color_activation_counts[color] = 0
 	for type in type_activation_counts.keys():
 		type_activation_counts[type] = 0
 	total_activated = 0
@@ -553,7 +558,6 @@ func reset_map():
 func _refill_pegs_from_panel(row: int, col: int):
 	var panel_type = grid_types[row][col]
 
-	# Calculate refill amounts with reduction
 	var activated_amount = max(1, ACTIVATED_PANEL_REFILL - consecutive_non_board)
 	var adjacent_amount = 0
 
@@ -579,7 +583,6 @@ func _refill_pegs_from_panel(row: int, col: int):
 		if adj_peg_id > 0:
 			PegInventoryManager.add_pegs_to_color(adj_peg_id, adjacent_amount)
 
-	# Update counter based on panel type
 	if panel_type == "Board":
 		consecutive_non_board = 0
 	else:

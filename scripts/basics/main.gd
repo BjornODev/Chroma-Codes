@@ -14,10 +14,9 @@ func _ready():
 	$HUDLayer/ActiveItemPanel.connect("request_tooltip_hide", _on_active_tooltip_hide)
 
 
-func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_select"):
-		get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
-
+#func _process(delta: float) -> void:
+#	if Input.is_action_just_pressed("ui_select"):
+#		get_tree().change_scene_to_file("res://scenes/MapScreen.tscn")
 
 
 func populate_hud():

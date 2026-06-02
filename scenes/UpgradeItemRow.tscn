@@ -6,12 +6,13 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sp453"]
 shader = ExtResource("3_chs2r")
-shader_parameter/radius = 40.0
-shader_parameter/thickness = 10.0
+shader_parameter/radius = 5.0
+shader_parameter/thickness = 5.0
 shader_parameter/color = Color(1, 1, 1, 1)
 shader_parameter/dash_count = 10.0
 shader_parameter/dash_ratio = 0.5
 shader_parameter/speed = 0.8
+shader_parameter/rect_size = Vector2(380, 70)
 
 [node name="PanelContainer" type="PanelContainer"]
 custom_minimum_size = Vector2(380, 70)
@@ -44,5 +45,9 @@ text = "Label"
 
 [node name="HoverOutline" type="NinePatchRect" parent="."]
 material = SubResource("ShaderMaterial_sp453")
+custom_minimum_size = Vector2(380, 70)
 layout_mode = 2
+size_flags_stretch_ratio = 0.0
 texture = ExtResource("2_u5obr")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2

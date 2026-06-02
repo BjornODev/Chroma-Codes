@@ -240,7 +240,7 @@ func _build_color_tracker():
 		wrapper.custom_minimum_size = Vector2(100, 100)
 		color_tracker.add_child(wrapper)
 
-		var count = MapManager.color_activation_counts[color_name]
+		var count = MapManager.board_color_activation_counts[color_name]
 		var base_color = MapManager.COLOR_VALUES[color_name]
 
 		var dot = TextureRect.new()

@@ -16,12 +16,12 @@ var dollars := 0
 var board_rows_submitted := 0
 var board_damage_taken := 0
 var board_peg_counts := {
-	1: 0,  # red
-	2: 0,  # yellow
-	3: 0,  # green
-	4: 0,  # white
-	5: 0,  # purple
-	6: 0,  # orange
+	1: 0,
+	2: 0,
+	3: 0,
+	4: 0,
+	5: 0,
+	6: 0,
 }
 
 var _rng := RandomNumberGenerator.new()
@@ -48,6 +48,7 @@ func start_new_run():
 func end_run():
 	run_active = false
 	boards_cleared = 0
+	ItemManager.player_items.clear()
 
 
 func board_cleared():
@@ -61,7 +62,7 @@ func board_cleared():
 func apply_board_modifiers():
 	print("Applying board modifiers, boards_cleared:", boards_cleared)
 	BoardModifierEngine.active_modifiers.clear()
-	
+
 	var board_index = boards_cleared
 	var modifier_count = board_index
 	print("Cleared modifiers, modifier_count:", modifier_count)
@@ -69,7 +70,6 @@ func apply_board_modifiers():
 	if modifier_count <= 0:
 		return
 
-	# Deterministic seed per board
 	var board_seed = MapManager.run_seed + board_index * 999983
 	_rng.seed = board_seed
 
@@ -79,7 +79,6 @@ func apply_board_modifiers():
 	var added_modifiers: Array = []
 
 	for i in range(modifier_count):
-		# 25% chance to upgrade existing modifier
 		if added_modifiers.size() > 0 and _rng.randf() < 0.25:
 			var upgradeable = added_modifiers.filter(func(m): return m.level < 3)
 			if not upgradeable.is_empty():
@@ -87,7 +86,6 @@ func apply_board_modifiers():
 				to_upgrade.level += 1
 				continue
 
-		# Add new modifier not already in list
 		var candidates = available.filter(
 			func(m): return not added_modifiers.any(
 				func(a): return a.modifier_name == m.modifier_name
@@ -113,7 +111,7 @@ func _seeded_shuffle(arr: Array):
 
 
 # =========================
-# REWARD CHOICES — ITEMS ONLY
+# REWARD CHOICES
 # =========================
 
 func get_reward_choices() -> Array:
@@ -148,7 +146,7 @@ func _get_weighted_item_pool(pool: Array) -> Array:
 	var weighted := []
 	for item in pool:
 		if item.is_gamble_only:
-			continue  # ← add this
+			continue
 		var weight = _rarity_weight(item.rarity)
 		for i in range(weight):
 			weighted.append(item)
@@ -157,9 +155,9 @@ func _get_weighted_item_pool(pool: Array) -> Array:
 
 func _rarity_weight(rarity: int) -> int:
 	match rarity:
-		0: return 8
-		1: return 4
-		2: return 2
+		0: return 27
+		1: return 9
+		2: return 3
 		3: return 1
 	return 8
 
@@ -169,18 +167,39 @@ func _rarity_weight(rarity: int) -> int:
 # =========================
 
 func add_health(amount: int):
+	var old_health = player_health
 	player_health += amount
 	emit_signal("health_changed", player_health)
 
+	if player_health != old_health:
+		ItemManager.emit_game_event("health_threshold", {
+			"new_health": player_health,
+			"old_health": old_health,
+		})
+
 
 func remove_health(amount: int):
+	var old_health = player_health
 	player_health -= amount
 	emit_signal("health_changed", player_health)
 
+	if player_health != old_health:
+		ItemManager.emit_game_event("health_threshold", {
+			"new_health": player_health,
+			"old_health": old_health,
+		})
+
 
 func set_health(amount: int):
+	var old_health = player_health
 	player_health = amount
 	emit_signal("health_changed", player_health)
+
+	if player_health != old_health:
+		ItemManager.emit_game_event("health_threshold", {
+			"new_health": player_health,
+			"old_health": old_health,
+		})
 
 
 # =========================
@@ -202,6 +221,7 @@ func spend_dollars(amount: int) -> bool:
 
 func can_afford(amount: int) -> bool:
 	return dollars >= amount
+
 
 # =========================
 # BOARD STATS

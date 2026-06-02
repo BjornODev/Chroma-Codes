@@ -46,6 +46,8 @@ func _process(delta: float) -> void:
 func start_drag(peg_stack):
 	var peg = null
 	print(cur_row)
+	if peg_stack.get_submission_value() == 0:
+		return
 
 	if !peg_stack.is_copy and not peg_stack.is_special:
 		# Check if this color stack has any pegs left
@@ -118,6 +120,7 @@ func finish_drag():
 	var can_place := false
 
 	if peg_slot_found:
+		HoverTooltip.hide_tooltip()
 		if replace_mode:
 			if peg_slot_found.row < cur_row:
 				can_place = true

@@ -103,17 +103,18 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 494.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 40
-alignment = 1
 
 [node name="ItemListSection" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
+alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/ItemListSection"]
-custom_minimum_size = Vector2(400, 600)
+custom_minimum_size = Vector2(400, 800)
 layout_mode = 2
 
 [node name="ItemList" type="VBoxContainer" parent="HBoxContainer/ItemListSection/ScrollContainer"]
@@ -295,7 +296,7 @@ offset_right = 55.0
 offset_bottom = 56.0
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
-columns = 15
+columns = 10
 
 [node name="ModifiersHUD" type="HBoxContainer" parent="HUDLayer/HUDRoot"]
 layout_mode = 0
@@ -320,8 +321,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 855.0
-offset_right = -405.0
+offset_left = 909.0
+offset_right = -293.0
 offset_bottom = -177.0
 grow_horizontal = 2
 grow_vertical = 2

@@ -3,10 +3,10 @@ extends Node
 var patterns = []
 var triggered_patterns = {}
 
+
 # =========================
 # SETUP
 # =========================
-
 
 func _ready() -> void:
 	load_patterns()
@@ -14,7 +14,7 @@ func _ready() -> void:
 
 func load_patterns():
 	patterns.clear()
-	
+
 	var files = ResourceLoader.list_directory("res://data/patterns")
 	files.sort()
 	if files.is_empty():
@@ -33,7 +33,6 @@ func load_patterns():
 # PUBLIC ENTRY POINT
 # =========================
 
-
 func evaluate_board(board_state, rows, columns, changed_row):
 
 	var triggered := []
@@ -42,9 +41,7 @@ func evaluate_board(board_state, rows, columns, changed_row):
 
 		var used_positions := {}
 
-		# =====================
 		# NORMAL PATTERNS
-		# =====================
 		if pattern.duplicate_type == "":
 
 			for r in range(max(0, changed_row - 2), min(rows, changed_row + 3)):
@@ -77,14 +74,11 @@ func evaluate_board(board_state, rows, columns, changed_row):
 							"positions": result,
 						})
 
-		# =====================
 		# DUPLICATE PATTERNS
-		# =====================
 		else:
 
 			var all_matches := []
 
-			# Step 1 — Collect ALL matches across board
 			for r in range(rows):
 				for c in range(columns):
 
@@ -96,8 +90,6 @@ func evaluate_board(board_state, rows, columns, changed_row):
 						continue
 
 					all_matches.append(res)
-
-			# Step 2 — Apply duplicate rules
 
 			if pattern.duplicate_type == "any":
 				if all_matches.size() < 2:
@@ -115,7 +107,6 @@ func evaluate_board(board_state, rows, columns, changed_row):
 				if rows_found.size() != required_rows.size():
 					continue
 
-			# Step 3 — Enforce non-overlap between duplicate instances
 			for match in all_matches:
 
 				var overlaps := false
@@ -142,6 +133,29 @@ func evaluate_board(board_state, rows, columns, changed_row):
 
 
 # =========================
+# CELL MATCH HELPER
+# =========================
+# Returns true if the board cell satisfies the pattern cell.
+# Pattern values:
+#   0  = empty (skip, matches anything)
+#   -1 = any (matches any non-empty)
+#   -2 = wild (only matches wild pegs on board)
+#   1-6 = specific color (matches that color OR a wild peg on the board)
+
+func _cell_matches(pattern_value: int, board_value) -> bool:
+	if pattern_value == 0:
+		return true
+	if pattern_value == -1:
+		# Any non-empty cell
+		return board_value != null and board_value != 0
+	if pattern_value == -2:
+		# Pattern requires a wild peg specifically
+		return board_value == -2
+	# Specific color — matches that color OR a wild peg
+	return board_value == pattern_value or board_value == -2
+
+
+# =========================
 # MATCHING LOGIC
 # =========================
 
@@ -156,7 +170,7 @@ func match_pattern_at(board_state, base_r, base_c, pattern : PatternData, rows, 
 		var required_color = pattern.grid[0][0]
 
 		for col in range(columns):
-			if board_state[base_r][col] != required_color:
+			if not _cell_matches(required_color, board_state[base_r][col]):
 				return null
 
 		return get_row_positions(base_r, columns)
@@ -181,23 +195,22 @@ func match_pattern_at(board_state, base_r, base_c, pattern : PatternData, rows, 
 			if r < 0 or r >= rows or c < 0 or c >= columns:
 				return null
 
-			if board_state[r][c] != pattern_color:
+			if not _cell_matches(pattern_color, board_state[r][c]):
 				return null
 
 			matched_positions.append(Vector2(r, c))
 
 	return matched_positions
 
+
 # =========================
 # DUPLICATE RULES
 # =========================
-
 
 func duplicate_rule_matches(board_state, pattern : PatternData, rows, columns):
 
 	var matched_sets := []
 
-	# Step 1 — Collect ALL matches
 	for r in range(rows):
 		for c in range(columns):
 
@@ -209,11 +222,9 @@ func duplicate_rule_matches(board_state, pattern : PatternData, rows, columns):
 			if result != null:
 				matched_sets.append(result)
 
-	# Step 2 — Need at least 2 total matches
 	if matched_sets.size() < 2:
 		return null
 
-	# Step 3 — Build non-overlapping set
 	var selected_sets := []
 
 	for candidate in matched_sets:
@@ -228,7 +239,6 @@ func duplicate_rule_matches(board_state, pattern : PatternData, rows, columns):
 		if not overlaps:
 			selected_sets.append(candidate)
 
-	# Step 4 — Apply duplicate rule
 	if pattern.duplicate_type == "any":
 		if selected_sets.size() >= 2:
 			return selected_sets
@@ -256,17 +266,16 @@ func sets_overlap(a, b):
 	return false
 
 
-
 # =========================
 # DUPLICATE PREVENTION
 # =========================
 
 func register_pattern(name, positions):
 	var key = name + "_" + str(positions)
-	
+
 	if key in triggered_patterns:
 		return false
-	
+
 	triggered_patterns[key] = true
 	print("Pattern triggered:", name, "at", positions)
 	return true

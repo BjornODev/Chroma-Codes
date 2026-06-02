@@ -5,6 +5,7 @@ extends PanelContainer
 @onready var description_label = $VBoxContainer/DescriptionLabel
 @onready var effect_label = $VBoxContainer/EffectLabel
 
+
 func _process(delta: float) -> void:
 
 	var mouse_pos = get_global_mouse_position()
@@ -18,8 +19,10 @@ func _process(delta: float) -> void:
 
 	position.y = clamp(position.y, 0, screen_size.y - tooltip_size.y)
 
+
 func _ready():
 	print("Tooltip ready")
+
 
 func display_item(item : ItemData):
 	if item.is_active:
@@ -28,51 +31,28 @@ func display_item(item : ItemData):
 	name_label.text = item.get_display_name()
 	name_label.add_theme_color_override("font_color", item.get_rarity_color())
 	description_label.text = item.description
-	var trigger_text = ""
 	clear_preview()
-	# Look for pattern trigger
+
 	for trigger in item.triggers:
 		if trigger.has("pattern"):
 			var pattern_name = trigger["pattern"]
-
 			var pattern = PatternEngine.get_pattern_by_name(pattern_name)
 			if pattern:
 				var preview = preload("res://scenes/PatternPreview.tscn").instantiate()
 				preview_container.add_child(preview)
 				preview.display_pattern(pattern)
-			break  # Only show first pattern
-		else:
-			trigger_text += "Trigger:\n"
-			var triggers := []
-			for key in item.triggers[0]:
-				triggers.append(item.triggers[0][key])
-				print(triggers)
-			trigger_text += "- %s: %d\n" % [triggers[1], triggers[0]]
+			break
 
-
-	effect_label.text = trigger_text + build_effect_text(item.keywords)
-#	queue_sort()
+	effect_label.text = build_effect_text(item.keywords)
 	update_minimum_size()
-	print("Tooltip size:", size)
 
 
 func display_modifier(modifier):
-
 	name_label.text = modifier.modifier_name + " (Lv " + str(modifier.level) + ")"
-	description_label.text = ""
-	
+	description_label.text = modifier.modifier_description
+	effect_label.text = ""
+
 	clear_preview()
-	
-	var trigger_text = ""
-	if modifier.phase != "":
-		trigger_text += "Phase: " + modifier.phase + "\n"
-	
-	if modifier.trigger.size() > 0:
-		trigger_text += "Trigger:\n"
-		for key in modifier.trigger.keys():
-			trigger_text += "- %s: %d\n" % [key, modifier.trigger[key]]
-	
-	effect_label.text = trigger_text + build_effect_text(modifier.get_scaled_effect())
 	queue_sort()
 	update_minimum_size()
 	print("Tooltip size:", size)
@@ -84,7 +64,6 @@ func display_active_item(item: ItemData):
 
 	clear_preview()
 
-	#Show charge conditions
 	var charge_text = "Charge: "
 	for condition in item.charge_conditions:
 		charge_text += "%s x%.0f  " % [condition.get("stat", ""), condition.get("amount", 1.0)]
@@ -102,7 +81,13 @@ func clear_preview():
 
 
 func build_effect_text(effect_dict):
-	var text = "Effects:\n"
+	if effect_dict == null or effect_dict.is_empty():
+		return ""
+	var text = ""
 	for key in effect_dict.keys():
-		text += "- %s %d\n" % [key, effect_dict[key]]
+		var value = effect_dict[key]
+		if value is Dictionary:
+			text += "- %s %s %d\n" % [key, value.get("color", ""), value.get("amount", 1)]
+		else:
+			text += "- %s %d\n" % [key, value]
 	return text

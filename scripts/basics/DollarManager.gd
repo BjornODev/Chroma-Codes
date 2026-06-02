@@ -32,6 +32,10 @@ func lose_dollar_from_damage():
 		if dollars_active[i]:
 			dollars_active[i] = false
 			emit_signal("dollar_flickered", i)
+			ItemManager.emit_game_event("dollar_changed", {
+				"dollar_index": i,
+				"state": "unlit",
+			})
 			return
 
 
@@ -45,6 +49,10 @@ func relight_dollar():
 		if not dollars_active[i]:
 			dollars_active[i] = true
 			emit_signal("dollar_relit", i)
+			ItemManager.emit_game_event("dollar_changed", {
+				"dollar_index": i,
+				"state": "lit",
+			})
 			return
 
 

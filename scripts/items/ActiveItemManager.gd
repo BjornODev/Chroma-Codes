@@ -49,7 +49,7 @@ func _process_charge_for_item(item: ItemData, stat: String, amount: float):
 		return
 
 	for condition in item.charge_conditions:
-		if condition.get("stat", "") == stat:
+		if condition.get("type", "") == stat:
 			var gain = amount * condition.get("amount", 1.0)
 			charge_state[item.item_name] = min(
 				charge_state[item.item_name] + gain,
@@ -156,6 +156,7 @@ func on_health_healed(amount: int):
 func on_peg_placed(peg_id: int):
 	add_charge("pegs_placed_any", 1.0)
 	match peg_id:
+		-2: add_charge("pegs_placed_wild", 1.0)
 		1: add_charge("pegs_placed_red", 1.0)
 		2: add_charge("pegs_placed_yellow", 1.0)
 		3: add_charge("pegs_placed_green", 1.0)

@@ -1,15 +1,16 @@
-[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3 uid="uid://dd0fsutoeup5m"]
+[gd_resource type="Resource" script_class="ModifierData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://dbmgh8hx8so2e" path="res://assets/mod_icons/nailed-head.svg" id="1_84wtc"]
-[ext_resource type="Script" uid="uid://bvnybafjvcq62" path="res://data/resources/modifiers_data.gd" id="1_n85vf"]
+[ext_resource type="Texture2D" path="res://assets/mod_icons/nailed-head.svg" id="1_84wtc"]
+[ext_resource type="Script" path="res://data/resources/modifiers_data.gd" id="1_n85vf"]
 
 [resource]
 script = ExtResource("1_n85vf")
 modifier_name = "Yellow Spike"
 icon = ExtResource("1_84wtc")
-trigger = {
+modifier_description = "Yellow pegss are  volatile here. Placing them creates unstable slots."
+trigger = Array[Dictionary]([{
 "yellow": 1
-}
+}])
 base_effect = {
-"Sudden Spike": 2
+"Sudden Spike": 1
 }

@@ -1,21 +1,26 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dq0p80tpw8qlg"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://ktqp1ils71r3" path="res://assets/item_icons/joystick.svg" id="1_febpe"]
-[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="1_te0pj"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/water-recycling.svg" id="1_mldr7"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_te0pj"]
 
 [resource]
 script = ExtResource("1_te0pj")
 item_name = "Green Clean"
-description = "Sometimes you just have to hit a hard reset"
-icon = ExtResource("1_febpe")
+description = "Charges with Green Pegs"
+icon = ExtResource("1_mldr7")
 rarity = 2
 price = 3
 is_active = true
 charge_conditions = Array[Dictionary]([{
 "amount": 1,
-"stat": "pegs_placed_green"
+"type": "pegs_placed_green"
 }])
 active_keywords = {
-"Cleanse": 10
+"Cleanse": 3
 }
-metadata/_custom_type_script = "uid://byr4oyeful2c4"
+upgrade_tier_1_effect = {
+"Cleanse": 1
+}
+upgrade_tier_2_effect = {
+"Cleanse": 1
+}

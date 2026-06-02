@@ -38,6 +38,14 @@ text = "Save"
 layout_mode = 2
 text = "Preview Tooltip"
 
+[node name="SwapButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Go to pattern maker tool"
+
+[node name="SwapToModifiersButton" type="Button" parent="TopBar"]
+layout_mode = 2
+text = "Go to modifier maker tool"
+
 [node name="MainHBox" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -125,6 +133,14 @@ layout_mode = 2
 [node name="AddButton" type="Button" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList"]
 layout_mode = 2
 text = "+ Add Trigger"
+
+[node name="AddThresholdTriggerButton" type="Button" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList"]
+layout_mode = 2
+text = "+ Add Threshold Trigger"
+
+[node name="AddConditionButton" type="Button" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList"]
+layout_mode = 2
+text = "+ Add Condition"
 
 [node name="Label3" type="Label" parent="MainHBox/PassiveColumn/ScrollContainer/PassiveSection"]
 layout_mode = 2
@@ -326,7 +342,11 @@ text = "LineEdit"
 visible = false
 layout_mode = 0
 
+[connection signal="pressed" from="TopBar/SwapButton" to="." method="_on_go_to_patterns"]
+[connection signal="pressed" from="TopBar/SwapToModifiersButton" to="." method="_on_go_to_modifiers"]
 [connection signal="pressed" from="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList/AddButton" to="." method="_on_add_trigger"]
+[connection signal="pressed" from="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList/AddThresholdTriggerButton" to="." method="_on_add_threshold_trigger"]
+[connection signal="pressed" from="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/TriggersList/AddConditionButton" to="." method="_on_add_condition"]
 [connection signal="pressed" from="MainHBox/PassiveColumn/ScrollContainer/PassiveSection/KeywordsList/AddButton" to="." method="_on_add_keyword"]
 [connection signal="pressed" from="MainHBox/ActiveColumn/ScrollContainer/ActiveSection/ChargeConditionsList/AddButton" to="." method="_on_add_charge_condition"]
 [connection signal="pressed" from="MainHBox/ActiveColumn/ScrollContainer/ActiveSection/ActiveKeywordsList/AddButton" to="." method="_on_add_active_keyword"]

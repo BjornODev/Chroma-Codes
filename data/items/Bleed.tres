@@ -1,34 +1,32 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
 
+[ext_resource type="Texture2D" path="res://assets/item_icons/sacrificial-dagger.svg" id="1_mvy8q"]
 [ext_resource type="Script" path="res://data/resources/item_data.gd" id="2_e22wt"]
 
 [resource]
 script = ExtResource("2_e22wt")
 item_name = "Bleed"
-description = "Blood for the Blood God"
+description = "This item charges every time you submit a row."
+icon = ExtResource("1_mvy8q")
 rarity = 1
-price = 2
 is_active = true
-charge_max = 1.0
+charge_max = 3.0
 charge_conditions = Array[Dictionary]([{
 "amount": 1,
-"type": "row_submitted"
+"type": "rows_submitted"
 }])
 active_keywords = {
 "Bleed": 1,
 "Replace": 1
 }
 upgrade_tier_1_effect = {
-"AddPegsColor": {
-"amount": 5,
-"color": "red"
-},
-"Bleed": 1
+"Bleed": 1,
+"Extra Dollar": 1
 }
 upgrade_tier_2_effect = {
 "Bleed": 1,
 "Cleanse": 5
 }
 upgrade_tier_3_effect = {
-"Reveal": 1
+"Reveal": 3
 }

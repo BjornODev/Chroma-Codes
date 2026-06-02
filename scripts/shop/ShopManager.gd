@@ -123,11 +123,11 @@ func _build_weighted_pool() -> Array:
 
 func _rarity_weight(rarity: int) -> int:
 	match rarity:
-		0: return 8   # Common
-		1: return 4   # Uncommon
-		2: return 2   # Rare
+		0: return 27  # Common
+		1: return 9   # Uncommon
+		2: return 3   # Rare
 		3: return 1   # Legendary
-	return 8
+	return 27
 
 
 # =========================

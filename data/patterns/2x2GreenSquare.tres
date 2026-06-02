@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_31at0")
-pattern_name = "2x2 Green Square"
+pattern_name = "2x2GreenSquare"
 width = 2
 height = 2
 grid = [[3, 3], [3, 3]]

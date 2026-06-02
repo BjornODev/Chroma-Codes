@@ -1,25 +1,32 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://b1sb74sutefrs"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://bwxrfoiyjv034" path="res://assets/item_icons/obelisk.svg" id="1_mw7po"]
-[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_g8ftp"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/obelisk.svg" id="1_mw7po"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="2_g8ftp"]
 
 [resource]
 script = ExtResource("2_g8ftp")
 item_name = "Step by Step"
-description = "Walking diagonally still makes forward progress"
+description = "Charges on Purple Pegs and White feedback."
 icon = ExtResource("1_mw7po")
-rarity = 2
+rarity = 3
 price = 3
 is_active = true
-charge_conditions = [{
+charge_max = 15.0
+charge_conditions = Array[Dictionary]([{
 "amount": 1,
-"stat": "pegs_placed_purple"
+"type": "pegs_placed_purple"
 }, {
 "amount": 1,
-"stat": "white_pegs"
-}]
+"type": "white_pegs"
+}])
 active_keywords = {
-"Clear": 3,
 "Heal": 2
 }
-metadata/_custom_type_script = "uid://byr4oyeful2c4"
+upgrade_tier_1_effect = {
+"Heal": 1
+}
+upgrade_tier_1_charge_delta = -2.0
+upgrade_tier_2_effect = {
+"Extra Dollar": 2
+}
+upgrade_tier_2_charge_delta = -3.0

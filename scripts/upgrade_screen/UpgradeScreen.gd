@@ -117,43 +117,37 @@ func _show_details(item: ItemData):
 	item_name_label.add_theme_font_size_override("font_size", 50)
 	item_name_label.add_theme_color_override("font_color", item.get_rarity_color())
 
-	# Clear existing pattern previews
 	for child in pattern_preview_container.get_children():
 		child.queue_free()
-	
-	# Current stats — skip pattern triggers, show them visually instead
+
 	var current_text = "CURRENT:\n"
 	if item.is_active:
 		for key in item.active_keywords:
-			current_text += "  %s: %d\n" % [key, item.active_keywords[key]]
+			current_text += "  %s: %s\n" % [key, _format_keyword_value(item.active_keywords[key])]
 		current_text += "  Charge: %.0f\n" % item.charge_max
 	else:
 		for key in item.keywords:
-			current_text += "  %s: %d\n" % [key, item.keywords[key]]
-		for trigger in item.triggers:
-			if trigger.has("pattern"):
-				var pattern = PatternEngine.get_pattern_by_name(trigger["pattern"])
-				if pattern:
-					var preview = preload("res://scenes/PatternPreview.tscn").instantiate()
-					pattern_preview_container.add_child(preview)
-					preview.display_pattern(pattern)
-			elif trigger.has("event"):
-				# Non-pattern triggers show as text
-				current_text += "  Trigger: %s\n" % trigger.get("event", "")
-	
+			current_text += "  %s: %s\n" % [key, _format_keyword_value(item.keywords[key])]
+
 	current_stats_label.text = current_text
-	
 	current_stats_label.add_theme_font_override("font", font)
 	current_stats_label.add_theme_font_size_override("font_size", 45)
 
-	# Upgrade preview
 	var tier = item.get_next_tier()
 	var preview_text = "AFTER UPGRADE:\n"
 
 	var effect_deltas = tier.get("effect", {})
 	for key in effect_deltas:
-		var current_val = item.active_keywords.get(key, item.keywords.get(key, 0))
-		preview_text += "  %s: %d → %d\n" % [key, current_val, current_val + effect_deltas[key]]
+		var delta = effect_deltas[key]
+		var current_raw = item.active_keywords.get(key, item.keywords.get(key, 0))
+
+		if delta is Dictionary or current_raw is Dictionary:
+			# Color keyword — both are dicts with color + amount
+			var current_amount = current_raw.get("amount", 0) if current_raw is Dictionary else int(current_raw)
+			var delta_amount = delta.get("amount", 0) if delta is Dictionary else int(delta)
+			preview_text += "  %s: %d → %d\n" % [key, current_amount, current_amount + delta_amount]
+		else:
+			preview_text += "  %s: %d → %d\n" % [key, int(current_raw), int(current_raw) + int(delta)]
 
 	var trigger_deltas = tier.get("trigger", {})
 	for key in trigger_deltas:
@@ -168,8 +162,14 @@ func _show_details(item: ItemData):
 	upgrade_preview_label.text = preview_text
 	upgrade_preview_label.add_theme_font_override("font", font)
 	upgrade_preview_label.add_theme_font_size_override("font_size", 45)
-	
+
 	confirm_button.disabled = false
+
+
+func _format_keyword_value(value) -> String:
+	if value is Dictionary:
+		return "%s %d" % [value.get("color", ""), value.get("amount", 0)]
+	return str(value)
 
 
 func _clear_details():

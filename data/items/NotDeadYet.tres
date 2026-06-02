@@ -1,20 +1,30 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://enu81j14lt4f"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://cd6c7wbn5bwox" path="res://assets/item_icons/psychic-waves.svg" id="1_ov07e"]
-[ext_resource type="Script" uid="uid://byr4oyeful2c4" path="res://data/resources/item_data.gd" id="2_olmvd"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/wanted-reward.svg" id="1_ov07e"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="2_olmvd"]
 
 [resource]
 script = ExtResource("2_olmvd")
 item_name = "Not Dead Yet"
-description = "What doesn't kill you makes you know more things"
+description = "Charges on damage taken"
 icon = ExtResource("1_ov07e")
+rarity = 2
+price = 4
 is_active = true
-charge_max = 7.0
+charge_max = 5.0
 charge_conditions = Array[Dictionary]([{
 "amount": 1,
-"stat": "damage_taken"
+"type": "damage_taken"
 }])
 active_keywords = {
 "Reveal": 2
 }
-metadata/_custom_type_script = "uid://byr4oyeful2c4"
+upgrade_tier_1_effect = {
+"Add All Colors": 2
+}
+upgrade_tier_1_charge_delta = -1.0
+upgrade_tier_2_effect = {
+"Bleed": 1,
+"Create Wild": 2
+}
+upgrade_tier_2_charge_delta = -1.0
