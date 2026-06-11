@@ -1,15 +1,21 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_ibxv4"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/enlightenment.svg" id="1_r481x"]
 
 [resource]
 script = ExtResource("1_ibxv4")
-item_name = "Test"
+item_name = "Enlightened Rage"
+description = "Triggers after every third red panel activated."
+icon = ExtResource("1_r481x")
 triggers = Array[Dictionary]([{
 "color": "red",
-"count": 1,
+"count": 3,
 "event": "panel_activated"
 }])
 keywords = {
 "Unlock Any": 1
+}
+upgrade_tier_1_effect = {
+"Add All Colors": 2
 }

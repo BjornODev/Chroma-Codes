@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/item_icons/bud.svg" id="1_sp1tk"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_xcitc"]
+
+[resource]
+script = ExtResource("1_xcitc")
+item_name = "Buds flourish"
+description = "Triggers for every green peg placed"
+icon = ExtResource("1_sp1tk")
+rarity = 1
+price = 2
+triggers = Array[Dictionary]([{
+"green": 1
+}])
+keywords = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}
+upgrade_tier_1_effect = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}
+upgrade_tier_2_effect = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}

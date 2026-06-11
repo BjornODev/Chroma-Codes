@@ -29,6 +29,8 @@ func populate_hud():
 	
 	# Items (top left)
 	for item in ItemManager.player_items:
+		if item.is_active:
+			continue
 		var icon = preload("res://scenes/DisplayIcon.tscn").instantiate()
 		items_hud.add_child(icon)
 		icon.setup(item)

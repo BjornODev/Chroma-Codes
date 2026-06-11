@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_rhtws"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/white-limit.svg" id="1_wmky6"]
+
+[resource]
+script = ExtResource("1_rhtws")
+item_name = "White Limit"
+description = "Triggers when the count of White pegs falls below 10"
+icon = ExtResource("1_wmky6")
+rarity = 1
+triggers = Array[Dictionary]([{
+"color": "white",
+"direction": "down",
+"event": "peg_threshold",
+"threshold": 10
+}])
+keywords = {
+"Replace": 2
+}
+upgrade_tier_1_effect = {
+"Create Wild": 1
+}

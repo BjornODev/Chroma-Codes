@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/item_icons/battery-100.svg" id="1_133u6"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_ynf0x"]
+
+[resource]
+script = ExtResource("1_ynf0x")
+item_name = "Fully Charged"
+description = "Triggers after every row submitted where all five dollars are lit"
+icon = ExtResource("1_133u6")
+rarity = 3
+price = 2
+triggers = Array[Dictionary]([{
+"comparison": ">",
+"condition": "dollar_lit",
+"mode": "and",
+"value": 0
+}, {
+"event": "row_submitted"
+}])
+keywords = {
+"Charge Active": 3
+}

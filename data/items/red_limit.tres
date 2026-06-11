@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/item_icons/red-limit.svg" id="1_l16ix"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_pnhkk"]
+
+[resource]
+script = ExtResource("1_pnhkk")
+item_name = "Red Limit"
+description = "Triggers when the count of red pegs falls below 10"
+icon = ExtResource("1_l16ix")
+rarity = 1
+triggers = Array[Dictionary]([{
+"color": "red",
+"direction": "down",
+"event": "peg_threshold",
+"threshold": 10
+}])
+keywords = {
+"Replace": 2
+}
+upgrade_tier_1_effect = {
+"Create Wild": 1
+}

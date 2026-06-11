@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Linearity Curve (http://linearity.io/curve) -->
+<svg height="409.6000061035156px" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 409.6 409.6" width="409.6000061035156px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs/>
+<clipPath id="ArtboardFrame">
+<rect height="409.6" width="409.6" x="0" y="0"/>
+</clipPath>
+<g clip-path="url(#ArtboardFrame)" id="Untitled">
+<path d="M158.25 204.812L158.25 342.812C158.25 368.517 179.108 389.344 204.812 389.344C230.517 389.344 251.344 368.517 251.344 342.812L251.344 204.812L158.25 204.812Z" fill="#cd0039" fill-rule="nonzero" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="round" stroke-width="26.488"/>
+<g opacity="1">
+<path d="M204.82 36.3534C102.02 36.3534 18.46 119.913 18.46 222.713C18.46 325.513 102 239.27 204.8 239.27C307.6 239.27 391.14 325.513 391.14 222.713C391.14 119.913 307.62 36.3534 204.82 36.3534Z" fill="#ff0000" fill-rule="nonzero" opacity="1" stroke="none"/>
+<path d="M204.82 50.6734C299.94 50.6734 376.9 127.593 376.9 222.713C376.9 317.833 299.94 230.504 204.82 230.504C109.7 230.504 32.78 317.833 32.78 222.713C32.78 127.593 109.7 50.6734 204.82 50.6734Z" fill="#ff0000" fill-rule="nonzero" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="round" stroke-width="28.585"/>
+</g>
+<path d="M419.031 302.907C419.031 291.597 428.201 282.427 439.511 282.427C450.822 282.427 459.991 291.597 459.991 302.907C459.991 314.218 450.822 323.387 439.511 323.387C428.201 323.387 419.031 314.218 419.031 302.907Z" fill="#4a4a4a" fill-rule="nonzero" opacity="1" stroke="none"/>
+</g>
+</svg>

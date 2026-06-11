@@ -14,9 +14,9 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Mastermind Roguelite"
+config/name="Chroma Codes"
 run/main_scene="res://scenes/MapScreen.tscn"
-config/features=PackedStringArray("4.5", "Mobile")
+config/features=PackedStringArray("4.6", "Mobile")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
 
@@ -41,6 +41,8 @@ ShopManager="*res://scripts/shop/ShopManager.gd"
 PegInventoryManager="*res://scripts/basics/PegInventoryManager.gd"
 DollarManager="*res://scripts/basics/DollarManager.gd"
 HoverTooltip="*res://scenes/HoverTooltip.tscn"
+RulesEngine="*res://scripts/RulesSystems/RulesEngine.gd"
+ScoreManager="*res://scripts/scoring/ScoreManager.gd"
 
 [display]
 
@@ -76,9 +78,8 @@ environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 [xogot]
 
 project/editorState=[{
-"column": 25,
-"current": true,
-"line": 35,
+"column": 0,
+"line": 869,
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
@@ -92,7 +93,7 @@ project/editorState=[{
 "path": "res://scripts/items/ActiveItemSlot.gd",
 "type": "file"
 }, {
-"column": 29,
+"column": 0,
 "line": 122,
 "path": "res://scripts/basics/peg_manager.gd",
 "type": "file"
@@ -123,11 +124,12 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
+"current": true,
 "line": 0,
 "path": "res://scripts/items/item_manager.gd",
 "type": "file"
 }, {
-"column": 12,
+"column": 0,
 "line": 30,
 "path": "res://scripts/basics/keyword_engine.gd",
 "type": "file"
@@ -142,24 +144,84 @@ project/editorState=[{
 "path": "res://scripts/basics/slot.gd",
 "type": "file"
 }, {
-"column": 33,
+"column": 0,
 "line": 50,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
-"column": 28,
-"line": 588,
+"column": 0,
+"line": 620,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
-"column": 66,
-"line": 242,
+"column": 0,
+"line": 189,
 "path": "res://scripts/map_screen/MapScreen.gd",
 "type": "file"
 }, {
-"column": 19,
+"column": 0,
 "line": 184,
 "path": "res://data/resources/item_data.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/ui/hud_layer.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 32,
+"path": "res://scripts/basics/main.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/peg_data.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/run_setup_screen.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 9,
+"path": "res://scripts/RulesSystems/RulesEngine.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 63,
+"path": "res://scripts/rules/ClockwiseFromTop.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 59,
+"path": "res://scripts/rules/SpreadSameType.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 181,
+"path": "res://scripts/scoring/ScoreManager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 21,
+"path": "res://scripts/scoring/SliceNode.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 16,
+"path": "res://scripts/scoring/FeedbackCircle.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 88,
+"path": "res://scripts/scoring/TugOfWarBar.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 69,
+"path": "res://scripts/scoring/ScorePegHUD.gd",
 "type": "file"
 }]
 project/breakpoints={
@@ -183,3 +245,4 @@ project/breakpoints={
 "res://scripts/ui/PegStackDisplay.gd": PackedInt32Array()
 }
 project/disabled_breakpoints={}
+project/xogot_game_id="2685_chroma-codes"

@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_5tm7q"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/yellow-wave.svg" id="1_gam7w"]
+
+[resource]
+script = ExtResource("1_5tm7q")
+item_name = "Green Wave"
+description = "Triggers on every green panel activated"
+icon = ExtResource("1_gam7w")
+rarity = 2
+price = 3
+triggers = Array[Dictionary]([{
+"color": "green",
+"count": 1,
+"event": "panel_activated"
+}])
+keywords = {
+"Add Color": {
+"amount": 1,
+"color": "green"
+}
+}
+upgrade_tier_1_effect = {
+"Add Color": {
+"amount": 1,
+"color": "green"
+}
+}
+upgrade_tier_2_effect = {
+"Add Color": {
+"amount": 1,
+"color": "green"
+}
+}
+upgrade_tier_3_effect = {
+"Add All Colors": 1
+}

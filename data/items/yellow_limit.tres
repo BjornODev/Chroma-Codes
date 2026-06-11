@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_50id8"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/yellow-limit.svg" id="1_jq3e1"]
+
+[resource]
+script = ExtResource("1_50id8")
+item_name = "Yellow Limit"
+description = "Triggers when the count of Yellow pegs falls below 10"
+icon = ExtResource("1_jq3e1")
+rarity = 1
+triggers = Array[Dictionary]([{
+"color": "yellow",
+"direction": "down",
+"event": "peg_threshold",
+"threshold": 10
+}])
+keywords = {
+"Replace": 2
+}
+upgrade_tier_1_effect = {
+"Create Wild": 1
+}

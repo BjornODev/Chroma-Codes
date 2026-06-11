@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_01n51"]
+[ext_resource type="Texture2D" path="res://assets/item_icons/orange-limit.svg" id="1_uj7eb"]
+
+[resource]
+script = ExtResource("1_01n51")
+item_name = "Orange Limit"
+description = "Triggers when the count of Orange pegs falls below 10"
+icon = ExtResource("1_uj7eb")
+rarity = 1
+triggers = Array[Dictionary]([{
+"color": "orange",
+"direction": "down",
+"event": "peg_threshold",
+"threshold": 10
+}])
+keywords = {
+"Replace": 2
+}
+upgrade_tier_1_effect = {
+"Create Wild": 1
+}

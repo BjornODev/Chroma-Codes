@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/item_icons/white-wave.svg" id="1_1u8bu"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_85iea"]
+
+[resource]
+script = ExtResource("1_85iea")
+item_name = "White Wave"
+description = "Triggers on every white panel activated"
+icon = ExtResource("1_1u8bu")
+rarity = 2
+price = 3
+triggers = Array[Dictionary]([{
+"color": "white",
+"count": 1,
+"event": "panel_activated"
+}])
+keywords = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}
+upgrade_tier_1_effect = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}
+upgrade_tier_2_effect = {
+"Add Color": {
+"amount": 1,
+"color": "white"
+}
+}
+upgrade_tier_3_effect = {
+"Add All Colors": 1
+}

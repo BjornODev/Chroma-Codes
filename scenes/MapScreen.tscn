@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dmpklyo2tmuv6"]
+[gd_scene format=3 uid="uid://dmpklyo2tmuv6"]
 
 [ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/map_screen/IrisWipe.gd" id="1_e0ph6"]
 [ext_resource type="Script" uid="uid://txb2pir8wxjd" path="res://scripts/map_screen/MapScreen.gd" id="1_k1etw"]
@@ -91,7 +91,7 @@ shader_parameter/color_d = Vector4(0.2, 0.8, 0.7, 1)
 shader_parameter/color_e = Vector4(0.9, 0.7, 0.2, 1)
 shader_parameter/seed = 0.0
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=1651044818]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -106,7 +106,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k1etw")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="GridContainer" type="GridContainer" parent="." unique_id=690147753]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -121,12 +121,12 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 6
 
-[node name="CautionOverlay" type="CanvasLayer" parent="."]
+[node name="CautionOverlay" type="CanvasLayer" parent="." unique_id=1573320148]
 layer = 11
 visible = false
 script = ExtResource("3_jyaso")
 
-[node name="Control" type="Control" parent="CautionOverlay"]
+[node name="Control" type="Control" parent="CautionOverlay" unique_id=1236949201]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -140,7 +140,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BG" type="ColorRect" parent="CautionOverlay/Control"]
+[node name="BG" type="ColorRect" parent="CautionOverlay/Control" unique_id=1396582598]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -152,7 +152,7 @@ offset_bottom = 520.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CautionLabel" type="Label" parent="CautionOverlay/Control"]
+[node name="CautionLabel" type="Label" parent="CautionOverlay/Control" unique_id=525886770]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -168,12 +168,12 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_cehh4")
 text = "Label"
 
-[node name="IrisWipe" type="CanvasLayer" parent="."]
+[node name="IrisWipe" type="CanvasLayer" parent="." unique_id=1823007931]
 layer = 12
 visible = false
 script = ExtResource("1_e0ph6")
 
-[node name="ShaderRect" type="ColorRect" parent="IrisWipe"]
+[node name="ShaderRect" type="ColorRect" parent="IrisWipe" unique_id=2083823595]
 material = SubResource("ShaderMaterial_d1huf")
 anchors_preset = 15
 anchor_right = 1.0
@@ -183,16 +183,16 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=998815418]
 layer = 100
 
-[node name="CRTFilter" type="ColorRect" parent="CanvasLayer"]
+[node name="CRTFilter" type="ColorRect" parent="CanvasLayer" unique_id=1813168425]
 material = SubResource("ShaderMaterial_cehh4")
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
-[node name="ColorTracker" type="HBoxContainer" parent="."]
+[node name="ColorTracker" type="HBoxContainer" parent="." unique_id=1877482192]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -204,11 +204,11 @@ offset_bottom = -393.0
 grow_horizontal = 2
 alignment = 1
 
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1776551023]
 layer = -1
 script = ExtResource("11_jd80c")
 
-[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer"]
+[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer" unique_id=1962601244]
 visible = false
 z_index = -100
 z_as_relative = false
@@ -219,7 +219,7 @@ offset_right = 2218.6665
 offset_bottom = 1248.0
 texture = ExtResource("10_jd80c")
 
-[node name="Background" type="TextureRect" parent="BackgroundLayer"]
+[node name="Background" type="TextureRect" parent="BackgroundLayer" unique_id=1046743098]
 visible = false
 z_index = -100
 z_as_relative = false
@@ -232,7 +232,7 @@ offset_bottom = 1248.0
 texture = ExtResource("10_jd80c")
 metadata/_edit_lock_ = true
 
-[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer"]
+[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer" unique_id=999088505]
 visible = false
 material = SubResource("ShaderMaterial_sd4vv")
 anchors_preset = 15
@@ -241,7 +241,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="BGRect" type="ColorRect" parent="BackgroundLayer"]
+[node name="BGRect" type="ColorRect" parent="BackgroundLayer" unique_id=1489304629]
 material = SubResource("ShaderMaterial_yn8di")
 anchors_preset = 15
 anchor_right = 1.0
@@ -249,15 +249,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HUDLayer" type="CanvasLayer" parent="."]
+[node name="HUDLayer" type="CanvasLayer" parent="." unique_id=767660110]
 layer = 10
 script = ExtResource("7_0q6xy")
 
-[node name="ActiveItemPanel" parent="HUDLayer" instance=ExtResource("12_0q6xy")]
+[node name="ActiveItemPanel" parent="HUDLayer" unique_id=226426228 instance=ExtResource("12_0q6xy")]
 offset_left = 40.0
 offset_right = 160.0
 
-[node name="ChaosMeter" type="Control" parent="HUDLayer"]
+[node name="ChaosMeter" type="Control" parent="HUDLayer" unique_id=1572254909]
 layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
@@ -269,15 +269,15 @@ offset_bottom = 140.0
 grow_horizontal = 0
 script = ExtResource("8_q7c8e")
 
-[node name="HUDRoot" type="Control" parent="HUDLayer"]
+[node name="HUDRoot" type="Control" parent="HUDLayer" unique_id=132676678]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="HealthText" parent="HUDLayer/HUDRoot" instance=ExtResource("7_jd80c")]
+[node name="HealthText" parent="HUDLayer/HUDRoot" unique_id=1816942852 instance=ExtResource("7_jd80c")]
 
-[node name="MoneyLabel" type="Label" parent="HUDLayer/HUDRoot"]
+[node name="MoneyLabel" type="Label" parent="HUDLayer/HUDRoot" unique_id=1543503716]
 layout_mode = 0
 offset_left = 280.0
 offset_top = 911.0
@@ -295,7 +295,7 @@ theme_override_font_sizes/font_size = 115
 text = "$ 10"
 vertical_alignment = 2
 
-[node name="ItemsHUD" type="GridContainer" parent="HUDLayer/HUDRoot"]
+[node name="ItemsHUD" type="GridContainer" parent="HUDLayer/HUDRoot" unique_id=3882122]
 layout_mode = 0
 offset_left = 15.0
 offset_top = 16.0
@@ -305,7 +305,7 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 15
 
-[node name="ModifiersHUD" type="GridContainer" parent="HUDLayer/HUDRoot"]
+[node name="ModifiersHUD" type="GridContainer" parent="HUDLayer/HUDRoot" unique_id=143095946]
 layout_direction = 3
 layout_mode = 0
 offset_left = 1860.0
@@ -316,15 +316,15 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 15
 
-[node name="TooltipLayer" type="CanvasLayer" parent="."]
+[node name="TooltipLayer" type="CanvasLayer" parent="." unique_id=1959594087]
 layer = 50
 
-[node name="Tooltip" parent="TooltipLayer" instance=ExtResource("7_ch6n0")]
+[node name="Tooltip" parent="TooltipLayer" unique_id=1994625064 instance=ExtResource("7_ch6n0")]
 visible = false
 z_index = 50
 offset_right = 600.0
 
-[node name="UnlockLabel" type="Label" parent="."]
+[node name="UnlockLabel" type="Label" parent="." unique_id=254165877]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -341,5 +341,5 @@ text = "Label"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PegStackDisplay" parent="." instance=ExtResource("16_8t4ed")]
+[node name="PegStackDisplay" parent="." unique_id=937433563 instance=ExtResource("16_8t4ed")]
 position = Vector2(20, 20)

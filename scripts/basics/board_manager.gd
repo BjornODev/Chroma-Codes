@@ -35,9 +35,13 @@ var scroll_offset := 0.0
 
 const TESTING_MODS = true
 
-# =========================
-# SETUP
-# =========================
+var current_adjacent_colors: Array = []
+
+const FEEDBACK_CIRCLE_RADIUS := 35.0
+const FEEDBACK_CIRCLE_PADDING := 40.0
+const FEEDBACK_TOTAL_SIZE := FEEDBACK_CIRCLE_RADIUS * 2 + FEEDBACK_CIRCLE_PADDING
+
+const BG_X_PADDING := 120
 
 func _ready():
 	black_frame.visible = true
@@ -51,7 +55,7 @@ func _ready():
 	ActiveItemManager.set_context(self, peg_manager_reference, null)
 	iris_wipe.instant_close()
 	slot_scene = preload("res://scenes/SnapZone.tscn")
-	feedback_scene = preload("res://scenes/Feedback_Grid.tscn")
+	feedback_scene = preload("res://scenes/FeedbackCircle.tscn")
 	PopUpText.toggle_mult(true)
 	if !TESTING_MODS:
 		RunProgressionManager.apply_board_modifiers()
@@ -62,6 +66,10 @@ func _ready():
 	KeywordEngine.set_context(self, peg_manager_reference, null)
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)
+
+	current_adjacent_colors = MapManager.get_last_panel_adjacent_colors()
+	ScoreManager.start_board(current_adjacent_colors)
+
 	for i in range(soft_row_limit):
 		add_row()
 	for child in get_children():
@@ -82,10 +90,6 @@ func _open_iris():
 	iris_wipe.iris_open(pos)
 
 
-# =========================
-# ROW CREATION
-# =========================
-
 func add_row():
 	var r = rows_generated
 
@@ -97,8 +101,7 @@ func add_row():
 	var camera_center = camera.get_screen_center_position()
 
 	var slot_width = columns * slot_size + (columns - 1) * spacing
-	var feedback_columns = ceil(columns / 2.0)
-	var feedback_width = feedback_columns * 24
+	var feedback_width = FEEDBACK_TOTAL_SIZE
 	var gap = 10
 
 	var total_width = slot_width + gap + feedback_width
@@ -121,14 +124,14 @@ func add_row():
 
 		slot_lookup[Vector2(r, c)] = slot
 
-	var feedback_grid = feedback_scene.instantiate()
-	feedback_grid.row = r
-	add_child(feedback_grid)
-	feedback_grid.background_resize(columns)
-	feedback_grid.position = Vector2(
+	var feedback_circle = feedback_scene.instantiate()
+	feedback_circle.row = r
+	add_child(feedback_circle)
+	feedback_circle.position = Vector2(
 		start_x + slot_width + gap,
-		y - 24
+		y - FEEDBACK_TOTAL_SIZE / 2.0
 	)
+	feedback_circle.generate(r, columns, current_adjacent_colors)
 
 	if r >= soft_row_limit:
 		for child in get_children():
@@ -158,7 +161,7 @@ func collapse_bottom_rows():
 				fade_tween.tween_property(child.peg_in_slot, "modulate:a", 0.0, 0.35)
 				nodes_to_delete.append(child.peg_in_slot)
 
-		elif child is Feedback_Grid and child.row < rows_to_remove:
+		elif child is FeedbackCircle and child.row < rows_to_remove:
 			fade_tween.tween_property(child, "modulate:a", 0.0, 0.35)
 			has_fade = true
 			nodes_to_delete.append(child)
@@ -203,7 +206,7 @@ func collapse_bottom_rows():
 				occ_new.y += shift_distance
 				move_tween.tween_property(occ, "position", occ_new, 0.5)
 
-		elif child is Feedback_Grid and child.row >= rows_to_remove:
+		elif child is FeedbackCircle and child.row >= rows_to_remove:
 			child.row -= rows_to_remove
 
 			var new_pos = child.position
@@ -262,8 +265,7 @@ func update_safe_background():
 	var camera_center = camera.get_screen_center_position()
 
 	var slot_width = columns * slot_size + (columns - 1) * spacing
-	var feedback_columns = ceil(columns / 2.0)
-	var feedback_width = feedback_columns * 24
+	var feedback_width = FEEDBACK_TOTAL_SIZE
 	var gap = 10
 
 	var total_width = slot_width + gap + feedback_width
@@ -279,7 +281,7 @@ func update_safe_background():
 
 	var bg = $SafeBoardBG
 
-	var padding_x = 90
+	var padding_x = BG_X_PADDING
 	var padding_y = 50
 
 	var final_width = total_width + padding_x
@@ -301,7 +303,7 @@ func tween_last_row():
 	var world_top = camera.global_position.y - screen_height / 2.0
 
 	for child in get_children():
-		if (child is SnapZone or child is Feedback_Grid) and child.row == r:
+		if (child is SnapZone or child is FeedbackCircle) and child.row == r:
 			var original_pos = child.global_position
 
 			child.global_position.y = world_top - 100
@@ -323,13 +325,12 @@ func create_danger_background(y_pos):
 	var camera_center = camera.get_screen_center_position()
 
 	var slot_width = columns * slot_size + (columns - 1) * spacing
-	var feedback_columns = ceil(columns / 2.0)
-	var feedback_width = feedback_columns * 24
+	var feedback_width = FEEDBACK_TOTAL_SIZE
 	var gap = 10
 	var total_width = slot_width + gap + feedback_width
 	var total_height = slot_size + spacing
 
-	var padding_x = 80
+	var padding_x = BG_X_PADDING - 30
 	var padding_y = 17
 
 	var final_width = total_width + padding_x
@@ -363,11 +364,6 @@ func apply_danger_visual(node):
 	node.in_danger_row = true
 
 
-# =========================
-# WILD PEG DRAIN
-# Tracks drained counts per wild peg for the tooltip.
-# =========================
-
 func _apply_wild_peg_drain(row_index: int):
 	for c in range(columns):
 		var slot = slot_lookup.get(Vector2(row_index, c))
@@ -379,7 +375,6 @@ func _apply_wild_peg_drain(row_index: int):
 		if not (peg.is_special and peg.special_type == "wild"):
 			continue
 
-		# Reset and mark as submitted for tooltip display
 		if "drained_counts" in peg:
 			peg.drained_counts = {}
 			peg.has_submitted_this_round = true
@@ -407,19 +402,13 @@ func _apply_wild_peg_drain(row_index: int):
 				continue
 			PegInventoryManager.remove_pegs_from_color(neighbor.peg_id, 1)
 
-			# Track for tooltip
 			if "drained_counts" in peg:
 				var cid = neighbor.peg_id
 				peg.drained_counts[cid] = peg.drained_counts.get(cid, 0) + 1
 
-		# If the tooltip is currently displayed for this peg, refresh it
 		if HoverTooltip.current_object == peg:
 			HoverTooltip.refresh()
 
-
-# =========================
-# SUBMIT GUESS
-# =========================
 
 func submit_guess():
 	var guess = []
@@ -463,8 +452,8 @@ func submit_guess():
 		obscurities = 0
 
 	item_system.emit_game_event("feedback_count", {
-		"black": result[0],
-		"white": result[1],
+		"correct": result[0],
+		"almost": result[1],
 	})
 
 	for child in get_children():
@@ -479,8 +468,8 @@ func submit_guess():
 		apply_damage(damage_per_row)
 
 	for child in get_children():
-		if child is Feedback_Grid and child.row == row_index:
-			child.show_results(result[0], result[1])
+		if child is FeedbackCircle and child.row == row_index:
+			child.show_feedback(result[0], result[1])
 
 	if result[0] == columns:
 		BoardModifierEngine.disabled_modifiers_this_round.clear()
@@ -488,6 +477,8 @@ func submit_guess():
 		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
+		var final = ScoreManager.finalize_board()
+		item_system.emit_game_event("team_won_board", final)
 		if RunProgressionManager.player_health > 0:
 			PopUpText.show_popup(
 				"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
@@ -544,10 +535,6 @@ func submit_guess():
 		tween_last_row()
 
 
-# =========================
-# DAMAGE SYSTEM
-# =========================
-
 func apply_damage(damage):
 	ActiveItemManager.on_damage_taken(damage)
 	RunProgressionManager.record_damage_taken(damage)
@@ -562,9 +549,9 @@ func apply_damage(damage):
 		"health": RunProgressionManager.player_health,
 		"source": "normal",
 	})
-	
+
 	item_system.process_turn_events()
-	
+
 	if RunProgressionManager.player_health <= 0:
 		print("Game Over")
 		in_game = false
@@ -575,6 +562,8 @@ func apply_damage(damage):
 		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
+		var final = ScoreManager.finalize_board()
+		item_system.emit_game_event("team_won_board", final)
 		await get_tree().create_timer(5.0).timeout
 		var tween = create_tween().set_ease(Tween.EASE_IN)
 		tween.tween_property(
@@ -598,38 +587,30 @@ func flash_damage():
 	tween.tween_property(damage_overlay, "modulate", Color(1, 0, 0, 0), 0.5)
 
 
-# =========================
-# GUESS EVALUATION
-# =========================
-
 func evaluate_guess(guess):
-	var black := 0
-	var white := 0
+	var correct := 0
+	var almost := 0
 
 	var secret_copy = secret_code.duplicate()
 	var guess_copy = guess.duplicate()
 
 	for i in range(columns):
 		if guess_copy[i] == -2:
-			black += 1
+			correct += 1
 			guess_copy[i] = -1
 			secret_copy[i] = -1
 		elif guess_copy[i] == secret_copy[i]:
-			black += 1
+			correct += 1
 			guess_copy[i] = -1
 			secret_copy[i] = -1
 
 	for g in guess_copy:
 		if g in secret_copy and g != -1:
-			white += 1
+			almost += 1
 			secret_copy[secret_copy.find(g)] = -1
 
-	return [black, white]
+	return [correct, almost]
 
-
-# =========================
-# VISUALS
-# =========================
 
 func spawn_pattern_markers(positions):
 	for pos in positions:
@@ -668,8 +649,8 @@ func re_evaluate_row(row_index):
 			apply_heal(1)
 
 	item_system.emit_game_event("feedback_count", {
-		"black": result[0],
-		"white": result[1],
+		"correct": result[0],
+		"almost": result[1],
 	})
 
 	ItemManager.process_row_submission(guess, result)
@@ -681,6 +662,8 @@ func re_evaluate_row(row_index):
 		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
+		var final = ScoreManager.finalize_board()
+		item_system.emit_game_event("team_won_board", final)
 		if RunProgressionManager.player_health > 0:
 			PopUpText.show_popup(
 						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
@@ -701,9 +684,8 @@ func re_evaluate_row(row_index):
 		board_state[row_index][c] = guess[c]
 
 	for child in get_children():
-		if child is Feedback_Grid and child.row == row_index:
-			clear_feedback_grid(child)
-			child.show_results(result[0], result[1])
+		if child is FeedbackCircle and child.row == row_index:
+			child.reapply_feedback(result[0], result[1])
 
 	var triggered = pattern_engine.evaluate_board(
 		board_state,
@@ -722,14 +704,6 @@ func re_evaluate_row(row_index):
 			})
 
 	print("Row re-evaluated:", row_index, result)
-
-
-func clear_feedback_grid(grid):
-	for node in grid.get_children():
-		if node is Feedback_Peg:
-			node.queue_free()
-		else:
-			clear_feedback_grid(node)
 
 
 func handle_goop_explosion():
@@ -774,10 +748,6 @@ func spawn_goop_explosion(pos):
 	explosion.explode()
 
 
-# =========================
-# SECRET CODE
-# =========================
-
 func generate_code():
 	secret_code.clear()
 	for i in range(columns):
@@ -796,21 +766,21 @@ func apply_heal(amount):
 
 
 func apply_obscure_logic(obscurities, result):
-	var black = result[0]
-	var white = result[1]
+	var correct = result[0]
+	var almost = result[1]
 	var obscured := 0
 	for g in range(obscurities):
 		if randf() < 0.5:
 			obscured += 1
-			if black > 0:
-				black -= 1
-			elif white > 0:
-				white -= 1
+			if correct > 0:
+				correct -= 1
+			elif almost > 0:
+				almost -= 1
 			item_system.emit_game_event("feedback_obscured", {})
 	PopUpText.show_popup(
 				"[center][b][color=#BC13FE]OBSCURE %d [/color][/b][/center]" % obscured
 			)
-	return [black, white]
+	return [correct, almost]
 
 
 func start_next_board():
@@ -828,7 +798,7 @@ func start_next_board():
 			if child.peg_in_slot:
 				child.peg_in_slot.queue_free()
 			child.queue_free()
-		if child is Feedback_Grid:
+		if child is FeedbackCircle:
 			child.queue_free()
 
 	for bg in $DangerBGContainer.get_children():
@@ -850,6 +820,10 @@ func start_next_board():
 	PopUpText.mult_reset()
 	generate_code()
 	$"../SecretCodeDisplay".build(secret_code)
+
+	current_adjacent_colors = MapManager.get_last_panel_adjacent_colors()
+	ScoreManager.start_board(current_adjacent_colors)
+
 	get_parent().populate_hud()
 	for i in range(soft_row_limit):
 		add_row()

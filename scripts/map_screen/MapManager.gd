@@ -56,7 +56,7 @@ var grid_activated: Array = []
 var grid_adjacency_unlocked: Array = []
 
 var color_activation_counts := {}
-var board_color_activation_counts := {}  # Tracks board panel activations per color (for boss trigger)
+var board_color_activation_counts := {}
 var type_activation_counts := {}
 var total_activated := 0
 var consecutive_non_board := 0
@@ -65,6 +65,8 @@ var boss_triggered := false
 var boss_ready := false
 
 var last_panel_world_pos: Vector2 = Vector2.ZERO
+var last_panel_row: int = -1
+var last_panel_col: int = -1
 
 var unlock_condition: Dictionary = {}
 var unlock_condition_progress: Dictionary = {}
@@ -95,6 +97,8 @@ func start_run(seed_value: int):
 	unlock_used = false
 	unlock_any_active = false
 	consecutive_non_board = 0
+	last_panel_row = -1
+	last_panel_col = -1
 
 	for color in COLORS:
 		color_activation_counts[color] = 0
@@ -111,8 +115,6 @@ func start_run(seed_value: int):
 
 # =========================
 # GRID GENERATION
-# Boards placed first — 3 per color, on random tiles of matching color.
-# Remaining 18 tiles get randomly typed (Shop/Event/Forge/Gamble).
 # =========================
 
 func _generate_grid():
@@ -123,7 +125,6 @@ func _generate_grid():
 
 	grid_colors = _generate_latin_square()
 
-	# Initialize grids
 	for r in range(GRID_SIZE):
 		var type_row = []
 		var activated_row = []
@@ -136,7 +137,6 @@ func _generate_grid():
 		grid_activated.append(activated_row)
 		grid_adjacency_unlocked.append(adjacency_row)
 
-	# Place 3 boards on tiles of each color
 	for color in COLORS:
 		var candidates = []
 		for r in range(GRID_SIZE):
@@ -150,7 +150,6 @@ func _generate_grid():
 			var pos = candidates[i]
 			grid_types[int(pos.x)][int(pos.y)] = "Board"
 
-	# Fill remaining empty tiles with random non-Board types
 	var remaining_types = []
 	for i in range(5): remaining_types.append("Shop")
 	for i in range(5): remaining_types.append("Event")
@@ -326,6 +325,9 @@ func activate_panel(row: int, col: int) -> bool:
 	if not is_panel_accessible(row, col):
 		return false
 
+	last_panel_row = row
+	last_panel_col = col
+
 	grid_activated[row][col] = true
 
 	var color = grid_colors[row][col]
@@ -335,7 +337,6 @@ func activate_panel(row: int, col: int) -> bool:
 	type_activation_counts[panel_type] += 1
 	total_activated += 1
 
-	# Track board-color activations separately for boss trigger
 	if panel_type == "Board":
 		board_color_activation_counts[color] += 1
 
@@ -361,6 +362,35 @@ func activate_panel(row: int, col: int) -> bool:
 	emit_signal("panel_activated", row, col, panel_type, color)
 
 	return true
+
+
+# =========================
+# ADJACENT PANEL COLORS
+# Returns the colors of the 4 orthogonally adjacent panels.
+# At edges, returns fewer than 4 entries (no padding here — let callers decide).
+# =========================
+
+func get_adjacent_panel_colors(row: int, col: int) -> Array:
+	var result := []
+	var offsets = [
+		Vector2(-1, 0),
+		Vector2(1, 0),
+		Vector2(0, -1),
+		Vector2(0, 1),
+	]
+	for offset in offsets:
+		var nr = row + int(offset.x)
+		var nc = col + int(offset.y)
+		if nr < 0 or nr >= GRID_SIZE or nc < 0 or nc >= GRID_SIZE:
+			continue
+		result.append(grid_colors[nr][nc])
+	return result
+
+
+func get_last_panel_adjacent_colors() -> Array:
+	if last_panel_row < 0 or last_panel_col < 0:
+		return []
+	return get_adjacent_panel_colors(last_panel_row, last_panel_col)
 
 
 # =========================
@@ -536,6 +566,8 @@ func reset_map():
 	unlock_used = false
 	unlock_any_active = false
 	consecutive_non_board = 0
+	last_panel_row = -1
+	last_panel_col = -1
 	for color in COLORS:
 		color_activation_counts[color] = 0
 		board_color_activation_counts[color] = 0

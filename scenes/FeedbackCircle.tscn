@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://d0qvvbhdcw3ue"]
+
+[ext_resource type="Script" uid="uid://clnev3ekul2yo" path="res://scripts/scoring/FeedbackCircle.gd" id="1_28o0i"]
+
+[node name="Control" type="Control" unique_id=312144080]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 100.0
+script = ExtResource("1_28o0i")

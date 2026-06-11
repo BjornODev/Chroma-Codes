@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/item_icons/ouroboros.svg" id="1_g1ab6"]
+[ext_resource type="Script" path="res://data/resources/item_data.gd" id="1_sd3u6"]
+
+[resource]
+script = ExtResource("1_sd3u6")
+item_name = "Feedback Loop"
+description = "Charges 1 for every peg placed."
+icon = ExtResource("1_g1ab6")
+rarity = 3
+is_active = true
+charge_max = 35.0
+charge_conditions = Array[Dictionary]([{
+"amount": 1,
+"type": "pegs_placed_any"
+}])
+active_keywords = {
+"Add All Colors": 3,
+"Multiply": 1
+}
+upgrade_tier_1_charge_delta = -5.0
+upgrade_tier_2_charge_delta = -5.0
+upgrade_tier_3_charge_delta = -5.0
