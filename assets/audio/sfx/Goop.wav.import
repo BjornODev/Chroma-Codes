@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://4aolnkgjy853"
-path="res://.godot/imported/Reveal.wav-02a15e4537afeb7af9110fbc014cae7e.sample"
+uid="uid://bkeghp6o1qmk6"
+path="res://.godot/imported/Goop.wav-a5eacc005ad3e3d8fa15d80366fe94ed.sample"
 
 [deps]
 
-source_file="res://sounds/sfx/Reveal.wav"
-dest_files=["res://.godot/imported/Reveal.wav-02a15e4537afeb7af9110fbc014cae7e.sample"]
+source_file="res://assets/audio/sfx/Goop.wav"
+dest_files=["res://.godot/imported/Goop.wav-a5eacc005ad3e3d8fa15d80366fe94ed.sample"]
 
 [params]
 

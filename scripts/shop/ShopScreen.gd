@@ -192,14 +192,14 @@ func _on_item_purchased(index: int):
 	if item == null:
 		return
 	if not ShopManager.can_afford(item.price):
-		AudioLoader.play_sound("damage")
+		AudioManager.play_sound("damage")
 		return
 	if ShopManager.buy_item(index):
-		AudioLoader.play_sound("win")
+		AudioManager.play_sound("win")
 		await item_slots[index].play_death_animation()
 		_refresh_affordability()
 	else:
-		AudioLoader.play_sound("damage")
+		AudioManager.play_sound("damage")
 	populate_hud()
 
 
@@ -211,21 +211,21 @@ func _on_buff_purchased(buff_type: int):
 		success = ShopManager.buy_peg_refill()
 
 	if success:
-		AudioLoader.play_sound("select")
+		AudioManager.play_sound("select")
 		health_button.refresh()
 		refill_button.refresh()
 		_refresh_affordability()
 	else:
-		AudioLoader.play_sound("damage")
+		AudioManager.play_sound("damage")
 
 
 func _on_reroll_pressed():
 	if ShopManager.reroll():
-		AudioLoader.play_sound("select")
+		AudioManager.play_sound("select")
 		_build_shop()
 		_update_reroll_button()
 	else:
-		AudioLoader.play_sound("damage")
+		AudioManager.play_sound("damage")
 
 
 func _refresh_affordability():
@@ -289,7 +289,7 @@ func _on_buff_hovered_off():
 # =========================
 
 func _on_leave_pressed():
-	AudioLoader.play_sound("select")
+	AudioManager.play_sound("select")
 	iris_wipe.iris_close(MapManager.last_panel_world_pos)
 	await iris_wipe.closed
 	await get_tree().create_timer(0.5).timeout

@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://d4b74qh85cufn"
-path="res://.godot/imported/PegSnap.wav-76e811b2f454d09824d8f546cebff4c0.sample"
+uid="uid://b5ffw7gjwplmu"
+path="res://.godot/imported/Damage.wav-f67149942f95eb535c67234c28a88fdd.sample"
 
 [deps]
 
-source_file="res://sounds/sfx/PegSnap.wav"
-dest_files=["res://.godot/imported/PegSnap.wav-76e811b2f454d09824d8f546cebff4c0.sample"]
+source_file="res://assets/audio/sfx/Damage.wav"
+dest_files=["res://.godot/imported/Damage.wav-f67149942f95eb535c67234c28a88fdd.sample"]
 
 [params]
 

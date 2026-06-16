@@ -26,7 +26,7 @@ func _process_queue():
 	_process_queue()
 
 func _animate_popup(text: String):
-	AudioLoader.play_sound("popup")
+	AudioManager.play_sound("popup")
 	label.visible = true
 	label.modulate = Color(1,1,1,0)
 #	label.scale = Vector2(0.6, 0.6)

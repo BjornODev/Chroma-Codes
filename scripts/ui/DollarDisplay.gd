@@ -127,7 +127,7 @@ func _activate_dollar(index: int):
 
 	emit_signal("dollar_activated", index)
 
-	AudioLoader.play_sound("select")
+	AudioManager.play_sound("select")
 
 	# Speed scaled delay
 	var delay = max(MIN_DELAY, BASE_DELAY * pow(SPEED_EXPONENT, activation_count))

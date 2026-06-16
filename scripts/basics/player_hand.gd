@@ -53,7 +53,7 @@ func _on_empty_stack_clicked():
 	if board and board.has_method("apply_damage"):
 		board.apply_damage(PegInventoryManager.refill_damage)
 	PegInventoryManager.refill_all_stacks()
-	AudioLoader.play_sound("damage")
+	AudioManager.play_sound("damage")
 
 
 # =========================

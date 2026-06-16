@@ -2,9 +2,26 @@ extends Node2D
 
 # =========================
 # MAP COMPLETE SCREEN
+# Plays out the end-of-map quota settlement.
+#
+# Layout:
+#   - Score peg totals: vertical, LEFT
+#   - Board-visited / multiplier indicator: vertical, CENTER
+#   - Peg stack (hand) display: horizontal, BOTTOM
+#   - Quota displays: vertical, RIGHT
+#
+# Sequence:
+#   1. Iris opens.
+#   2. The full settlement is computed up front (QuotaSettlement).
+#   3. After SETTLE_DELAY seconds, the event timeline is replayed as animation:
+#      score pegs fly from the left totals, pass THROUGH the lit multiplier slot
+#      (splitting into <multiplier> flyers), then fly to the right quota indicator,
+#      ticking it down by 1 per flyer. When score pegs run out, hand pegs fly from
+#      the bottom (no split); emptying a hand color costs 1 HP and refills to 10.
+#   4. On completion: quota met -> advance to next map; HP 0 -> game over.
 # =========================
 
-const SETTLE_DELAY := 0.5
+const SETTLE_DELAY := 3.0
 const PEG_COLORS := {
 	"red": Color("#FF0000"),
 	"yellow": Color("#FFF200"),
@@ -23,15 +40,15 @@ const SCORE_FLIGHT_TIME := 0.4      # left total -> multiplier slot
 const QUOTA_FLIGHT_TIME := 0.4      # multiplier slot -> quota indicator
 const EVENT_STAGGER := 0.04         # gap between consecutive settlement events (stream pacing)
 const PEG_SIZE := 90.0              # much larger flight pegs
-const WOBBLE_AMP := 45.0            # perpendicular wobble amplitude (pixels) — higher = wider swings
-const WOBBLE_FREQ := 4.0            # number of wobble oscillations across the path — higher = more wiggles
+const WOBBLE_AMP := 85.0            # perpendicular wobble amplitude (pixels) — higher = wider swings
+const WOBBLE_FREQ := 6.0            # number of wobble oscillations across the path — higher = more wiggles
 
 @onready var iris_wipe = $IrisWipe
 @onready var score_total_display = $ScoreTotalDisplay      # left, vertical
 @onready var multiplier_display = $MultiplierDisplay        # center, vertical
 @onready var peg_stack_display = $PegStackDisplay           # bottom, horizontal
 @onready var quota_display = $QuotaDisplay                  # right, vertical
-@onready var health_text = $HealthText
+@onready var health_text = $HUDLayer/HUDRoot/HealthText
 @onready var background_layer = $BackgroundLayer
 
 var _settlement: QuotaSettlement
@@ -43,8 +60,6 @@ var _debug: SettlementDebug
 var live_quotas: Dictionary = {}
 var live_score_pegs: Dictionary = {}
 var live_hand_pegs: Dictionary = {}
-
-@onready var damage_overlay: ColorRect = $DamageOverlay
 
 # Overlay state
 var _overlay_label: Label
@@ -66,6 +81,8 @@ func _ready():
 	add_child(_debug)
 
 	background_layer.change_background(RunProgressionManager.map_offset)
+
+	AudioManager.play_screen_music("Synthwave_2")
 
 	# Gather the current manager values (overrides, if any, are already applied)
 	var inputs = SettlementDebug.gather_inputs()
@@ -234,19 +251,9 @@ func _play_damage_event(event: Dictionary):
 
 	if health_text:
 		health_text.change_health(new_hp)
-	flash_damage()
 	# Flash / feedback could go here
-	AudioLoader.play_sound("damage")
+	AudioManager.play_sound("damage")
 	await get_tree().create_timer(_scaled(0.25)).timeout
-
-
-func flash_damage():
-	damage_overlay.modulate = Color(1, 0, 0, 0.8)
-
-	var tween = create_tween()
-	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(damage_overlay, "modulate", Color(1, 0, 0, 0), 0.5)
 
 
 # =========================
@@ -502,7 +509,7 @@ func _advance_to_next_map():
 
 func _game_over():
 	PopUpText.show_popup("[center][b][color=#FF073A] YOU LOSE [/color][/b][/center]")
-	AudioLoader.play_sound("lose")
+	AudioManager.play_sound("lose")
 	await get_tree().create_timer(3.0).timeout
 	RunProgressionManager.end_run()
 	get_tree().change_scene_to_file("res://scenes/RunSetupScreen.tscn")

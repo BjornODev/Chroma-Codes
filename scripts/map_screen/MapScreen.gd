@@ -33,11 +33,6 @@ var pending_global_pos: Vector2 = Vector2.ZERO
 var font: Font
 
 
-func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_select"):
-		get_tree().change_scene_to_file("res://scenes/MapCompleteScreen.tscn")
-
-
 func _ready():
 	font = preload("res://assets/gomarice_goma_block.ttf")
 
@@ -49,6 +44,8 @@ func _ready():
 		RunProgressionManager.first_time_on_map = false
 	
 	background_layer.change_background(RunProgressionManager.map_offset)
+
+	AudioManager.play_screen_music("Synthwave_1")
 	
 	_build_grid()
 	_build_color_tracker()
@@ -216,7 +213,7 @@ func _play_panel_peg_flight(origin_global_pos: Vector2):
 		return
 	if peg_stack_display == null:
 		return
-	var flight = preload("res://scripts/map_screen/MapPanelPegFlight.gd").new()
+	var flight = preload("res://scripts/MapPanelPegFlight.gd").new()
 	add_child(flight)
 	flight.play(peg_stack_display, origin_global_pos)
 
@@ -224,7 +221,7 @@ func _play_panel_peg_flight(origin_global_pos: Vector2):
 func _on_map_unlock_triggered():
 	# Animate newly unlocked panel
 	_refresh_all_panels()
-	AudioLoader.play_sound("reveal")
+	AudioManager.play_sound("reveal")
 	PopUpText.show_popup(
 		"[center][b][color=#FFD700]PANEL UNLOCKED![/color][/b][/center]"
 	)

@@ -55,7 +55,7 @@ func start_drag(peg_stack):
 			# Empty stack clicked — damage and refill
 			board_reference.apply_damage(PegInventoryManager.refill_damage)
 			PegInventoryManager.add_pegs_to_color(peg_stack.peg_id, 10)
-			AudioLoader.play_sound("damage")
+			AudioManager.play_sound("damage")
 			return
 
 		# Decrement the inventory
@@ -150,7 +150,7 @@ func finish_drag():
 					print("No replacements left. Awaiting confirmation.")
 
 		elif other_peg and other_peg.get("is_obscure"):
-			AudioLoader.play_sound("obscure", -20.0)
+			AudioManager.play_sound("obscure", -20.0)
 			board_reference.obscurities += 1
 			other_peg.queue_free()
 			peg_slot_found.peg_in_slot = null
@@ -173,7 +173,7 @@ func finish_drag():
 		peg_being_dragged.row = peg_slot_found.row
 		peg_being_dragged.column = peg_slot_found.column
 
-		AudioLoader.play_sound("peg_snap")
+		AudioManager.play_sound("peg_snap")
 
 		if other_peg:
 			if drag_start_slot:
@@ -380,7 +380,7 @@ func start_clear(amount):
 func reveal_code(code_peg):
 	if reveal_mode == true:
 		if !code_peg.revealed:
-			AudioLoader.play_sound("reveal")
+			AudioManager.play_sound("reveal")
 			code_peg.reveal()
 			reveals_left -= 1
 			if reveals_left <= 0:
@@ -395,4 +395,4 @@ func start_reveal(amount):
 
 func _on_pressed() -> void:
 	confirm_replace()
-	AudioLoader.play_sound("select")
+	AudioManager.play_sound("select")

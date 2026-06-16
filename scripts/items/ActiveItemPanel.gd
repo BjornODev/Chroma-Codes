@@ -62,7 +62,7 @@ func _rebuild_slots():
 func _on_slot_clicked(item: ItemData):
 	if can_click:
 		if ActiveItemManager.try_activate(item) :
-			AudioLoader.play_sound("select")
+			AudioManager.play_sound("select")
 
 
 func _on_slot_hovered(slot):

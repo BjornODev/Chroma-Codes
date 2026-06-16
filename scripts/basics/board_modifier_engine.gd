@@ -273,7 +273,7 @@ func spawn_goop_from_black(board, black_count):
 	for i in range(black_count):
 		var goop = preload("res://scenes/Phys_Peg.tscn").instantiate()
 
-		AudioLoader.play_sound("goop")
+		AudioManager.play_sound("goop")
 
 		goop.is_special = true
 		goop.is_copy = true

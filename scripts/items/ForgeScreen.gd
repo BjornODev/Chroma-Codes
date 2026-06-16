@@ -164,7 +164,7 @@ func _on_confirm_pressed():
 	ItemManager.player_items.erase(selected_item)
 	ItemManager.emit_signal("items_changed")
 	RunProgressionManager.add_dollars(payout)
-	AudioLoader.play_sound("win")
+	AudioManager.play_sound("win")
 
 	selected_item = null
 	selected_icon = null
@@ -270,7 +270,7 @@ func _on_hud_hovered_off(_data):
 # =========================
 
 func _on_leave_pressed():
-	AudioLoader.play_sound("select")
+	AudioManager.play_sound("select")
 	iris_wipe.iris_close(MapManager.last_panel_world_pos)
 	leave_button.disabled = true
 	await iris_wipe.closed

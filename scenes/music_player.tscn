@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dpav7dldydvo5"]
 
-[ext_resource type="AudioStream" uid="uid://df4px53wbewy6" path="res://sounds/music/DavidKBD - Pink Bloom Pack - 06 - Diamonds on The Ceiling.ogg" id="1_ql6qh"]
+[ext_resource type="AudioStream" uid="uid://df4px53wbewy6" path="res://assets/audio/music/Synthwave_3.ogg" id="1_ql6qh"]
 [ext_resource type="Script" uid="uid://bsav3lfbev48g" path="res://scripts/audio/music_player.gd" id="1_wcrh0"]
 
 [node name="Node2D" type="Node2D"]

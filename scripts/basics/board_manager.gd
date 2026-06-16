@@ -33,7 +33,7 @@ var scroll_offset := 0.0
 @onready var pattern_engine = PatternEngine
 @onready var item_system = ItemManager
 
-const TESTING_MODS = false
+const TESTING_MODS = true
 
 var current_adjacent_colors: Array = []
 
@@ -62,6 +62,7 @@ func _ready():
 	BoardModifierEngine.pre_board_build(self)
 	get_parent().call_deferred("populate_hud")
 	$"../BackgroundLayer".change_background(randi())
+	AudioManager.play_screen_music("Synthwave_3")
 	KeywordEngine.multiplier = 1
 	KeywordEngine.set_context(self, peg_manager_reference, null)
 	generate_code()
@@ -483,7 +484,7 @@ func submit_guess():
 			PopUpText.show_popup(
 				"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 			)
-		AudioLoader.play_sound("win")
+		AudioManager.play_sound("win")
 		var reward_ui = preload("res://scenes/RewardsSelectionUI.tscn").instantiate()
 		add_child(reward_ui)
 
@@ -543,7 +544,7 @@ func apply_damage(damage):
 
 	flash_damage()
 	RunProgressionManager.remove_health(damage)
-	AudioLoader.play_sound("damage")
+	AudioManager.play_sound("damage")
 	item_system.emit_game_event("Damage Taken", {
 		"amount": damage_per_row,
 		"health": RunProgressionManager.player_health,
@@ -558,7 +559,7 @@ func apply_damage(damage):
 		PopUpText.show_popup(
 			"[center][b][color=#FF073A] YOU LOSE [/color][/b][/center]"
 		)
-		AudioLoader.play_sound("lose")
+		AudioManager.play_sound("lose")
 		$"../SecretCodeDisplay".reveal_all()
 		in_game = false
 		await handle_goop_explosion()
@@ -668,7 +669,7 @@ func re_evaluate_row(row_index):
 			PopUpText.show_popup(
 						"[center][b][color=#BEFD73] YOU WIN [/color][/b][/center]"
 					)
-		AudioLoader.play_sound("win")
+		AudioManager.play_sound("win")
 		var reward_ui = preload("res://scenes/RewardsSelectionUI.tscn").instantiate()
 		add_child(reward_ui)
 
@@ -727,7 +728,7 @@ func handle_goop_explosion():
 	for peg in goop_pegs:
 		goop_count += 1
 		spawn_goop_explosion(peg.global_position)
-		AudioLoader.play_sound("goop")
+		AudioManager.play_sound("goop")
 		peg.queue_free()
 		if goop_count == 2:
 			apply_damage(1)
@@ -867,4 +868,4 @@ func fade_in():
 func _on_pressed() -> void:
 	if in_game:
 		submit_guess()
-		AudioLoader.play_sound("select")
+		AudioManager.play_sound("select")

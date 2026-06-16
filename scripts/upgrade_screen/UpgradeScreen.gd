@@ -188,7 +188,7 @@ func _on_confirm_pressed():
 		return
 	confirm_button.disabled = true
 	selected_item.apply_upgrade()
-	AudioLoader.play_sound("win")
+	AudioManager.play_sound("win")
 	ItemManager.emit_signal("items_changed")
 	
 	# Clear selection and show completion message
@@ -276,7 +276,7 @@ func _on_item_hovered_off(_item):
 # =========================
 
 func _on_leave_pressed():
-	AudioLoader.play_sound("select")
+	AudioManager.play_sound("select")
 	iris_wipe.iris_close(MapManager.last_panel_world_pos)
 	leave_button.disabled = true
 	await iris_wipe.closed

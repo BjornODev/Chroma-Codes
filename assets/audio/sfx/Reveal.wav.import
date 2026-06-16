@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://dqyektw5vx5dq"
-path="res://.godot/imported/Win.wav-bc81b47bad951247bbc6ad561df6d768.sample"
+uid="uid://4aolnkgjy853"
+path="res://.godot/imported/Reveal.wav-33f461b50e4856fdb2a527653ea67740.sample"
 
 [deps]
 
-source_file="res://sounds/sfx/Win.wav"
-dest_files=["res://.godot/imported/Win.wav-bc81b47bad951247bbc6ad561df6d768.sample"]
+source_file="res://assets/audio/sfx/Reveal.wav"
+dest_files=["res://.godot/imported/Reveal.wav-33f461b50e4856fdb2a527653ea67740.sample"]
 
 [params]
 

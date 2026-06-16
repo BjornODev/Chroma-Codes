@@ -207,7 +207,7 @@ func play_blink_animation(new_item: ItemData):
 
 	if new_item:
 		setup(new_item)
-	AudioLoader.play_sound("select")
+	AudioManager.play_sound("select")
 
 	var open_tween = create_tween().set_parallel(true)
 	open_tween.set_trans(Tween.TRANS_CUBIC)

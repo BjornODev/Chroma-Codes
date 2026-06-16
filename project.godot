@@ -31,8 +31,6 @@ BoardModifierEngine="*res://scripts/basics/board_modifier_engine.gd"
 PatternEngine="*res://scripts/basics/pattern_engine.gd"
 PopUpText="*res://scenes/PopUpText.tscn"
 KeywordEngine="*res://scripts/basics/keyword_engine.gd"
-AudioSystem="*res://scenes/music_player.tscn"
-AudioLoader="*res://scripts/audio/music_player.gd"
 RunProgressionManager="*res://scripts/basics/run_progression_manager.gd"
 MapManager="*res://scripts/map_screen/MapManager.gd"
 BackgroundGenerator="*res://scripts/ui/BackgroundGenerator.gd"
@@ -79,8 +77,9 @@ environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 [xogot]
 
 project/editorState=[{
-"column": 0,
-"line": 35,
+"column": 35,
+"current": true,
+"line": 870,
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
@@ -149,14 +148,13 @@ project/editorState=[{
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
-"column": 41,
-"current": true,
+"column": 0,
 "line": 454,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 37,
+"column": 26,
+"line": 338,
 "path": "res://scripts/map_screen/MapScreen.gd",
 "type": "file"
 }, {
@@ -265,8 +263,8 @@ project/editorState=[{
 "path": "res://scripts/quota_screen/SettlementDebug.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 33,
+"column": 68,
+"line": 514,
 "path": "res://scripts/quota_screen/MapCompleteScreen.gd",
 "type": "file"
 }, {
@@ -278,6 +276,26 @@ project/editorState=[{
 "column": 0,
 "line": 0,
 "path": "res://scripts/ui/health_text.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/music_player.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 35,
+"path": "res://scripts/audio/AudioManager.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 17,
+"path": "res://scripts/audio/music_player.gd",
+"type": "file"
+}, {
+"column": 10,
+"line": 110,
+"path": "res://scripts/audio/SFXPool.gd",
 "type": "file"
 }]
 project/breakpoints={

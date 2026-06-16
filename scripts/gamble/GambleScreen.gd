@@ -69,7 +69,7 @@ func _on_spin_pressed():
 	if is_spinning:
 		return
 	if not RunProgressionManager.spend_dollars(spin_cost):
-		AudioLoader.play_sound("damage")
+		AudioManager.play_sound("damage")
 		return
 
 	is_spinning = true
@@ -184,19 +184,19 @@ func _apply_outcome(outcome: Dictionary):
 			var amount = 2 * multiplier
 			RunProgressionManager.add_dollars(amount)
 			result_text = "+$%d!" % amount
-			AudioLoader.play_sound("select")
+			AudioManager.play_sound("select")
 
 		"refill":
 			var amount = 2 * multiplier
 			PegInventoryManager.add_pegs_to_all(amount)
 			result_text = "+%d PEGS!" % amount
-			AudioLoader.play_sound("select")
+			AudioManager.play_sound("select")
 
 		"health":
 			var amount = 1 * multiplier
 			RunProgressionManager.add_health(amount)
 			result_text = "+%d HEALTH!" % amount
-			AudioLoader.play_sound("select")
+			AudioManager.play_sound("select")
 
 		"common", "uncommon", "rare", "legendary":
 			var rarity_map := {
@@ -211,7 +211,7 @@ func _apply_outcome(outcome: Dictionary):
 				ItemManager.give_item_by_name(item.item_name)
 				var rarity_names = ["COMMON", "UNCOMMON", "RARE", "LEGENDARY"]
 				result_text = "[%s]\n%s!" % [rarity_names[rarity], item.item_name]
-				AudioLoader.play_sound("win")
+				AudioManager.play_sound("win")
 			else:
 				var amount = (rarity + 1) * 2 * multiplier
 				RunProgressionManager.add_dollars(amount)
@@ -325,7 +325,7 @@ func _on_hud_hovered_off(_data):
 # =========================
 
 func _on_leave_pressed():
-	AudioLoader.play_sound("select")
+	AudioManager.play_sound("select")
 	iris_wipe.iris_close(MapManager.last_panel_world_pos)
 	leave_button.disabled = true
 	await iris_wipe.closed
