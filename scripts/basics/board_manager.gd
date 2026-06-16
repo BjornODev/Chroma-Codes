@@ -33,11 +33,11 @@ var scroll_offset := 0.0
 @onready var pattern_engine = PatternEngine
 @onready var item_system = ItemManager
 
-const TESTING_MODS = true
+const TESTING_MODS = false
 
 var current_adjacent_colors: Array = []
 
-const FEEDBACK_CIRCLE_RADIUS := 35.0
+const FEEDBACK_CIRCLE_RADIUS := 30.0
 const FEEDBACK_CIRCLE_PADDING := 40.0
 const FEEDBACK_TOTAL_SIZE := FEEDBACK_CIRCLE_RADIUS * 2 + FEEDBACK_CIRCLE_PADDING
 

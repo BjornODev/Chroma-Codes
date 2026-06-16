@@ -12,9 +12,9 @@ class_name FeedbackCircle
 const SLICE_SCRIPT = preload("res://scripts/scoring/SliceNode.gd")
 
 const CIRCLE_RADIUS := 30.0
-const INNER_HUB_RADIUS := 13.5
+const INNER_HUB_RADIUS := 8.0
 const PADDING := 40.0
-const HUB_COLOR := Color.BLACK
+const HUB_COLOR := Color("#B0E0FF")
 const HUB_OUTLINE_COLOR := Color.BLACK
 const HUB_OUTLINE_WIDTH := 2.5
 
@@ -117,8 +117,8 @@ func show_feedback(correct_count: int, almost_count: int):
 		push_warning("RulesEngine returned empty arrangement")
 		return
 
+	# Lock immediately so the player can't keep dragging during the reveal.
 	for i in range(slot_count):
-		slices[i].set_feedback(arrangement[i])
 		slices[i].set_locked(true)
 
 	locked = true
@@ -129,7 +129,98 @@ func show_feedback(correct_count: int, almost_count: int):
 		_drag_slice.unlift()
 		_drag_slice = null
 
+	# Data layer updates synchronously (marker_position, item events, board pegs).
 	ScoreManager.process_row_feedback(slice_colors, arrangement)
+
+	# Visual reveal: blink each indicator in clockwise from the top, one at a time.
+	# Each slot's score peg launches as its indicator appears.
+	_reveal_feedback_clockwise(arrangement)
+
+
+const REVEAL_STAGGER := 0.25  # delay between consecutive slot reveals
+
+
+func _reveal_feedback_clockwise(arrangement: Array):
+	var hud = get_tree().get_first_node_in_group("score_peg_hud")
+
+	# Set all "none" slots immediately (no indicator to show, no delay).
+	for i in range(slot_count):
+		if arrangement[i] == "none":
+			slices[i].blink_in_feedback("none")
+
+	# Stagger only the slots that actually have feedback, clockwise from the top.
+	# The first feedback slot reveals at delay 0.
+	var step := 0
+	for i in range(slot_count):
+		if arrangement[i] == "none":
+			continue
+		var delay = step * REVEAL_STAGGER
+		var idx = i
+		var t = get_tree().create_timer(delay)
+		t.timeout.connect(func():
+			_reveal_one_slot(idx, arrangement[idx], hud)
+		)
+		step += 1
+
+
+func _reveal_one_slot(idx: int, feedback: String, hud):
+	if idx < 0 or idx >= slices.size():
+		return
+
+	# Determine whether this slot will earn pegs, so we can launch them only
+	# after the flicker settles.
+	var earns := false
+	var color_name := ""
+	if feedback != "none":
+		color_name = slice_colors[idx]
+		if color_name != "black" and color_name != "" and \
+			(color_name in ScoreManager.team_a_colors or color_name in ScoreManager.team_b_colors):
+			earns = true
+
+	if earns and hud != null and is_instance_valid(hud):
+		var captured_idx = idx
+		var captured_color = color_name
+		var captured_feedback = feedback
+		# Launch the pegs once the flicker has fully settled.
+		var on_settled = _launch_slot_pegs.bind(captured_idx, captured_color, captured_feedback, hud)
+		slices[idx].blink_in_feedback(feedback, on_settled)
+	else:
+		# No pegs to launch — just flicker the indicator in.
+		slices[idx].blink_in_feedback(feedback)
+
+
+func _launch_slot_pegs(idx: int, color_name: String, feedback: String, hud):
+	if hud == null or not is_instance_valid(hud):
+		return
+	if idx < 0 or idx >= slices.size():
+		return
+
+	var pegs_earned = 2 if feedback == "correct" else 1
+	var slice_screen_pos = _slice_screen_position(slices[idx])
+	var shift_dir = 1 if color_name in ScoreManager.team_a_colors else -1
+
+	for p in range(pegs_earned):
+		var peg_delay = p * 0.08
+		if peg_delay > 0.0:
+			_launch_one_delayed(hud, color_name, slice_screen_pos, peg_delay, shift_dir)
+		else:
+			hud.launch_flying_peg(color_name, slice_screen_pos, shift_dir)
+
+
+func _launch_one_delayed(hud, color_name: String, from_pos: Vector2, delay: float, shift_dir: int):
+	var t = get_tree().create_timer(delay)
+	t.timeout.connect(func():
+		if is_instance_valid(hud):
+			hud.launch_flying_peg(color_name, from_pos, shift_dir)
+	)
+
+
+func _slice_screen_position(slice: SliceNode) -> Vector2:
+	# The slice's visual center is at this circle's center + radius along its angle.
+	var radius_mid = (slice.inner_radius + slice.base_radius) / 2.0
+	var local_offset = Vector2(cos(slice.angle_center), sin(slice.angle_center)) * radius_mid
+	var local_point = size / 2.0 + local_offset
+	return get_global_transform_with_canvas() * local_point
 
 
 func reapply_feedback(correct_count: int, almost_count: int):
@@ -187,24 +278,26 @@ func _handle_drag_motion(rel: Vector2):
 	var cursor_angle = rel.angle()
 	_drag_slice.set_angle_immediate(cursor_angle)
 
-	# Determine which slot the dragged slice currently occupies
+	# Determine which slot the dragged slice is currently over
 	var target_slot = _angle_to_slot(cursor_angle)
 	var dragged_slot = slices.find(_drag_slice)
 	if target_slot != dragged_slot and target_slot >= 0 and target_slot < slot_count:
-		# Move the dragged slice in the array; tween the displaced slices to their new homes
-		slices.remove_at(dragged_slot)
+		# Swap the dragged slice with the slice at the target slot.
+		# Only the displaced slice needs to animate — back to the dragged slice's old slot.
+		var displaced_slice = slices[target_slot]
+		var displaced_color = slice_colors[target_slot]
 		var dragged_color = slice_colors[dragged_slot]
-		slice_colors.remove_at(dragged_slot)
-		slices.insert(target_slot, _drag_slice)
-		slice_colors.insert(target_slot, dragged_color)
 
-		# Tween all non-dragged slices to their new slot positions
+		slices[dragged_slot] = displaced_slice
+		slice_colors[dragged_slot] = displaced_color
+		slices[target_slot] = _drag_slice
+		slice_colors[target_slot] = dragged_color
+
+		# Tween the displaced slice into the dragged slice's old slot position
 		var slice_arc = TAU / float(slot_count)
 		var top_angle = -PI / 2.0
-		for i in range(slot_count):
-			if slices[i] != _drag_slice:
-				var center_angle = top_angle + i * slice_arc
-				slices[i].tween_to_angle(center_angle)
+		var center_angle = top_angle + dragged_slot * slice_arc
+		displaced_slice.tween_to_angle(center_angle)
 
 
 func _release_drag():

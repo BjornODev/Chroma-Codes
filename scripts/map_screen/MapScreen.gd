@@ -20,7 +20,22 @@ var pending_global_pos: Vector2 = Vector2.ZERO
 @onready var tooltip = $TooltipLayer/Tooltip
 @onready var background_layer = $BackgroundLayer
 
+# Play-peg hand display on the map (mushroom counters).
+@onready var peg_stack_display = $PegStackDisplay
+
+# Static vertical display of this map's peg quotas.
+@onready var quota_display = $QuotaDisplay
+
+# Countdown label showing how many panels the player may still activate.
+# Color ramps green -> yellow -> red as it ticks down.
+@onready var countdown_label = $CountdownLabel
+
 var font: Font
+
+
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("ui_select"):
+		get_tree().change_scene_to_file("res://scenes/MapCompleteScreen.tscn")
 
 
 func _ready():
@@ -38,11 +53,15 @@ func _ready():
 	_build_grid()
 	_build_color_tracker()
 	_update_unlock_label()
+	_update_countdown_label()
+	if quota_display:
+		quota_display.refresh()
 	PopUpText.toggle_mult(false)
 	populate_hud()
 	
 	# Connect map signals
 	MapManager.connect("map_unlock_triggered", _on_map_unlock_triggered)
+	MapManager.connect("panels_remaining_changed", _on_panels_remaining_changed)
 	ItemManager.connect("items_changed", _on_items_changed)
 
 	if MapManager.boss_ready:
@@ -121,6 +140,44 @@ func _update_unlock_label():
 		unlock_label.add_theme_color_override("font_color", Color("#FFFFFF"))
 
 
+# =========================
+# COUNTDOWN LABEL
+# Shows panels_remaining, color-ramped green -> yellow -> red.
+# Only the font color is overridden here.
+# =========================
+
+func _update_countdown_label():
+	if countdown_label == null:
+		return
+	var remaining = MapManager.panels_remaining
+	countdown_label.text = str(remaining)
+	countdown_label.add_theme_color_override("font_color", _countdown_color(remaining))
+
+
+func _countdown_color(remaining: int) -> Color:
+	# t = 1.0 at full budget, 0.0 at empty
+	var total = float(MapManager.PANELS_PER_MAP)
+	var t = 0.0
+	if total > 0.0:
+		t = clamp(float(remaining) / total, 0.0, 1.0)
+
+	var green = Color("#3BB143")
+	var yellow = Color("#FFF200")
+	var red = Color("#FF0000")
+
+	# First half of the budget ramps green -> yellow, second half yellow -> red.
+	if t >= 0.5:
+		var local_t = (t - 0.5) / 0.5  # 1.0 at full, 0.0 at half
+		return yellow.lerp(green, local_t)
+	else:
+		var local_t = t / 0.5  # 1.0 at half, 0.0 at empty
+		return red.lerp(yellow, local_t)
+
+
+func _on_panels_remaining_changed(_remaining: int):
+	_update_countdown_label()
+
+
 func _on_panel_clicked(row: int, col: int, panel_type: String, global_pos: Vector2):
 	pending_row = row
 	pending_col = col
@@ -128,19 +185,40 @@ func _on_panel_clicked(row: int, col: int, panel_type: String, global_pos: Vecto
 	pending_global_pos = global_pos
 	MapManager.last_panel_world_pos = pending_global_pos
 
+	# Suppress the stack display's auto counter animation BEFORE activating, so
+	# the peg_count_changed signal fired during activation doesn't tick the
+	# counters up early. The flight drives the tick-up as pegs land instead.
+	if peg_stack_display != null and peg_stack_display.has_method("suppress_all"):
+		peg_stack_display.suppress_all()
+
 	MapManager.activate_panel(row, col)
 	panels[row][col].activate()
 
-	await get_tree().create_timer(0.7).timeout
+	# Pegs gained from this panel fly from the panel down to the matching-color
+	# mushroom in the peg stack display, ticking the counters up as they land.
+	_play_panel_peg_flight(pending_global_pos)
+
+	await get_tree().create_timer(1.1).timeout
 
 	_refresh_all_panels()
 	_update_unlock_label()
+	_update_countdown_label()
 	_build_color_tracker()
 
 	iris_wipe.iris_close(pending_global_pos)
 	await iris_wipe.closed
 	await get_tree().create_timer(0.5).timeout
 	_load_panel_scene(panel_type)
+
+
+func _play_panel_peg_flight(origin_global_pos: Vector2):
+	if MapManager.last_refill_by_color.is_empty():
+		return
+	if peg_stack_display == null:
+		return
+	var flight = preload("res://scripts/map_screen/MapPanelPegFlight.gd").new()
+	add_child(flight)
+	flight.play(peg_stack_display, origin_global_pos)
 
 
 func _on_map_unlock_triggered():

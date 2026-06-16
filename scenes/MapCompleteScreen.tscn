@@ -1,0 +1,203 @@
+[gd_scene format=3 uid="uid://cwa4cg8otstc6"]
+
+[ext_resource type="Script" uid="uid://b1igmd13t68dt" path="res://scripts/quota_screen/MapCompleteScreen.gd" id="1_me5hi"]
+[ext_resource type="Script" uid="uid://ciqj2w71ttbyf" path="res://scripts/map_screen/IrisWipe.gd" id="2_63qh3"]
+[ext_resource type="Shader" uid="uid://dhnljtdx7tjn8" path="res://shaders/IrisWipe.gdshader" id="3_d6a6p"]
+[ext_resource type="Shader" uid="uid://bkyqc5fuwr10j" path="res://shaders/glitch.gdshader" id="4_tfdy2"]
+[ext_resource type="Script" uid="uid://dyjuerpu4qupn" path="res://scripts/ui/BackgroundLayer.gd" id="5_xwx5r"]
+[ext_resource type="Texture2D" uid="uid://c8u5amc2052kk" path="res://assets/backgrounds/background_image_0.jpg" id="6_0ig3i"]
+[ext_resource type="Shader" uid="uid://blejp2c0ylw5i" path="res://shaders/background.gdshader" id="7_ec4u7"]
+[ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="8_q8l71"]
+[ext_resource type="Script" uid="uid://ub7pv3woh4lf" path="res://scripts/map_screen/MapScorePegCounter.gd" id="9_6mguf"]
+[ext_resource type="Script" uid="uid://d0hn5f4i4x3u" path="res://scripts/quota_screen/MultiplierDisplay.gd" id="10_tfdy2"]
+[ext_resource type="Script" uid="uid://cu28kjrdyg00o" path="res://scripts/map_screen/QuotaDisplay.gd" id="11_xwx5r"]
+[ext_resource type="PackedScene" uid="uid://qbs5mpvfuahd" path="res://scenes/PegStackDisplay.tscn" id="12_0ig3i"]
+[ext_resource type="PackedScene" uid="uid://oc11oeqiu24y" path="res://scenes/HealthText.tscn" id="13_xwx5r"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxq0p"]
+shader = ExtResource("3_d6a6p")
+shader_parameter/radius = 0.0
+shader_parameter/center = Vector2(0.5, 0.5)
+shader_parameter/screen_size = Vector2(1920, 1080)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nfar8"]
+shader = ExtResource("4_tfdy2")
+shader_parameter/overlay = false
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.1
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(320, 180)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 0.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.075
+shader_parameter/noise_speed = 50.0
+shader_parameter/static_noise_intensity = 0.0
+shader_parameter/aberration = 0.0
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.150000007125
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.400000019
+shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y6k36"]
+shader = ExtResource("7_ec4u7")
+shader_parameter/screen_height = 2160.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 1.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 1.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5wqaw"]
+shader = ExtResource("7_ec4u7")
+shader_parameter/screen_height = 1080.0
+shader_parameter/amplitude = 0.075
+shader_parameter/frequency = 10.0
+shader_parameter/speed = 2.0
+shader_parameter/amplitude_vertical = 0.075
+shader_parameter/frequency_vertical = 10.0
+shader_parameter/speed_vertical = 2.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.08
+shader_parameter/enable_palette_cycling = false
+shader_parameter/palette_speed = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ykan"]
+shader = ExtResource("8_q8l71")
+shader_parameter/amplitude = 0.15
+shader_parameter/frequency = 8.0
+shader_parameter/speed = 2.0
+shader_parameter/scroll_direction = Vector2(0, 0)
+shader_parameter/scrolling_speed = 0.0
+shader_parameter/blob_scale = 1.0
+shader_parameter/blob_count = 15
+shader_parameter/color_a = Vector4(0.2, 0.4, 0.9, 1)
+shader_parameter/color_b = Vector4(0.6, 0.2, 0.8, 1)
+shader_parameter/color_c = Vector4(0.9, 0.3, 0.5, 1)
+shader_parameter/color_d = Vector4(0.2, 0.8, 0.7, 1)
+shader_parameter/color_e = Vector4(0.9, 0.7, 0.2, 1)
+shader_parameter/seed = 0.0
+
+[node name="Node2D" type="Node2D" unique_id=1966955564]
+script = ExtResource("1_me5hi")
+
+[node name="IrisWipe" type="CanvasLayer" parent="." unique_id=10704477]
+layer = 12
+visible = false
+script = ExtResource("2_63qh3")
+
+[node name="ShaderRect" type="ColorRect" parent="IrisWipe" unique_id=1603903171]
+material = SubResource("ShaderMaterial_cxq0p")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=923516578]
+layer = 100
+
+[node name="CRTFilter" type="ColorRect" parent="CanvasLayer" unique_id=2136416625]
+material = SubResource("ShaderMaterial_nfar8")
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=729228988]
+layer = -1
+script = ExtResource("5_xwx5r")
+
+[node name="BackgroundBehind" type="TextureRect" parent="BackgroundLayer" unique_id=774853173]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("6_0ig3i")
+
+[node name="Background" type="TextureRect" parent="BackgroundLayer" unique_id=1773255852]
+visible = false
+z_index = -100
+z_as_relative = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_y6k36")
+offset_left = -227.55566
+offset_top = -232.0
+offset_right = 2218.6665
+offset_bottom = 1248.0
+texture = ExtResource("6_0ig3i")
+metadata/_edit_lock_ = true
+
+[node name="BGTextureRect" type="TextureRect" parent="BackgroundLayer" unique_id=815902897]
+visible = false
+material = SubResource("ShaderMaterial_5wqaw")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BGRect" type="ColorRect" parent="BackgroundLayer" unique_id=1404989462]
+material = SubResource("ShaderMaterial_1ykan")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScoreTotalDisplay" type="Control" parent="." unique_id=1884065910]
+z_index = 15
+layout_mode = 3
+anchors_preset = 0
+offset_top = 80.0
+offset_right = 199.0
+offset_bottom = 1001.0
+script = ExtResource("9_6mguf")
+
+[node name="MultiplierDisplay" type="Control" parent="." unique_id=277481560]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 864.0
+offset_top = 80.0
+offset_right = 904.0
+offset_bottom = 1001.0
+script = ExtResource("10_tfdy2")
+
+[node name="QuotaDisplay" type="Control" parent="." unique_id=494233943]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1688.0
+offset_top = 170.0
+offset_right = 1833.0
+offset_bottom = 923.0
+script = ExtResource("11_xwx5r")
+
+[node name="PegStackDisplay" parent="." unique_id=1706331569 instance=ExtResource("12_0ig3i")]
+position = Vector2(960, 560)
+
+[node name="HealthText" parent="." unique_id=473935788 instance=ExtResource("13_xwx5r")]
+
+[node name="DamageOverlay" type="ColorRect" parent="." unique_id=1079831109]
+modulate = Color(1, 1, 1, 0)
+z_index = 1000
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(48.674236, 29.958965)
+mouse_filter = 2
+color = Color(0.7097931, 0.10195923, 0, 1)
+metadata/_edit_lock_ = true

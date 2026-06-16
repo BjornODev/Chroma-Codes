@@ -11,6 +11,10 @@ const BOARDS_PER_COLOR := 3
 const ACTIVATED_PANEL_REFILL := 5
 const ADJACENT_PANEL_REFILL := 0
 
+# Fixed number of panels the player may activate per map. The map ends after the
+# player exits the panel that brings this to zero.
+const PANELS_PER_MAP := 12
+
 const COLOR_VALUES := {
 	"red": Color("#E05555"),
 	"yellow": Color("#E0C055"),
@@ -61,12 +65,22 @@ var type_activation_counts := {}
 var total_activated := 0
 var consecutive_non_board := 0
 
+# Countdown of how many more panels can be activated this map.
+var panels_remaining := PANELS_PER_MAP
+# Set true once panels_remaining hits zero (the player should be sent onward
+# after exiting the panel that triggered it).
+var map_ended := false
+
 var boss_triggered := false
 var boss_ready := false
 
 var last_panel_world_pos: Vector2 = Vector2.ZERO
 var last_panel_row: int = -1
 var last_panel_col: int = -1
+
+# Per-color peg refill amounts from the most recent panel activation, so the
+# board can animate the colored pegs flying into the hand. Consumed on board load.
+var last_refill_by_color: Dictionary = {}
 
 var unlock_condition: Dictionary = {}
 var unlock_condition_progress: Dictionary = {}
@@ -82,6 +96,8 @@ var unlock_any_active := false
 signal panel_activated(row: int, col: int, panel_type: String, color: String)
 signal unlock_condition_met
 signal map_unlock_triggered
+signal panels_remaining_changed(remaining: int)
+signal map_panels_exhausted
 
 
 # =========================
@@ -108,6 +124,8 @@ func start_run(seed_value: int):
 		type_activation_counts[type] = 0
 
 	total_activated = 0
+	panels_remaining = PANELS_PER_MAP
+	map_ended = false
 
 	_generate_grid()
 	_generate_unlock_condition()
@@ -337,6 +355,12 @@ func activate_panel(row: int, col: int) -> bool:
 	type_activation_counts[panel_type] += 1
 	total_activated += 1
 
+	# Decrement the per-map panel budget
+	panels_remaining = max(0, panels_remaining - 1)
+	emit_signal("panels_remaining_changed", panels_remaining)
+	if panels_remaining <= 0:
+		map_ended = true
+
 	if panel_type == "Board":
 		board_color_activation_counts[color] += 1
 
@@ -345,7 +369,6 @@ func activate_panel(row: int, col: int) -> bool:
 	if unlock_any_active and total_activated > 1:
 		unlock_any_active = false
 
-	_check_boss_trigger()
 	_check_unlock_condition(color, panel_type)
 
 	ItemManager.emit_game_event("panel_activated", {
@@ -355,11 +378,15 @@ func activate_panel(row: int, col: int) -> bool:
 		"color": color,
 		"color_counts": color_activation_counts.duplicate(),
 		"type_counts": type_activation_counts.duplicate(),
-		"total": total_activated
+		"total": total_activated,
+		"panels_remaining": panels_remaining,
 	})
 	ItemManager.process_turn_events()
 
 	emit_signal("panel_activated", row, col, panel_type, color)
+
+	if map_ended:
+		emit_signal("map_panels_exhausted")
 
 	return true
 
@@ -391,24 +418,6 @@ func get_last_panel_adjacent_colors() -> Array:
 	if last_panel_row < 0 or last_panel_col < 0:
 		return []
 	return get_adjacent_panel_colors(last_panel_row, last_panel_col)
-
-
-# =========================
-# BOSS TRIGGER
-# Boss spawns when at least one Board panel of each color has been activated
-# =========================
-
-func _check_boss_trigger():
-	if boss_triggered:
-		return
-
-	for color in COLORS:
-		if board_color_activation_counts.get(color, 0) < 1:
-			return
-
-	boss_triggered = true
-	boss_ready = true
-
 
 # =========================
 # UNLOCK CONDITION CHECKING
@@ -443,7 +452,7 @@ func _check_unlock_condition(_activated_color: String, _activated_type: String):
 
 	if met:
 		unlock_used = true
-		KeywordEngine.apply_keyword("Heal", 1)
+		KeywordEngine.apply_keyword("Unlock Any", 1)
 
 
 func _trigger_unlock():
@@ -574,6 +583,8 @@ func reset_map():
 	for type in type_activation_counts.keys():
 		type_activation_counts[type] = 0
 	total_activated = 0
+	panels_remaining = PANELS_PER_MAP
+	map_ended = false
 	grid_activated.clear()
 	grid_adjacency_unlocked.clear()
 	for r in range(GRID_SIZE):
@@ -593,10 +604,14 @@ func _refill_pegs_from_panel(row: int, col: int):
 	var activated_amount = max(1, ACTIVATED_PANEL_REFILL - consecutive_non_board)
 	var adjacent_amount = 0
 
+	# Record per-color refill amounts so the board can animate pegs flying in.
+	last_refill_by_color = {}
+
 	var activated_color = grid_colors[row][col]
 	var activated_peg_id = COLOR_TO_PEG_ID.get(activated_color, 0)
 	if activated_peg_id > 0:
 		PegInventoryManager.add_pegs_to_color(activated_peg_id, activated_amount)
+		last_refill_by_color[activated_color] = last_refill_by_color.get(activated_color, 0) + activated_amount
 
 	var neighbors = [
 		Vector2(row - 1, col),
@@ -612,8 +627,9 @@ func _refill_pegs_from_panel(row: int, col: int):
 			continue
 		var adj_color = grid_colors[nr][nc]
 		var adj_peg_id = COLOR_TO_PEG_ID.get(adj_color, 0)
-		if adj_peg_id > 0:
+		if adj_peg_id > 0 and adjacent_amount > 0:
 			PegInventoryManager.add_pegs_to_color(adj_peg_id, adjacent_amount)
+			last_refill_by_color[adj_color] = last_refill_by_color.get(adj_color, 0) + adjacent_amount
 
 	if panel_type == "Board":
 		consecutive_non_board = 0

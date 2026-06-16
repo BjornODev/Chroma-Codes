@@ -17,9 +17,9 @@ const PEG_COLORS := {
 	"black": Color("#000000"),
 }
 
-const INNER_HUB_COLOR := Color("#00F0FF")
+const INNER_HUB_COLOR := Color("#B0E0FF")
 const OUTLINE_COLOR := Color.BLACK
-const OUTLINE_WIDTH := 4.25
+const OUTLINE_WIDTH := 2.5
 
 const LIFT_EXTRA_RADIUS := 10.0
 const LIFT_ANIM_DURATION := 0.18
@@ -34,9 +34,12 @@ var lift_offset: float = 0.0
 var inner_radius: float = 9.0
 var feedback_type: String = "none"
 var locked: bool = false
+var indicator_scale: float = 1.0  # animated 0->1 for blink-in
+var indicator_visible: bool = true  # toggled during flicker reveal
 
 var _lift_tween: Tween = null
 var _angle_tween: Tween = null
+var _blink_tween: Tween = null
 
 
 func setup(color_name: String, p_angle_center: float, p_slice_arc: float, c: Vector2, r: float, inner_r: float):
@@ -49,14 +52,25 @@ func setup(color_name: String, p_angle_center: float, p_slice_arc: float, c: Vec
 	queue_redraw()
 
 
-# Smoothly tween center angle to a new target
+# Smoothly tween center angle to a new target, taking the shortest path.
+# The tween animates a 0-to-1 progress over an explicit signed delta, so the
+# traversed arc is guaranteed to be the short way, and the stored angle is
+# always wrapped back into (-PI, PI] so values never drift out of range.
 func tween_to_angle(new_angle: float):
 	if _angle_tween:
 		_angle_tween.kill()
+
+	var start = angle_center
+	var delta = wrapf(new_angle - start, -PI, PI)
+
 	_angle_tween = create_tween()
 	_angle_tween.set_trans(Tween.TRANS_CUBIC)
 	_angle_tween.set_ease(Tween.EASE_OUT)
-	_angle_tween.tween_method(_set_angle_center, angle_center, new_angle, ANGLE_ANIM_DURATION)
+	_angle_tween.tween_method(_apply_angle_step.bind(start, delta), 0.0, 1.0, ANGLE_ANIM_DURATION)
+
+
+func _apply_angle_step(t: float, start: float, delta: float):
+	_set_angle_center(start + delta * t)
 
 
 # Instantly set angle (for dragged slice following cursor)
@@ -64,17 +78,66 @@ func set_angle_immediate(new_angle: float):
 	if _angle_tween:
 		_angle_tween.kill()
 		_angle_tween = null
-	angle_center = new_angle
+	angle_center = wrapf(new_angle, -PI, PI)
 	queue_redraw()
 
 
 func _set_angle_center(a: float):
-	angle_center = a
+	angle_center = wrapf(a, -PI, PI)
 	queue_redraw()
 
 
 func set_feedback(t: String):
 	feedback_type = t
+	indicator_scale = 1.0
+	indicator_visible = true
+	queue_redraw()
+
+
+# Set feedback and flicker the indicator on/off a few times before settling visible,
+# like a neon sign warming up. on_settled (optional) fires once the flicker finishes.
+func blink_in_feedback(t: String, on_settled: Callable = Callable()):
+	feedback_type = t
+	indicator_scale = 1.0
+
+	if t == "none":
+		indicator_visible = true
+		queue_redraw()
+		if on_settled.is_valid():
+			on_settled.call()
+		return
+
+	if _blink_tween:
+		_blink_tween.kill()
+
+	# Flicker pattern: on/off intervals (seconds), ending ON.
+	# Irregular timing reads more like a real flicker than even toggles.
+	var pattern := [0.05, 0.06, 0.04, 0.09, 0.05, 0.12]
+
+	indicator_visible = false
+	queue_redraw()
+
+	_blink_tween = create_tween()
+	var vis := true
+	for dur in pattern:
+		var show_state = vis
+		_blink_tween.tween_callback(func(): _set_indicator_visible(show_state))
+		_blink_tween.tween_interval(dur)
+		vis = not vis
+	# Guarantee it ends visible regardless of pattern length parity
+	_blink_tween.tween_callback(func(): _set_indicator_visible(true))
+	# Fire the settled callback after the full flicker has played out
+	if on_settled.is_valid():
+		_blink_tween.tween_callback(on_settled)
+
+
+func _set_indicator_visible(v: bool):
+	indicator_visible = v
+	queue_redraw()
+
+
+func _set_indicator_scale(v: float):
+	indicator_scale = v
 	queue_redraw()
 
 
@@ -182,6 +245,11 @@ func _get_fill_color() -> Color:
 
 
 func _draw_feedback_indicator(current_radius: float):
+	if not indicator_visible:
+		return
+	if indicator_scale <= 0.001:
+		return
+
 	var mid_radius = (inner_radius + current_radius) / 2.0
 	var pos = center + Vector2(cos(angle_center), sin(angle_center)) * mid_radius
 
@@ -190,9 +258,11 @@ func _draw_feedback_indicator(current_radius: float):
 
 	match feedback_type:
 		"correct":
-			draw_circle(pos, 7.0, indicator_color)
+			draw_circle(pos, 7.0 * indicator_scale, indicator_color)
 		"almost":
-			draw_arc(pos, 6.0, 0, TAU, 32, indicator_color, 2.0)
+			# Keep ring thickness readable even while scaling in
+			var ring_width = max(1.0, 4.0 * indicator_scale)
+			draw_arc(pos, 6.0 * indicator_scale, 0, TAU, 32, indicator_color, ring_width)
 
 
 # =========================

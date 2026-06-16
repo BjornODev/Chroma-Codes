@@ -23,6 +23,9 @@
 [ext_resource type="PackedScene" uid="uid://cauxwn6vnpopq" path="res://scenes/TooltipPanel.tscn" id="21_1iba3"]
 [ext_resource type="Shader" uid="uid://dhnljtdx7tjn8" path="res://shaders/IrisWipe.gdshader" id="21_yxlcp"]
 [ext_resource type="PackedScene" uid="uid://dv7xb81iu655c" path="res://scenes/ActiveItemPanel.tscn" id="23_ebg2g"]
+[ext_resource type="Script" uid="uid://n2venpfo1eye" path="res://scripts/scoring/ScorePegHUD.gd" id="24_36rkl"]
+[ext_resource type="Script" uid="uid://wh20tgxmah1v" path="res://scripts/scoring/TugOfWarBar.gd" id="25_fs0b5"]
+[ext_resource type="Script" uid="uid://dxb5up7hx38tr" path="res://scripts/scoring/RulesDisplayPanel.gd" id="26_ma7h6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ebg2g"]
 shader = ExtResource("2_1iba3")
@@ -371,6 +374,42 @@ offset_top = 16.0
 offset_right = -1820.0
 offset_bottom = 56.0
 alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUDLayer" unique_id=1742897114]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -600.0
+offset_top = 100.0
+offset_bottom = 980.0
+grow_horizontal = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="HUDLayer/HBoxContainer" unique_id=244368345]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScorePegHUD" type="Control" parent="HUDLayer/HBoxContainer/CenterContainer" unique_id=910475005]
+z_index = 20
+z_as_relative = false
+layout_mode = 2
+script = ExtResource("24_36rkl")
+
+[node name="CenterContainer2" type="CenterContainer" parent="HUDLayer/HBoxContainer" unique_id=245888895]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TugOfWarBar" type="Control" parent="HUDLayer/HBoxContainer/CenterContainer2" unique_id=36405585]
+layout_mode = 2
+script = ExtResource("25_fs0b5")
+
+[node name="RulesDisplayPanel" type="Control" parent="HUDLayer/HBoxContainer" unique_id=1630878045]
+custom_minimum_size = Vector2(0, 650)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("26_ma7h6")
 
 [connection signal="pressed" from="ConfirmationButton" to="BoardManager" method="_on_pressed"]
 [connection signal="pressed" from="ReplaceConfirmationButton" to="PegManager" method="_on_pressed"]

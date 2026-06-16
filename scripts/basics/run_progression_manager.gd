@@ -24,6 +24,24 @@ var board_peg_counts := {
 	6: 0,
 }
 
+# =========================
+# PEG QUOTAS
+# =========================
+# The quota a player must meet for the current map, as { color_name: amount }.
+# Only colors that HAVE a quota appear in this dict.
+# Color names match MapManager.COLORS.
+
+var peg_quotas: Dictionary = {}
+
+# Which map the player is on (1-indexed). Drives quota scaling.
+var current_map_number: int = 1
+
+# --- Quota generation tuning ---
+const QUOTA_BASE := 100              # total pegs required on map 1
+const QUOTA_GROWTH := 25             # quadratic growth coefficient
+const QUOTA_FLOOR_FRAC := 0.3        # min per-color share (fraction of even split)
+const QUOTA_COLORS := ["red", "yellow", "green", "white", "purple", "orange"]
+
 var _rng := RandomNumberGenerator.new()
 
 
@@ -43,6 +61,10 @@ func start_new_run():
 
 	reward_pool_items = ItemManager.all_items.duplicate()
 	_rng.seed = MapManager.run_seed
+
+	# Set up the first map's quotas
+	current_map_number = 1
+	generate_quotas_for_map(current_map_number)
 
 
 func end_run():
@@ -243,3 +265,99 @@ func record_row_submitted(guess: Array):
 
 func record_damage_taken(amount: int):
 	board_damage_taken += amount
+
+
+# =========================
+# PEG QUOTA GENERATION
+# =========================
+
+# Total pegs required across all colors for a given map.
+# Quadratic: base + growth*(map-1)^2  (sits around 1.5x per map early on).
+func quota_total_for_map(map_number: int) -> int:
+	return QUOTA_BASE + QUOTA_GROWTH * (map_number - 1) * (map_number - 1)
+
+
+# How many colors carry a quota on a given map: 2,3,4,5,6,6,...  (all six by map 5).
+func quota_color_count_for_map(map_number: int) -> int:
+	return min(6, map_number + 1)
+
+
+# Generate and store the quotas for the given map. Random colors, random
+# weighted split of the total with a per-color floor.
+func generate_quotas_for_map(map_number: int) -> void:
+	current_map_number = map_number
+	var total = quota_total_for_map(map_number)
+	var n = quota_color_count_for_map(map_number)
+
+	# Pick which colors get a quota
+	var pool = QUOTA_COLORS.duplicate()
+	pool.shuffle()
+	var chosen = pool.slice(0, n)
+
+	# Random weighted split with a floor so no color is trivially small
+	var even = float(total) / float(n)
+	var floor_amount = max(1, int(even * QUOTA_FLOOR_FRAC))
+	var remaining = total - floor_amount * n
+	if remaining < 0:
+		remaining = 0
+		floor_amount = int(total / n)
+
+	var weights := []
+	var wsum := 0.0
+	for i in range(n):
+		var w = randf()
+		weights.append(w)
+		wsum += w
+	if wsum <= 0.0:
+		wsum = 1.0
+
+	var amounts := []
+	for i in range(n):
+		amounts.append(floor_amount + int(remaining * weights[i] / wsum))
+
+	# Fix rounding remainder so the amounts sum exactly to total
+	var diff = total - _sum_array(amounts)
+	var idx = 0
+	while diff != 0 and n > 0:
+		amounts[idx % n] += 1 if diff > 0 else -1
+		diff += -1 if diff > 0 else 1
+		idx += 1
+
+	peg_quotas = {}
+	for i in range(n):
+		peg_quotas[chosen[i]] = amounts[i]
+
+
+func _sum_array(arr: Array) -> int:
+	var s := 0
+	for v in arr:
+		s += v
+	return s
+
+
+# Advance to the next map and generate its quotas.
+func advance_to_next_map() -> void:
+	generate_quotas_for_map(current_map_number + 1)
+
+
+# Manually override this map's quotas. Example: set_peg_quotas({"red": 8})
+func set_peg_quotas(quotas: Dictionary) -> void:
+	peg_quotas = quotas.duplicate()
+
+
+# Convenience: the colors that have a quota this map, in canonical order.
+func get_quota_colors() -> Array:
+	var result := []
+	for c in QUOTA_COLORS:
+		if peg_quotas.has(c):
+			result.append(c)
+	return result
+
+
+# Whether the player's earned score pegs currently meet every quota.
+func are_quotas_met() -> bool:
+	for color_name in peg_quotas.keys():
+		var have = ScoreManager.earned_score_pegs.get(color_name, 0)
+		if have < peg_quotas[color_name]:
+			return false
+	return true

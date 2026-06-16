@@ -16,6 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://dv7xb81iu655c" path="res://scenes/ActiveItemPanel.tscn" id="12_0q6xy"]
 [ext_resource type="Shader" uid="uid://85s8xd26ubjh" path="res://shaders/BlobBackground.gdshader" id="14_0q6xy"]
 [ext_resource type="PackedScene" uid="uid://qbs5mpvfuahd" path="res://scenes/PegStackDisplay.tscn" id="16_8t4ed"]
+[ext_resource type="Script" uid="uid://ub7pv3woh4lf" path="res://scripts/map_screen/MapScorePegCounter.gd" id="17_sd4vv"]
+[ext_resource type="Script" uid="uid://cu28kjrdyg00o" path="res://scripts/map_screen/QuotaDisplay.gd" id="18_yn8di"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d1huf"]
 shader = ExtResource("2_lb6md")
@@ -105,6 +107,7 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k1etw")
+metadata/_edit_use_anchors_ = true
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=690147753]
 layout_mode = 1
@@ -343,3 +346,40 @@ vertical_alignment = 1
 
 [node name="PegStackDisplay" parent="." unique_id=937433563 instance=ExtResource("16_8t4ed")]
 position = Vector2(20, 20)
+
+[node name="MapScorePegCounter" type="Control" parent="." unique_id=1295463254]
+z_index = 15
+anchors_preset = 0
+offset_left = -622.0
+offset_top = -370.0
+offset_right = -423.0
+offset_bottom = 551.0
+script = ExtResource("17_sd4vv")
+
+[node name="CountdownLabel" type="Label" parent="." unique_id=1140445766]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 400.0
+offset_top = -100.5
+offset_right = 648.0
+offset_bottom = 100.5
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 50
+theme_override_fonts/font = ExtResource("5_cehh4")
+theme_override_font_sizes/font_size = 175
+text = "10"
+horizontal_alignment = 1
+
+[node name="QuotaDisplay" type="Control" parent="." unique_id=55739903]
+anchors_preset = 0
+offset_left = 730.0
+offset_top = -354.0
+offset_right = 875.0
+offset_bottom = 399.0
+script = ExtResource("18_yn8di")

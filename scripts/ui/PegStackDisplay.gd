@@ -13,6 +13,10 @@ var peg_database_reference
 
 var center_screen_x: float = 0.0
 
+# Colors (peg_ids) whose auto-counter-animation is suppressed because a flight
+# animation is currently driving their tick-up.
+var _suppressed_ids: Dictionary = {}
+
 func _ready():
 	peg_database_reference = preload("res://scripts/basics/peg_data.gd")
 	center_screen_x = get_viewport().get_visible_rect().size.x / 2.0
@@ -67,6 +71,9 @@ func _calculate_peg_position(index: int) -> float:
 
 
 func _on_count_changed(color_id: int, new_count: int, old_count: int):
+	# If a flight is driving this color's counter, skip the auto-animation.
+	if _suppressed_ids.has(color_id):
+		return
 	for peg in stack_pegs:
 		if not is_instance_valid(peg):
 			continue
@@ -102,6 +109,34 @@ func _update_greyed(peg, count: int):
 		peg.modulate = Color(0.4, 0.4, 0.4, 1.0)
 	else:
 		peg.modulate = Color.WHITE
+
+
+# =========================
+# FLIGHT SUPPRESSION
+# Called by MapPanelPegFlight so the flight can drive the counter tick-up
+# instead of the instant auto-animation when pegs are gained from a panel.
+# =========================
+
+func suppress_color(peg_id: int):
+	if peg_id < 0:
+		return
+	_suppressed_ids[peg_id] = true
+
+
+func suppress_all():
+	for pid in [1, 2, 3, 4, 5, 6]:
+		_suppressed_ids[pid] = true
+
+
+func unsuppress_all():
+	_suppressed_ids.clear()
+
+
+func get_stack_peg(peg_id: int):
+	for peg in stack_pegs:
+		if is_instance_valid(peg) and peg.peg_id == peg_id:
+			return peg
+	return null
 
 
 func connect_peg_signals(peg):

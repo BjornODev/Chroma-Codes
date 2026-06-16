@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://qbs5mpvfuahd"]
+[gd_scene format=3 uid="uid://qbs5mpvfuahd"]
 
 [ext_resource type="Script" uid="uid://bynxcjftwvcet" path="res://scripts/ui/PegStackDisplay.gd" id="1_ykhtp"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" unique_id=1706331569]
 script = ExtResource("1_ykhtp")

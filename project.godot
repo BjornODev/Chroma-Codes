@@ -32,7 +32,7 @@ PatternEngine="*res://scripts/basics/pattern_engine.gd"
 PopUpText="*res://scenes/PopUpText.tscn"
 KeywordEngine="*res://scripts/basics/keyword_engine.gd"
 AudioSystem="*res://scenes/music_player.tscn"
-AudioLoader="*res://scripts/music_player.gd"
+AudioLoader="*res://scripts/audio/music_player.gd"
 RunProgressionManager="*res://scripts/basics/run_progression_manager.gd"
 MapManager="*res://scripts/map_screen/MapManager.gd"
 BackgroundGenerator="*res://scripts/ui/BackgroundGenerator.gd"
@@ -43,6 +43,7 @@ DollarManager="*res://scripts/basics/DollarManager.gd"
 HoverTooltip="*res://scenes/HoverTooltip.tscn"
 RulesEngine="*res://scripts/RulesSystems/RulesEngine.gd"
 ScoreManager="*res://scripts/scoring/ScoreManager.gd"
+AudioManager="*res://scripts/audio/AudioManager.gd"
 
 [display]
 
@@ -79,7 +80,7 @@ environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 
 project/editorState=[{
 "column": 0,
-"line": 869,
+"line": 35,
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
@@ -124,7 +125,6 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"current": true,
 "line": 0,
 "path": "res://scripts/items/item_manager.gd",
 "type": "file"
@@ -145,17 +145,18 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 50,
+"line": 362,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
-"column": 0,
-"line": 620,
+"column": 41,
+"current": true,
+"line": 454,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 189,
+"line": 37,
 "path": "res://scripts/map_screen/MapScreen.gd",
 "type": "file"
 }, {
@@ -200,28 +201,83 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 181,
+"line": 223,
 "path": "res://scripts/scoring/ScoreManager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 21,
+"line": 286,
 "path": "res://scripts/scoring/SliceNode.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 16,
+"line": 139,
 "path": "res://scripts/scoring/FeedbackCircle.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 88,
+"line": 150,
 "path": "res://scripts/scoring/TugOfWarBar.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 69,
+"line": 23,
 "path": "res://scripts/scoring/ScorePegHUD.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 79,
+"path": "res://scripts/scoring/RulesDisplayPanel.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 79,
+"path": "res://scripts/scoring/FlyingScorePeg.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 22,
+"path": "res://scripts/map_screen/MapScorePegCounter.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 175,
+"path": "res://scripts/map_screen/PanelPegFlight.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 142,
+"path": "res://scripts/ui/PegStackDisplay.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 187,
+"path": "res://scripts/map_screen/MapPanelPegFlight.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 129,
+"path": "res://scripts/map_screen/QuotaDisplay.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 32,
+"path": "res://scripts/quota_screen/SettlementDebug.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 33,
+"path": "res://scripts/quota_screen/MapCompleteScreen.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 82,
+"path": "res://scripts/quota_screen/MultiplierDisplay.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/ui/health_text.gd",
 "type": "file"
 }]
 project/breakpoints={
