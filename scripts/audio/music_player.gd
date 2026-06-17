@@ -29,6 +29,7 @@ class SongInstance:
 	var target_db: Array[float] = []             # per-stem target volume
 	var enabled: Array[bool] = []                # per-stem on/off
 	var fade_tweens: Array = []                  # per-stem active tween
+	var play_volume_db: float = 0.0              # per-play level offset for this playback
 
 var _current: SongInstance = null
 var _song_defs: Dictionary = {}    # name -> Array[String] of stem paths
@@ -50,16 +51,17 @@ func register_songs(defs: Dictionary) -> void:
 		register_song(k, defs[k])
 
 
-# Start a song. enabled_layers: which stem indices begin audible (others start
-# silent but still play, so they can be faded in later in sync). If a song is
-# already playing, it crossfades out.
-func play_song(song_name: String, enabled_layers: Array = [0], crossfade := DEFAULT_CROSSFADE) -> void:
+# Start a song. enabled_layers: which stem indices begin audible. volume_db is a
+# per-play level offset applied to every layer of THIS playback (0 = full).
+# If a song is already playing, it crossfades out.
+func play_song(song_name: String, enabled_layers: Array = [0], crossfade := DEFAULT_CROSSFADE, volume_db := 0.0) -> void:
 	if not _song_defs.has(song_name):
 		push_warning("[MusicPlayer] unknown song: " + song_name)
 		return
 
 	var old = _current
 	var inst = _build_song_instance(song_name, enabled_layers)
+	inst.play_volume_db = volume_db
 	_current = inst
 
 	# Start all stems together (sample-synced)
@@ -67,7 +69,7 @@ func play_song(song_name: String, enabled_layers: Array = [0], crossfade := DEFA
 		var p = inst.players[i]
 		var start_db = SILENT_DB
 		if inst.enabled[i]:
-			start_db = (FULL_DB + _vol_offset()) if old == null else SILENT_DB
+			start_db = _layer_target_db(inst, i) if old == null else SILENT_DB
 		p.volume_db = start_db
 		p.play()
 
@@ -147,7 +149,7 @@ func current_song() -> String:
 # =========================
 
 func _layer_target_db(inst: SongInstance, i: int) -> float:
-	return inst.target_db[i] + _vol_offset()
+	return inst.target_db[i] + inst.play_volume_db + _vol_offset()
 
 
 func _vol_offset() -> float:

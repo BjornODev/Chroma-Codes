@@ -13,7 +13,7 @@ const ADJACENT_PANEL_REFILL := 0
 
 # Fixed number of panels the player may activate per map. The map ends after the
 # player exits the panel that brings this to zero.
-const PANELS_PER_MAP := 12
+const PANELS_PER_MAP := 8
 
 const COLOR_VALUES := {
 	"red": Color("#E05555"),
@@ -87,6 +87,17 @@ var unlock_condition_progress: Dictionary = {}
 var unlock_used := false
 
 var unlock_any_active := false
+
+# =========================
+# PLAYTEST OVERRIDES
+# Set by PlaytestSettings.apply_to_new_run(). When playtest_refill_override is
+# true, _refill_pegs_from_panel uses these instead of the ACTIVATED/ADJACENT
+# _PANEL_REFILL consts.
+# =========================
+
+var playtest_refill_override := false
+var playtest_clicked_refill := 5
+var playtest_adjacent_refill := 1
 
 
 # =========================
@@ -248,7 +259,7 @@ func _generate_unlock_condition():
 
 	match condition_type:
 		UnlockType.COLOR_COUNT:
-			var num_colors = 1 + rng.randi() % 3
+			var num_colors = 1 + rng.randi() % 2
 			var chosen_colors = COLORS.duplicate()
 			_seeded_shuffle(chosen_colors)
 			var requirements = {}
@@ -265,7 +276,7 @@ func _generate_unlock_condition():
 		UnlockType.PANEL_TYPE:
 			var types = ["Board", "Shop", "Event", "Forge", "Gamble"]
 			var chosen_type = types[rng.randi() % types.size()]
-			var count = 2 + rng.randi() % 3
+			var count = 1 + rng.randi() % 3
 			unlock_condition = {
 				"type": UnlockType.PANEL_TYPE,
 				"panel_type": chosen_type,
@@ -601,8 +612,12 @@ func reset_map():
 func _refill_pegs_from_panel(row: int, col: int):
 	var panel_type = grid_types[row][col]
 
-	var activated_amount = max(1, ACTIVATED_PANEL_REFILL - consecutive_non_board)
-	var adjacent_amount = 0
+	# Use playtest overrides for the refill amounts when active.
+	var base_clicked = playtest_clicked_refill if playtest_refill_override else ACTIVATED_PANEL_REFILL
+	var base_adjacent = playtest_adjacent_refill if playtest_refill_override else ADJACENT_PANEL_REFILL
+
+	var activated_amount = max(1, base_clicked - consecutive_non_board)
+	var adjacent_amount = base_adjacent
 
 	# Record per-color refill amounts so the board can animate pegs flying in.
 	last_refill_by_color = {}

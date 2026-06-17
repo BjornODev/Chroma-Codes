@@ -29,8 +29,9 @@ const COLOR_TO_PEG_ID := {
 const FLIGHT_DURATION := 0.5
 const WOBBLE_AMP := 24.0
 const WOBBLE_FREQ := 2.0
-const STAGGER := 0.05
+const STAGGER := 0.075
 const PEG_SIZE := 60.0
+const SHUFFLE_PITCH_RAND := 0.05
 
 var _stack_display = null
 var _peg_texture: Texture2D
@@ -42,10 +43,8 @@ func play(peg_stack_display, origin_global_pos: Vector2):
 
 	var refills = MapManager.last_refill_by_color.duplicate()
 	MapManager.last_refill_by_color = {}   # consume so it won't replay
-	print("[PegFlight] play() refills=", refills)
 
 	if refills.is_empty() or _stack_display == null:
-		print("[PegFlight] play() BAIL: empty refills or null stack display")
 		queue_free()
 		return
 
@@ -54,20 +53,15 @@ func play(peg_stack_display, origin_global_pos: Vector2):
 	if _stack_display.has_method("suppress_color"):
 		for color_name in refills.keys():
 			_stack_display.suppress_color(COLOR_TO_PEG_ID.get(color_name, -1))
-	else:
-		print("[PegFlight] WARNING: stack display has no suppress_color method")
 
 	var total_flyers := 0
 	for color_name in refills.keys():
 		var amount = refills[color_name]
-		print("[PegFlight] color=", color_name, " amount=", amount, " peg_id=", COLOR_TO_PEG_ID.get(color_name, -1))
 		if amount <= 0:
 			continue
 		var peg_node = _find_stack_peg(COLOR_TO_PEG_ID.get(color_name, -1))
 		if peg_node == null:
-			print("[PegFlight] BAIL for ", color_name, ": no matching stack peg found")
 			continue
-		print("[PegFlight] launching ", amount, " flyers for ", color_name, " to ", peg_node.global_position)
 
 		# Roll the displayed counter back by the refill so the flight animates the gain
 		_set_counter_offset(peg_node, -amount)
@@ -76,8 +70,6 @@ func play(peg_stack_display, origin_global_pos: Vector2):
 			var delay = total_flyers * STAGGER
 			_launch_delayed(color_name, origin_global_pos, peg_node, delay)
 			total_flyers += 1
-
-	print("[PegFlight] total_flyers launched=", total_flyers)
 
 	var lifetime = total_flyers * STAGGER + FLIGHT_DURATION + 0.5
 	get_tree().create_timer(lifetime).timeout.connect(func():
@@ -119,12 +111,27 @@ func _bump_counter(peg_node):
 	# Restore full color once pegs start arriving
 	if shown > 0:
 		peg_node.modulate = Color.WHITE
-	# Pop the mushroom
+	# Pulse the peg: grow then ease back, matching the score peg system.
+	_pulse_peg(peg_node)
+
+
+const PULSE_SCALE := 1.45
+const PULSE_RETURN_TIME := 0.45
+
+func _pulse_peg(peg_node):
+	if not is_instance_valid(peg_node):
+		return
+	# Kill any in-flight pulse on this peg so rapid landings don't stack
+	if peg_node.has_meta("_pulse_tween"):
+		var prev = peg_node.get_meta("_pulse_tween")
+		if prev != null and prev.is_valid():
+			prev.kill()
+	peg_node.scale = Vector2(PULSE_SCALE, PULSE_SCALE)
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC)
 	tween.set_ease(Tween.EASE_OUT)
-	peg_node.scale = Vector2(1.25, 1.25)
-	tween.tween_property(peg_node, "scale", Vector2.ONE, 0.18)
+	tween.tween_property(peg_node, "scale", Vector2.ONE, PULSE_RETURN_TIME)
+	peg_node.set_meta("_pulse_tween", tween)
 
 
 func _launch_delayed(color_name: String, origin: Vector2, peg_node, delay: float):
@@ -140,6 +147,8 @@ func _launch_delayed(color_name: String, origin: Vector2, peg_node, delay: float
 func _launch(color_name: String, origin: Vector2, peg_node):
 	var flyer = _Flyer.new()
 	add_child(flyer)
+	# Each flying peg plays the Shuffle sound with slight pitch variation.
+	AudioManager.play_sound("Shuffle", 0.0, 1.0, SHUFFLE_PITCH_RAND)
 	var target = peg_node.global_position
 	flyer.setup(_peg_texture, PEG_COLORS.get(color_name, Color.WHITE), origin, target,
 		PEG_SIZE / float(_peg_texture.get_width()),

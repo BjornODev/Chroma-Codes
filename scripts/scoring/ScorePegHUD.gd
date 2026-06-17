@@ -19,9 +19,10 @@ const PEG_COLORS := {
 
 const COLORS_ORDER := ["red", "yellow", "green", "white", "purple", "orange"]
 
-const ENTRY_HEIGHT := 70.0      # bigger than before
+const ENTRY_HEIGHT := 94.0      # bigger than before
 const ENTRY_WIDTH := 130.0
-const PEG_DISPLAY_SIZE := 75.0   # rendered diameter of each HUD peg
+const PEG_DISPLAY_SIZE := 70.0   # rendered diameter of each HUD peg
+const SHUFFLE_PITCH_RAND := 0.05
 const PULSE_SCALE := 1.45        # how big the peg gets on a landing
 const PULSE_RETURN_TIME := 0.45
 
@@ -131,6 +132,8 @@ func launch_flying_peg(color_name: String, from_screen_pos: Vector2, shift_direc
 	var flyer = Node2D.new()
 	flyer.set_script(preload("res://scripts/scoring/FlyingScorePeg.gd"))
 	_flight_layer.add_child(flyer)
+	# Each flying peg plays the Shuffle sound with slight pitch variation.
+	AudioManager.play_sound("Shuffle", 0.0, 1.0, SHUFFLE_PITCH_RAND)
 
 	# Convert screen positions into the flight layer's local space
 	var inv = _flight_layer.get_global_transform_with_canvas().affine_inverse()

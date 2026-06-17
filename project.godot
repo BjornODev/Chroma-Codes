@@ -42,6 +42,8 @@ HoverTooltip="*res://scenes/HoverTooltip.tscn"
 RulesEngine="*res://scripts/RulesSystems/RulesEngine.gd"
 ScoreManager="*res://scripts/scoring/ScoreManager.gd"
 AudioManager="*res://scripts/audio/AudioManager.gd"
+PlaytestSettings="*res://scripts/ui/PlaytestSettings.gd"
+PlaytestMenu="*res://scripts/ui/PlaytestMenu.gd"
 
 [display]
 
@@ -67,6 +69,11 @@ m={
 "events": Array[InputEvent]([Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":77,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ])
 }
+"Menu Button"={
+"deadzone": 0.5,
+"events": Array[InputEvent]([Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+])
+}
 
 [rendering]
 
@@ -77,9 +84,8 @@ environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 [xogot]
 
 project/editorState=[{
-"column": 35,
-"current": true,
-"line": 870,
+"column": 0,
+"line": 35,
 "path": "res://scripts/basics/board_manager.gd",
 "type": "file"
 }, {
@@ -144,17 +150,17 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 362,
+"line": 293,
 "path": "res://scripts/basics/run_progression_manager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 454,
+"line": 652,
 "path": "res://scripts/map_screen/MapManager.gd",
 "type": "file"
 }, {
-"column": 26,
-"line": 338,
+"column": 0,
+"line": 71,
 "path": "res://scripts/map_screen/MapScreen.gd",
 "type": "file"
 }, {
@@ -219,7 +225,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 23,
+"line": 135,
 "path": "res://scripts/scoring/ScorePegHUD.gd",
 "type": "file"
 }, {
@@ -239,7 +245,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 175,
+"line": 33,
 "path": "res://scripts/map_screen/PanelPegFlight.gd",
 "type": "file"
 }, {
@@ -249,7 +255,7 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 187,
+"line": 33,
 "path": "res://scripts/map_screen/MapPanelPegFlight.gd",
 "type": "file"
 }, {
@@ -263,8 +269,8 @@ project/editorState=[{
 "path": "res://scripts/quota_screen/SettlementDebug.gd",
 "type": "file"
 }, {
-"column": 68,
-"line": 514,
+"column": 0,
+"line": 40,
 "path": "res://scripts/quota_screen/MapCompleteScreen.gd",
 "type": "file"
 }, {
@@ -279,23 +285,34 @@ project/editorState=[{
 "type": "file"
 }, {
 "column": 0,
-"line": 0,
-"path": "res://scripts/music_player.gd",
-"type": "file"
-}, {
-"column": 0,
-"line": 35,
+"line": 208,
 "path": "res://scripts/audio/AudioManager.gd",
 "type": "file"
 }, {
 "column": 0,
-"line": 17,
+"line": 0,
 "path": "res://scripts/audio/music_player.gd",
 "type": "file"
 }, {
-"column": 10,
-"line": 110,
+"column": 0,
+"line": 95,
 "path": "res://scripts/audio/SFXPool.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 0,
+"path": "res://scripts/basics/board_modifier_engine.gd",
+"type": "file"
+}, {
+"column": 0,
+"line": 55,
+"path": "res://scripts/ui/PlaytestSettings.gd",
+"type": "file"
+}, {
+"column": 56,
+"current": true,
+"line": 267,
+"path": "res://scripts/ui/PlaytestMenu.gd",
 "type": "file"
 }]
 project/breakpoints={

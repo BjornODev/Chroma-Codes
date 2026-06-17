@@ -31,6 +31,7 @@ const WOBBLE_AMP := 24.0
 const WOBBLE_FREQ := 2.0
 const STAGGER := 0.07
 const PEG_SIZE := 34.0
+const SHUFFLE_PITCH_RAND := 0.05
 
 var _hand = null
 var _peg_texture: Texture2D
@@ -122,6 +123,7 @@ func _launch(color_name: String, origin: Vector2, peg_node):
 	var flyer = _Flyer.new()
 	add_child(flyer)
 	var target = peg_node.global_position
+	AudioManager.play_sound("Shuffle", 0.0, 1.0, SHUFFLE_PITCH_RAND)
 	flyer.setup(_peg_texture, PEG_COLORS.get(color_name, Color.WHITE), origin, target,
 		PEG_SIZE / float(_peg_texture.get_width()),
 		func():

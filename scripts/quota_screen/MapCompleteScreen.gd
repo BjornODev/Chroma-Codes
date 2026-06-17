@@ -38,10 +38,11 @@ const COLOR_TO_PEG_ID := {
 # Animation timing
 const SCORE_FLIGHT_TIME := 0.4      # left total -> multiplier slot
 const QUOTA_FLIGHT_TIME := 0.4      # multiplier slot -> quota indicator
-const EVENT_STAGGER := 0.04         # gap between consecutive settlement events (stream pacing)
+const EVENT_STAGGER := 0.075         # gap between consecutive settlement events (stream pacing)
 const PEG_SIZE := 90.0              # much larger flight pegs
 const WOBBLE_AMP := 85.0            # perpendicular wobble amplitude (pixels) — higher = wider swings
 const WOBBLE_FREQ := 6.0            # number of wobble oscillations across the path — higher = more wiggles
+const SHUFFLE_PITCH_RAND := 0.05    # pitch variation for the per-peg Shuffle sound (± range)
 
 @onready var iris_wipe = $IrisWipe
 @onready var score_total_display = $ScoreTotalDisplay      # left, vertical
@@ -335,6 +336,9 @@ func _make_flyer(color: String) -> Sprite2D:
 	s.modulate = PEG_COLORS.get(color, Color.WHITE)
 	var scl = PEG_SIZE / float(_peg_texture.get_width())
 	s.scale = Vector2(scl, scl)
+	# Each flying peg plays the Shuffle sound with a little pitch variation so the
+	# stream of pegs doesn't sound robotic. Tune SHUFFLE_PITCH_RAND to taste.
+	AudioManager.play_sound("Shuffle", 0.0, 1.0, SHUFFLE_PITCH_RAND)
 	return s
 
 

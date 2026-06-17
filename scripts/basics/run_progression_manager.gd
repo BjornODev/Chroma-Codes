@@ -37,10 +37,19 @@ var peg_quotas: Dictionary = {}
 var current_map_number: int = 1
 
 # --- Quota generation tuning ---
-const QUOTA_BASE := 100              # total pegs required on map 1
+const QUOTA_BASE := 50              # total pegs required on map 1
 const QUOTA_GROWTH := 25             # quadratic growth coefficient
 const QUOTA_FLOOR_FRAC := 0.3        # min per-color share (fraction of even split)
 const QUOTA_COLORS := ["red", "yellow", "green", "white", "purple", "orange"]
+
+# =========================
+# PLAYTEST OVERRIDES
+# Set by PlaytestSettings.apply_to_new_run(). When playtest_quota_override is
+# true, quota_total_for_map uses playtest_quota_base instead of QUOTA_BASE.
+# =========================
+
+var playtest_quota_override := false
+var playtest_quota_base := 50
 
 var _rng := RandomNumberGenerator.new()
 
@@ -52,7 +61,7 @@ var _rng := RandomNumberGenerator.new()
 func start_new_run():
 	run_active = true
 	boards_cleared = 0
-	player_health = 5
+	player_health = 10
 	dollars = 0
 
 	var seed = randi()
@@ -274,7 +283,8 @@ func record_damage_taken(amount: int):
 # Total pegs required across all colors for a given map.
 # Quadratic: base + growth*(map-1)^2  (sits around 1.5x per map early on).
 func quota_total_for_map(map_number: int) -> int:
-	return QUOTA_BASE + QUOTA_GROWTH * (map_number - 1) * (map_number - 1)
+	var base = playtest_quota_base if playtest_quota_override else QUOTA_BASE
+	return base + QUOTA_GROWTH * (map_number - 1) * (map_number - 1)
 
 
 # How many colors carry a quota on a given map: 2,3,4,5,6,6,...  (all six by map 5).

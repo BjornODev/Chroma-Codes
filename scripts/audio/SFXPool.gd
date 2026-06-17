@@ -12,12 +12,6 @@ const SFX_FOLDER := "res://assets/audio/sfx"
 const POOL_SIZE := 16
 const SFX_BUS := "SFX"
 
-# Fallback manifest used if folder scanning fails (e.g. the Xogot editor
-# list_directory bug). Add "name": "res://path.ogg" entries here as a safety net.
-const FALLBACK_MANIFEST := {
-	# "reveal": "res://assets/audio/sfx/reveal.ogg",
-}
-
 var _streams: Dictionary = {}        # name -> AudioStream
 var _players: Array[AudioStreamPlayer] = []
 var _next := 0
@@ -37,34 +31,24 @@ func _build_pool():
 
 
 func _load_streams():
-	var loaded := 0
-	var dir = DirAccess.open(SFX_FOLDER)
-	if dir != null:
-		dir.list_dir_begin()
-		var fname = dir.get_next()
-		while fname != "":
-			if not dir.current_is_dir():
-				var clean = fname.trim_suffix(".import").trim_suffix(".remap")
-				if _is_audio_file(clean):
-					var key = clean.get_basename()
-					var path = SFX_FOLDER.path_join(clean)
-					if ResourceLoader.exists(path):
-						var stream = load(path)
-						if stream != null:
-							_streams[key] = stream
-							loaded += 1
-			fname = dir.get_next()
-		dir.list_dir_end()
+	_streams.clear()
 
-	# Fallback if scanning found nothing (Xogot editor bug or empty folder)
-	if loaded == 0:
-		for key in FALLBACK_MANIFEST.keys():
-			var path = FALLBACK_MANIFEST[key]
-			if ResourceLoader.exists(path):
-				_streams[key] = load(path)
-				loaded += 1
+	var files := ResourceLoader.list_directory(SFX_FOLDER)
+	files.sort()
+	if files.is_empty():
+		push_error("SFX folder missing or empty: " + SFX_FOLDER)
+		return
 
-	print("[SFXPool] loaded %d sound effects" % loaded)
+	for file_name in files:
+		if _is_audio_file(file_name):
+			var path = SFX_FOLDER + "/" + file_name
+			var stream = ResourceLoader.load(path)
+			if stream:
+				_streams[file_name.get_basename()] = stream
+			else:
+				push_warning("Failed to load sound: " + path)
+
+	print("Loaded sound effects: ", _streams.size())
 
 
 func _is_audio_file(fname: String) -> bool:

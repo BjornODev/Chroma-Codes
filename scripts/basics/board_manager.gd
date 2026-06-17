@@ -33,7 +33,7 @@ var scroll_offset := 0.0
 @onready var pattern_engine = PatternEngine
 @onready var item_system = ItemManager
 
-const TESTING_MODS = true
+const TESTING_MODS = false
 
 var current_adjacent_colors: Array = []
 
@@ -62,7 +62,7 @@ func _ready():
 	BoardModifierEngine.pre_board_build(self)
 	get_parent().call_deferred("populate_hud")
 	$"../BackgroundLayer".change_background(randi())
-	AudioManager.play_screen_music("Synthwave_3")
+	AudioManager.play_screen_music("Synthwave_3", -5.0)
 	KeywordEngine.multiplier = 1
 	KeywordEngine.set_context(self, peg_manager_reference, null)
 	generate_code()

@@ -36,6 +36,8 @@ var font: Font
 func _ready():
 	font = preload("res://assets/gomarice_goma_block.ttf")
 
+	print("Map ended =", MapManager.map_ended)
+
 	if !RunProgressionManager.run_active:
 		RunProgressionManager.start_new_run()
 	
@@ -45,7 +47,7 @@ func _ready():
 	
 	background_layer.change_background(RunProgressionManager.map_offset)
 
-	AudioManager.play_screen_music("Synthwave_1")
+	AudioManager.play_screen_music("Synthwave_1", -5.0)
 	
 	_build_grid()
 	_build_color_tracker()
@@ -61,18 +63,17 @@ func _ready():
 	MapManager.connect("panels_remaining_changed", _on_panels_remaining_changed)
 	ItemManager.connect("items_changed", _on_items_changed)
 
-	if MapManager.boss_ready:
-		MapManager.boss_ready = false
+	if MapManager.map_ended:
+		MapManager.map_ended = false
 		RunProgressionManager.first_time_on_map = true
 		iris_wipe.instant_close()
-		_show_caution()
 		await get_tree().create_timer(0.5).timeout
 		iris_wipe.iris_open(MapManager.last_panel_world_pos)
 		await iris_wipe.opened
-		await get_tree().create_timer(4.5).timeout
 		iris_wipe.iris_close(get_viewport().get_visible_rect().size / 2.0)
 		await iris_wipe.closed
 		await get_tree().create_timer(0.5).timeout
+		get_tree().change_scene_to_file("res://scenes/MapCompleteScreen.tscn")
 	elif MapManager.last_panel_world_pos != Vector2.ZERO:
 		iris_wipe.instant_close()
 		await get_tree().create_timer(0.5).timeout
@@ -213,7 +214,7 @@ func _play_panel_peg_flight(origin_global_pos: Vector2):
 		return
 	if peg_stack_display == null:
 		return
-	var flight = preload("res://scripts/MapPanelPegFlight.gd").new()
+	var flight = preload("res://scripts/map_screen/MapPanelPegFlight.gd").new()
 	add_child(flight)
 	flight.play(peg_stack_display, origin_global_pos)
 
